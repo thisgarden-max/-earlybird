@@ -299,6 +299,21 @@ textarea.input{resize:vertical;font-family:var(--f-data);font-size:13px;line-hei
 .pj-qr-col{align-items:center;justify-content:center;gap:clamp(8px,1.2vh,14px);background:linear-gradient(175deg,var(--sun-tint),var(--dawn-1) 60%)}
 #projector .qr-frame{padding:clamp(10px,1.6vh,18px);box-shadow:var(--shadow-md)}
 #projector .qr-frame img,#projector .qr-frame canvas{width:min(30vh,22vw,340px);height:min(30vh,22vw,340px)}
+/* 가로 화면(교실 아이패드·전자칠판): 오늘의 QR을 옆으로 눕혀 높이를 줄이고, 남는 자리를 이번 달 TOP 10에 줍니다 */
+.pj-side .pj-qr-col[data-mode="fixed"]{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto 1fr;column-gap:clamp(10px,1.2vw,20px);row-gap:clamp(4px,.8vh,10px);align-items:center;justify-items:start}
+.pj-side .pj-qr-col[data-mode="fixed"] .pj-h{grid-column:1/-1;margin-bottom:0}
+.pj-side .pj-qr-col[data-mode="fixed"] .qr-frame{grid-row:2/4;padding:clamp(6px,.9vh,12px)}
+#projector .pj-side .pj-qr-col[data-mode="fixed"] .qr-frame img,#projector .pj-side .pj-qr-col[data-mode="fixed"] .qr-frame canvas{width:min(18vh,11.5vw,280px);height:min(18vh,11.5vw,280px)}
+.pj-side .pj-qr-col[data-mode="fixed"] .qr-code{align-self:end;font-size:clamp(18px,2vw,40px);letter-spacing:.18em;margin:0;text-align:left}
+.pj-side .pj-qr-col[data-mode="fixed"] .pj-sub{align-self:start;word-break:keep-all;text-align:left;font-size:clamp(11px,1.05vw,19px);line-height:1.45;margin:0}
+.pj-side .pj-rank-col{flex:1 1 0}
+.pj-grid{grid-template-columns:1fr minmax(260px,34%)}
+.pj-side .pj-rank{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,auto);grid-auto-flow:column;align-content:start;gap:clamp(4px,.4vh,8px) clamp(5px,.5vw,8px);overflow:hidden}
+.pj-side .pj-rank li{min-width:0;gap:clamp(4px,.5vw,10px)}
+.pj-side .pj-rank .r{width:1.3em}
+.pj-side .pj-rank li{padding:clamp(3px,.6vh,10px) clamp(6px,.7vw,14px)}
+.pj-side .pj-rank .r,.pj-side .pj-rank .nm{font-size:clamp(14px,min(1.45vw,1.9vh),30px);line-height:1.25}
+.pj-side .pj-rank .hr{font-size:clamp(11px,min(1.1vw,1.5vh),22px)}
 #projector .qr-code{font-size:clamp(26px,3.2vw,58px)}
 #projector .ttl-bar{max-width:min(60%,320px);height:12px}
 #projector .pj-sub{font-size:clamp(12px,1.35vw,23px);color:var(--ink-500);text-align:center;line-height:1.5}
