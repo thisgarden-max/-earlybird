@@ -280,6 +280,15 @@ textarea.input{resize:vertical;font-family:var(--f-data);font-size:13px;line-hei
 .pj-quote p::after{content:"”";color:var(--sun);margin-left:.1em}
 .pj-quote cite{display:block;margin-top:8px;font-family:var(--f-data);font-size:clamp(12px,1.4vw,24px);letter-spacing:.16em;color:var(--sun-ink);font-style:normal}
 
+.pj-note{flex:0 0 auto;background:var(--sky-tint);border:2px solid var(--sky);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);padding:clamp(10px,1.5vh,18px) clamp(16px,2.4vw,32px);display:flex;align-items:baseline;gap:clamp(10px,1.4vw,20px)}
+.pj-note b{font-family:var(--f-data);font-size:clamp(11px,1.25vw,20px);letter-spacing:.2em;color:#3E6EA8;flex:0 0 auto}
+.pj-note p{font-family:var(--f-display);font-size:clamp(17px,2.3vw,44px);color:var(--ink-900);line-height:1.35;margin:0;flex:1 1 auto}
+.s-note{background:var(--sky-tint);border:2px solid var(--sky);border-radius:var(--r-lg);padding:var(--s4) var(--s4);margin-bottom:var(--s3)}
+.s-note b{display:block;font-family:var(--f-data);font-size:11px;letter-spacing:.18em;color:#3E6EA8;margin-bottom:5px}
+.s-note p{font-family:var(--f-display);font-size:16.5px;color:var(--ink-900);line-height:1.5;margin:0}
+.note-box{background:var(--sky-tint);border:2px solid var(--sky);border-radius:var(--r-lg);padding:var(--s4);margin-bottom:var(--s5)}
+.note-box h3{font-family:var(--f-display);font-size:16px;font-weight:400;color:var(--ink-900);margin-bottom:var(--s3);display:flex;align-items:center;gap:6px}
+.note-box textarea{resize:vertical;line-height:1.6;font-family:var(--f-body)}
 .pj-grid{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1fr minmax(230px,29%);gap:clamp(10px,1.4vw,22px)}
 .pj-side{display:flex;flex-direction:column;gap:clamp(10px,1.4vw,22px);min-height:0}
 .pj-side .pj-qr-col{flex:0 0 auto}
@@ -466,6 +475,8 @@ body{font-variant-numeric:tabular-nums}
     <button class="btn btn-ghost pj-exit hidden" id="pj-fs">전체화면</button>
     <button class="btn btn-ghost pj-exit" id="pj-exit">닫기 (Esc)</button>
   </header>
+
+  <div class="pj-note hidden" id="pj-note"></div>
 
   <div class="pj-grid">
     <section class="pj-col">
@@ -710,6 +721,18 @@ async function bindMe(id,hash){
   ME=id;MEOK=id+'|'+hash;spinTry=0;
   await DB.set('me',ME,false);await DB.set('meok',MEOK,false);
 }
+/* ── 오늘 전달사항 ──
+   note:<날짜> 로 하루치만 저장합니다. 교실 화면은 10초마다 다시 읽어오므로
+   선생님이 저장하면 아이패드에 바로 반영됩니다. 자정이 지나면 빈 칸으로 시작합니다. */
+let NOTE='';
+async function loadNote(){NOTE=(await DB.get('note:'+dateKey()))||'';return NOTE}
+async function saveNote(txt){
+  const t=String(txt||'').trim().slice(0,300);
+  const k='note:'+dateKey();
+  const ok=t?await DB.set(k,t):await DB.del(k);
+  if(ok)NOTE=t;
+  return ok;
+}
 // 이번 달 누적(분) — 좌석 칩과 '오늘 아침' TOP 10의 공통 기준
 let MONTHMIN={};
 async function computeMonthMins(){
@@ -745,7 +768,7 @@ function computeStreak(dates){
 async function renderStudent(){
   tickClock();
   const stage=$('#st-stage');
-  await loadLive();await loadToday();
+  await loadLive();await loadToday();await loadNote();
   if(!ROSTER.length){stage.innerHTML=`<div class="card"><div class="empty" style="padding:var(--s6) 0"><b>아직 명렬표가 없습니다</b>선생님이 명단을 등록하면 시작할 수 있어요.</div></div><div class="notice" style="margin-top:var(--s4)"><button class="linkbtn" id="st-self0">명단에 내 이름이 없어요 · 직접 입력</button></div>`;$('#st-change').classList.add('hidden');const b=$('#st-self0');if(b)b.onclick=renderSelfEnroll;return}
   if(!ME||!findStudent(ME)){renderPicker();return}
   if(!(await meVerified())){renderPinGate(ME);return}
@@ -785,7 +808,8 @@ async function renderStudent(){
   const dots=ROSTER.map(x=>`<span class="s-dot${TODAY[x.id]?(x.id===ME?' me':' lit'):''}">${esc(x.name)}</span>`).join('');
   const leadBtn=me.lead?`<button class="btn btn-primary" id="st-open-pj" style="width:100%;padding:14px;font-size:16px;margin-bottom:var(--s3)">📺 교실 화면 켜기</button>
     <p class="hint" style="margin:-4px 0 var(--s4);text-align:center">전자칠판·패드에 오늘 현황을 띄웁니다. 닫으려면 화면 오른쪽 위 <b>닫기</b>.</p>`:'';
-  stage.innerHTML=`${leadBtn}<div class="s-quote" id="st-quote"><p>${esc(q.t||'오늘도 잘 왔어요')}</p>${q.a?`<cite>— ${esc(q.a)}</cite>`:''}</div>
+  const noteCard=NOTE.trim()?`<div class="s-note"><b>오늘 전달사항</b><p>${esc(NOTE).replace(/\n/g,'<br>')}</p></div>`:'';
+  stage.innerHTML=`${leadBtn}${noteCard}<div class="s-quote" id="st-quote"><p>${esc(q.t||'오늘도 잘 왔어요')}</p>${q.a?`<cite>— ${esc(q.a)}</cite>`:''}</div>
     ${banner}
     <div class="me-card"><div class="me-tag">${me.g}학년 ${me.c}반 ${me.n}번${me.lead?' · 얼리버드 팀장 ⭐':''}</div><div class="me-name">${esc(me.name)}</div><div class="me-sub">${rec?'오늘의 기록':'오늘의 아침'}</div></div>
     ${action}
@@ -925,13 +949,16 @@ function stopPoll(){if(pollTimer){clearInterval(pollTimer);pollTimer=null}if(rot
 
 /* ── 오늘 현황 ── */
 async function renderToday(){
-  const [,,mm]=await Promise.all([loadLive(),loadToday(),computeMonthMins()]);
+  const [,,mm]=await Promise.all([loadLive(),loadToday(),computeMonthMins(),loadNote()]);
   MONTHMIN=mm;
   const el=$('#tab-today'),d=new Date(),ws=windowStatus();
   const lit=ROSTER.filter(s=>TODAY[s.id]).length;
   const todayMin=ROSTER.reduce((a,s)=>a+(TODAY[s.id]?earnedMinutes(TODAY[s.id].t):0),0);
   el.innerHTML=`<div class="p-title"><div><div class="brandline">${esc(CFG.school)} · 얼리버드 🌅</div><div class="eyebrow" style="margin-bottom:5px">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 ${DOW[d.getDay()]} · ${CFG.openTime}~${CFG.deadline}</div><h2>오늘 아침</h2><span class="day-flag ${ws.ok?'open':'closed'}">${ws.ok?'출석 받는 중':(ws.after?'마감됨':ws.before?'대기':'운영 안 함')}</span></div>
     <div class="p-actions"><button class="btn btn-ghost btn-sm" id="td-refresh">새로고침</button><button class="btn btn-sm" id="td-csv">오늘 명단</button><button class="btn btn-primary btn-sm" id="td-qr">QR 띄우기</button></div></div>
+    <div class="note-box"><h3>📢 오늘 전달사항</h3>
+    <textarea class="input" id="td-note" rows="2" maxlength="300" placeholder="예) 8시 20분에 학년 조회가 있습니다. 자리 정리하고 강당으로 이동하세요.">${esc(NOTE)}</textarea>
+    <div style="display:flex;gap:var(--s2);margin-top:var(--s3);flex-wrap:wrap;align-items:center"><button class="btn btn-primary btn-sm" id="td-note-save">저장</button><button class="btn btn-ghost btn-sm" id="td-note-clear">지우기</button><span class="hint" id="td-note-state" style="margin-left:auto">교실 아이패드와 학생 폰에 10초 안에 뜹니다 · 오늘 하루만 표시</span></div></div>
     <div class="today-grid"><div class="room"><div class="room-head"><div class="room-count"><b>${lit}</b><span>/ ${ROSTER.length}</span><u>오늘 출석 · 합계 ${fmtDur(todayMin)} 적립</u></div><div class="room-place">마감 ${CFG.deadline}</div></div>
     <div class="seats" id="seats"></div>
     <div class="room-legend"><span class="lg on"><i></i>출석 (입실시각·오늘 적립분)</span><span class="lg off"><i></i>미출석</span><span class="lg" style="margin-left:auto">이름 밑 숫자는 <b>이번 달 누적(분)</b> · 자리를 누르면 출결을 고칠 수 있습니다</span></div></div>
@@ -940,6 +967,19 @@ async function renderToday(){
   const seats=$('#seats');
   seats.innerHTML=ROSTER.map(s=>{const r=TODAY[s.id];const e=r?earnedMinutes(r.t):0;const cm=(MONTHMIN[s.id]||{}).min||0;return `<button class="seat ${r?'lit':''}" data-id="${s.id}" title="${esc(s.name)} · 이번 달 ${cm}분"><div class="nm">${esc(s.name)}</div><div class="cum">${cm?cm+'분':'—'}</div><div class="foot"><span class="tm">${r?prettyTime(r.t):'··:··'}</span><span class="earn">${r?`+${e}분`:''}</span></div></button>`}).join('')||`<div class="empty" style="grid-column:1/-1"><b>등록된 학생이 없습니다</b>명렬표 탭에서 추가해 주세요.</div>`;
   $$('#seats .seat').forEach(b=>b.onclick=()=>toggleSeat(b.dataset.id));
+  $('#td-note-save').onclick=async()=>{
+    const st=$('#td-note-state');
+    const ok=await saveNote($('#td-note').value);
+    if(!ok)return toast('저장 실패. 다시 눌러 주세요.',true);
+    st.textContent=NOTE?'저장됐습니다 · 교실 화면에 곧 뜹니다':'전달사항을 비웠습니다';
+    toast(NOTE?'전달사항을 저장했습니다.':'전달사항을 비웠습니다.');
+  };
+  $('#td-note-clear').onclick=async()=>{
+    if(!$('#td-note').value.trim())return;
+    if(!confirm('오늘 전달사항을 지울까요?'))return;
+    $('#td-note').value='';await saveNote('');
+    $('#td-note-state').textContent='전달사항을 비웠습니다';toast('전달사항을 비웠습니다.');
+  };
   $('#td-refresh').onclick=renderToday;$('#td-csv').onclick=exportToday;$('#td-qr').onclick=()=>openTab('qr');
   $('#td-quote').onclick=()=>{quoteShift++;const q=quoteOfDay();$('#td-quote').innerHTML=`<p>“${esc(q.t)}”</p>${q.a?`<cite>— ${esc(q.a)}</cite>`:''}`};
   renderTodayRank(false);
@@ -1078,6 +1118,14 @@ function pjQrCol(){
       <div class="pj-sub" style="margin-top:var(--s3)">출석 QR은 <b>${CFG.openTime}~${CFG.deadline}</b>에만 나타납니다.</div>`;
   }
 }
+async function pjNote(){
+  const el=$('#pj-note');if(!el)return;
+  await loadNote();
+  const has=!!NOTE.trim();
+  el.classList.toggle('hidden',!has);
+  if(has&&el.dataset.v!==NOTE){el.dataset.v=NOTE;el.innerHTML=`<b>전달사항</b><p>${esc(NOTE).replace(/\n/g,'<br>')}</p>`}
+  if(!has)el.dataset.v='';
+}
 async function pjRank(){
   const box=$('#pj-rank');if(!box)return;
   const mm=await computeMonthMins();
@@ -1094,7 +1142,7 @@ function openProjector(force=false){
   $('#pj-fs').classList.toggle('hidden',!pjKiosk());
   $('#pj-exit').classList.toggle('hidden',DISPLAY);   // 전시 모드(#display)에선 화면을 닫지 못하게. 팀장은 닫을 수 있음.
   const refresh=async()=>{
-    pjClock();await loadToday();pjSeats();
+    pjClock();await loadToday();pjSeats();await pjNote();
     if(pjTick%6===0)await pjRank();      // 순위는 1분마다
     pjTick++;
   };
