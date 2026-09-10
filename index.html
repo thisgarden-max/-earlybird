@@ -347,6 +347,9 @@ textarea.input{resize:vertical;font-family:var(--f-data);font-size:13px;line-hei
 .stat-box .n{font-family:var(--f-display);font-size:34px;font-weight:400;letter-spacing:0;line-height:1.15;margin-top:6px}
 .stat-box .n i{font-style:normal;font-size:14px;color:var(--ink-400);font-weight:600;margin-left:2px}
 
+.pv-box{position:relative;width:100%;overflow:hidden;border:2px solid var(--line-strong);border-radius:var(--r-lg);background:var(--dawn-0);box-shadow:var(--shadow-md)}
+.pv-box iframe{border:0;position:absolute;top:0;left:0;transform-origin:0 0;display:block}
+.pv-shade{position:absolute;inset:0;cursor:default}
 .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--dawn-1);box-shadow:var(--shadow-sm)}
 table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:520px}
 thead th{font-family:var(--f-data);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);text-align:left;padding:var(--s3) var(--s4);background:var(--dawn-2);border-bottom:1px solid var(--line);white-space:nowrap}
@@ -453,6 +456,7 @@ body{font-variant-numeric:tabular-nums}
           <button data-tab="today" class="on">오늘 현황</button>
           <button data-tab="board">순위</button>
           <button data-tab="log">누적 기록</button>
+          <button data-tab="preview">교실 화면</button>
           <button data-tab="qr">출석 QR</button>
           <button data-tab="roster">명렬표</button>
           <button data-tab="settings">설정</button>
@@ -465,6 +469,7 @@ body{font-variant-numeric:tabular-nums}
       <div id="tab-today" class="panel"></div>
       <div id="tab-board" class="panel hidden"></div>
       <div id="tab-log" class="panel hidden"></div>
+      <div id="tab-preview" class="panel hidden"></div>
       <div id="tab-qr" class="panel hidden"></div>
       <div id="tab-roster" class="panel hidden"></div>
       <div id="tab-settings" class="panel hidden"></div>
@@ -957,7 +962,9 @@ $('#pin-go').onclick=async()=>{const v=$('#pin-in').value.trim();const fresh=awa
 $('#pin-in').addEventListener('keydown',e=>{if(e.key==='Enter')$('#pin-go').click()});
 $('#t-exit').onclick=showStudent;
 let curTab='today',pollTimer=null;
-function openTab(name){curTab=name;$$('#t-nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));['today','board','log','qr','roster','settings'].forEach(t=>$('#tab-'+t).classList.toggle('hidden',t!==name));stopPoll();({today:renderToday,board:renderBoard,log:renderLog,qr:renderQR,roster:renderRoster,settings:renderSettings})[name]()}
+function openTab(name){
+  if(curTab==='preview'&&name!=='preview'){const f=$('#pv-if');if(f)f.src='about:blank'}  // 안 보는 동안은 미리보기 정지
+  curTab=name;$$('#t-nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));['today','board','log','preview','qr','roster','settings'].forEach(t=>$('#tab-'+t).classList.toggle('hidden',t!==name));stopPoll();({today:renderToday,board:renderBoard,log:renderLog,preview:renderPreview,qr:renderQR,roster:renderRoster,settings:renderSettings})[name]()}
 $$('#t-nav button').forEach(b=>b.onclick=()=>openTab(b.dataset.tab));
 function stopPoll(){if(pollTimer){clearInterval(pollTimer);pollTimer=null}if(rotateTimer&&curTab!=='qr'&&$('#projector').classList.contains('hidden')){clearInterval(rotateTimer);rotateTimer=null;clearInterval(ttlTimer)}}
 
@@ -1223,6 +1230,41 @@ $('#pj-exit').onclick=closeProjector;
 $('#pj-fs').onclick=()=>{const el=document.documentElement;if(document.fullscreenElement){if(document.exitFullscreen)document.exitFullscreen().catch(()=>{})}else if(el.requestFullscreen)el.requestFullscreen().catch(()=>toast('전체화면을 지원하지 않는 브라우저입니다.',true))};
 $('#pj-quote').onclick=()=>{quoteShift++;pjQuote()};
 document.addEventListener('keydown',e=>{if(DISPLAY)return;if(e.key==='Escape'&&!$('#projector').classList.contains('hidden'))closeProjector()});
+
+/* ── 교실 화면 미리보기 ──
+   교실 아이패드에 뜨는 화면(#display)을 그대로 불러와 축소해 보여줍니다.
+   실제 화면과 같은 것을 읽으므로 출석·전달사항이 똑같이 갱신됩니다. */
+const PV_SIZES={ipad:[1024,768,'아이패드 가로'],ipadv:[768,1024,'아이패드 세로'],wide:[1920,1080,'전자칠판 16:9']};
+let pvSize='ipad',pvTry=0;
+function pvFit(){
+  const box=$('#pv-box'),f=$('#pv-if');if(!box||!f)return;
+  const [w,h]=PV_SIZES[pvSize];
+  const k=box.clientWidth/w;
+  if(!k){                                  // 탭이 막 열려 폭이 아직 0이면 잠시 뒤 다시
+    if(!$('#tab-preview').classList.contains('hidden')&&(pvTry=(pvTry||0)+1)<25)setTimeout(pvFit,120);
+    return;
+  }
+  pvTry=0;
+  f.style.width=w+'px';f.style.height=h+'px';
+  f.style.transform=`scale(${k})`;
+  box.style.height=Math.round(h*k)+'px';
+}
+let pvT=null;
+addEventListener('resize',()=>{clearTimeout(pvT);pvT=setTimeout(pvFit,150)});
+function renderPreview(){
+  const el=$('#tab-preview');
+  const src=location.href.split('#')[0]+'#display';
+  const btn=(k)=>`<button class="btn btn-ghost btn-sm" data-pv="${k}" style="${pvSize===k?'background:var(--sun-tint);color:var(--sun-ink);border-color:var(--sun)':''}">${PV_SIZES[k][2]}</button>`;
+  el.innerHTML=`<div class="p-title"><div><div class="brandline">${esc(CFG.school)} · 얼리버드 🌅</div><div class="eyebrow" style="margin-bottom:5px">학생들이 보는 그대로</div><h2>교실 화면</h2></div>
+    <div class="p-actions"><button class="btn btn-ghost btn-sm" id="pv-reload">새로고침</button><button class="btn btn-primary btn-sm" id="pv-full">전체화면으로 열기</button></div></div>
+    <div style="display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s4)">${Object.keys(PV_SIZES).map(btn).join('')}</div>
+    <div class="pv-box" id="pv-box"><iframe id="pv-if" src="${esc(src)}" title="교실 화면 미리보기" scrolling="no"></iframe><div class="pv-shade"></div></div>
+    <p class="hint" style="margin-top:var(--s3)">교실 아이패드에 뜨는 화면과 같습니다. 출석과 전달사항이 실제와 똑같이 갱신됩니다. 여기서는 눌러도 아무 일이 없으니 안심하고 보세요.<br>아이패드에서는 <b>${esc(src)}</b> 주소를 홈 화면에 추가해 두시면 됩니다.</p>`;
+  $$('[data-pv]').forEach(b=>b.onclick=()=>{pvSize=b.dataset.pv;renderPreview()});
+  $('#pv-reload').onclick=()=>{const f=$('#pv-if');if(f)f.contentWindow.location.reload()};
+  $('#pv-full').onclick=()=>openProjector(true);
+  setTimeout(pvFit,60);
+}
 
 /* ── 누적 기록 (교사용) ──
    학생별로 며칠 나왔고 몇 분 쌓았는지, 어느 날 몇 시에 왔는지까지 봅니다. */
