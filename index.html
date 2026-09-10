@@ -474,6 +474,7 @@ body{font-variant-numeric:tabular-nums}
     <div class="pj-live">출석 <b id="pj-count">0</b> / <span id="pj-total">0</span></div>
     <div class="pj-brand"><span id="pj-brand">풍산고등학교</span> · 얼리버드 🌅</div>
     <div class="pj-now"><span id="pj-date">—</span> <b id="pj-clock">--:--</b></div>
+    <div class="pill" id="pj-conn" style="flex:0 0 auto;font-size:clamp(10px,1vw,15px)">● 확인 중</div>
     <button class="btn btn-ghost pj-exit hidden" id="pj-fs">전체화면</button>
     <button class="btn btn-ghost pj-exit" id="pj-exit">닫기 (Esc)</button>
   </header>
@@ -528,7 +529,16 @@ const DB=(()=>{
   async function set(k,v,sh=true){if(sh&&ready){try{await col().doc(encId(k)).set({k,v});lset(k,v,sh);return true}catch(e){return lset(k,v,sh)}}return lset(k,v,sh)}
   async function del(k,sh=true){if(sh&&ready){try{await col().doc(encId(k)).delete();ldel(k,sh);return true}catch(e){return ldel(k,sh)}}return ldel(k,sh)}
   async function list(pre='',sh=true){if(sh&&ready){try{const snap=await col().orderBy('k').startAt(pre).endAt(pre+'\uf8ff').get();return snap.docs.map(d=>d.data().k).filter(k=>typeof k==='string'&&k.startsWith(pre))}catch(e){return llist(pre,sh)}}return llist(pre,sh)}
-  return {get,set,del,list,initFirebase,get isRemote(){return ready}};
+  // set과 같지만 서버에 정말 저장됐는지를 'remote' / 'local'로 알려줍니다.
+  async function setChecked(k,v,sh=true){
+    if(sh&&ready){try{await col().doc(encId(k)).set({k,v});lset(k,v,sh);return 'remote'}catch(e){lset(k,v,sh);return 'local'}}
+    lset(k,v,sh);return 'local';
+  }
+  async function delChecked(k,sh=true){
+    if(sh&&ready){try{await col().doc(encId(k)).delete();ldel(k,sh);return 'remote'}catch(e){ldel(k,sh);return 'local'}}
+    ldel(k,sh);return 'local';
+  }
+  return {get,set,del,list,setChecked,delChecked,initFirebase,get isRemote(){return ready}};
 })();
 
 const $=s=>document.querySelector(s);
@@ -731,9 +741,9 @@ async function loadNote(){NOTE=(await DB.get('note:'+dateKey()))||'';return NOTE
 async function saveNote(txt){
   const t=String(txt||'').trim().slice(0,300);
   const k='note:'+dateKey();
-  const ok=t?await DB.set(k,t):await DB.del(k);
-  if(ok)NOTE=t;
-  return ok;
+  const where=t?await DB.setChecked(k,t):await DB.delChecked(k);
+  NOTE=t;
+  return where;   // 'remote'면 교실 화면까지 갑니다. 'local'이면 이 기기에만 남습니다.
 }
 // 이번 달 누적(분) — 좌석 칩과 '오늘 아침' TOP 10의 공통 기준
 let MONTHMIN={};
@@ -971,16 +981,23 @@ async function renderToday(){
   $$('#seats .seat').forEach(b=>b.onclick=()=>toggleSeat(b.dataset.id));
   $('#td-note-save').onclick=async()=>{
     const st=$('#td-note-state');
-    const ok=await saveNote($('#td-note').value);
-    if(!ok)return toast('저장 실패. 다시 눌러 주세요.',true);
-    st.textContent=NOTE?'저장됐습니다 · 교실 화면에 곧 뜹니다':'전달사항을 비웠습니다';
+    const where=await saveNote($('#td-note').value);
+    if(where==='local'){
+      st.style.color='var(--alert)';
+      st.textContent='⚠ 이 기기에만 저장됐습니다 — 교실 아이패드에는 안 보입니다';
+      return toast('서버에 저장하지 못했습니다. 오른쪽 위 연결 상태를 확인하세요.',true);
+    }
+    st.style.color='';
+    st.textContent=NOTE?'서버에 저장됨 · 교실 화면에 10초 안에 뜹니다':'전달사항을 비웠습니다';
     toast(NOTE?'전달사항을 저장했습니다.':'전달사항을 비웠습니다.');
   };
   $('#td-note-clear').onclick=async()=>{
     if(!$('#td-note').value.trim())return;
     if(!confirm('오늘 전달사항을 지울까요?'))return;
-    $('#td-note').value='';await saveNote('');
-    $('#td-note-state').textContent='전달사항을 비웠습니다';toast('전달사항을 비웠습니다.');
+    $('#td-note').value='';const w=await saveNote('');
+    $('#td-note-state').style.color=w==='local'?'var(--alert)':'';
+    $('#td-note-state').textContent=w==='local'?'⚠ 이 기기에서만 지워졌습니다':'전달사항을 비웠습니다';
+    toast('전달사항을 비웠습니다.');
   };
   $('#td-refresh').onclick=renderToday;$('#td-csv').onclick=exportToday;$('#td-qr').onclick=()=>openTab('qr');
   $('#td-quote').onclick=()=>{quoteShift++;const q=quoteOfDay();$('#td-quote').innerHTML=`<p>“${esc(q.t)}”</p>${q.a?`<cite>— ${esc(q.a)}</cite>`:''}`};
@@ -1064,6 +1081,13 @@ let pjTimer=null;
 let PJLEAD=false;
 const pjKiosk=()=>DISPLAY||PJLEAD;
 function pjQuote(){const q=quoteOfDay();const t=$('#pj-quote-t'),a=$('#pj-quote-a');if(t)t.textContent=q.t||'오늘도 잘 왔어요';if(a)a.textContent=q.a?'— '+q.a:''}
+function pjConn(){
+  const el=$('#pj-conn');if(!el)return;
+  const on=DB.isRemote;
+  el.textContent=on?'● 온라인 연결됨':'● 이 기기에만 저장 (교사 화면과 연결 안 됨)';
+  el.style.borderColor=on?'var(--good)':'var(--alert)';
+  el.style.color=on?'var(--good)':'var(--alert)';
+}
 function pjClock(){const d=new Date();const dt=$('#pj-date'),ck=$('#pj-clock');if(dt)dt.textContent=`${d.getMonth()+1}월 ${d.getDate()}일 ${DOW[d.getDay()]}`;if(ck)ck.textContent=`${pad(d.getHours())}:${pad(d.getMinutes())}`}
 let pjSeen=new Set();
 // 좌석표: 전체 명단을 보여주고 출석한 자리에만 불이 들어옵니다. 눌러도 아무 일 없음(읽기 전용).
@@ -1177,7 +1201,7 @@ function openProjector(force=false){
   $('#pj-fs').classList.toggle('hidden',!pjKiosk());
   $('#pj-exit').classList.toggle('hidden',DISPLAY);   // 전시 모드(#display)에선 화면을 닫지 못하게. 팀장은 닫을 수 있음.
   const refresh=async()=>{
-    pjClock();await loadToday();pjSeats();await pjNote();
+    pjClock();pjConn();await loadToday();pjSeats();await pjNote();
     if(pjTick%6===0)await pjRank();      // 순위는 1분마다
     pjTick++;
   };
@@ -1262,7 +1286,24 @@ function downloadCSV(rows,filename){const body=rows.map(r=>r.map(c=>{const v=Str
 (async function init(){
   readUrlCode();
   DB.initFirebase();
-  if(!DB.isRemote)setTimeout(()=>toast('온라인 연결 실패 — 이 기기에만 저장됩니다.',true),1200);
+  if(!DB.isRemote){
+    // 학교망에서 firebase 스크립트가 늦게 도착하는 경우가 있어 10초간 다시 시도합니다.
+    let tries=0;
+    const retry=setInterval(async()=>{
+      tries++;
+      if(DB.initFirebase()){
+        clearInterval(retry);updateConnBadge();pjConn();
+        toast('온라인 연결됨 — 다른 기기와 함께 씁니다.');
+        await loadCore();
+        if(DISPLAY||!$('#projector').classList.contains('hidden')){await loadLive();await loadToday();pjSeats();await pjNote();pjRank()}
+        else if(!$('#v-teacher').classList.contains('hidden'))openTab(curTab);
+        else renderStudent();
+      }else if(tries>=10){
+        clearInterval(retry);
+        toast('온라인 연결 실패 — 이 기기에만 저장됩니다.',true);
+      }
+    },1000);
+  }
   await loadCore();
   ME=await DB.get('me',false);
   MEOK=await DB.get('meok',false);
