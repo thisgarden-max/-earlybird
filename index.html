@@ -452,6 +452,7 @@ body{font-variant-numeric:tabular-nums}
         <div class="t-nav" id="t-nav">
           <button data-tab="today" class="on">오늘 현황</button>
           <button data-tab="board">순위</button>
+          <button data-tab="log">누적 기록</button>
           <button data-tab="qr">출석 QR</button>
           <button data-tab="roster">명렬표</button>
           <button data-tab="settings">설정</button>
@@ -463,6 +464,7 @@ body{font-variant-numeric:tabular-nums}
     <main class="t-main"><div class="wrap">
       <div id="tab-today" class="panel"></div>
       <div id="tab-board" class="panel hidden"></div>
+      <div id="tab-log" class="panel hidden"></div>
       <div id="tab-qr" class="panel hidden"></div>
       <div id="tab-roster" class="panel hidden"></div>
       <div id="tab-settings" class="panel hidden"></div>
@@ -955,7 +957,7 @@ $('#pin-go').onclick=async()=>{const v=$('#pin-in').value.trim();const fresh=awa
 $('#pin-in').addEventListener('keydown',e=>{if(e.key==='Enter')$('#pin-go').click()});
 $('#t-exit').onclick=showStudent;
 let curTab='today',pollTimer=null;
-function openTab(name){curTab=name;$$('#t-nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));['today','board','qr','roster','settings'].forEach(t=>$('#tab-'+t).classList.toggle('hidden',t!==name));stopPoll();({today:renderToday,board:renderBoard,qr:renderQR,roster:renderRoster,settings:renderSettings})[name]()}
+function openTab(name){curTab=name;$$('#t-nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));['today','board','log','qr','roster','settings'].forEach(t=>$('#tab-'+t).classList.toggle('hidden',t!==name));stopPoll();({today:renderToday,board:renderBoard,log:renderLog,qr:renderQR,roster:renderRoster,settings:renderSettings})[name]()}
 $$('#t-nav button').forEach(b=>b.onclick=()=>openTab(b.dataset.tab));
 function stopPoll(){if(pollTimer){clearInterval(pollTimer);pollTimer=null}if(rotateTimer&&curTab!=='qr'&&$('#projector').classList.contains('hidden')){clearInterval(rotateTimer);rotateTimer=null;clearInterval(ttlTimer)}}
 
@@ -1221,6 +1223,62 @@ $('#pj-exit').onclick=closeProjector;
 $('#pj-fs').onclick=()=>{const el=document.documentElement;if(document.fullscreenElement){if(document.exitFullscreen)document.exitFullscreen().catch(()=>{})}else if(el.requestFullscreen)el.requestFullscreen().catch(()=>toast('전체화면을 지원하지 않는 브라우저입니다.',true))};
 $('#pj-quote').onclick=()=>{quoteShift++;pjQuote()};
 document.addEventListener('keydown',e=>{if(DISPLAY)return;if(e.key==='Escape'&&!$('#projector').classList.contains('hidden'))closeProjector()});
+
+/* ── 누적 기록 (교사용) ──
+   학생별로 며칠 나왔고 몇 분 쌓았는지, 어느 날 몇 시에 왔는지까지 봅니다. */
+let logMonth='all',logSort='num',logOpen=null;
+async function collectLog(){
+  const keys=await DB.list('at:');
+  const per={},months=new Set();
+  for(const k of keys){
+    const p=k.split(':');if(p.length<4)continue;
+    const [,date,id,t]=p;
+    months.add(date.slice(0,7));
+    (per[id]||=[]).push({date,t,min:earnedMinutes(t)});
+  }
+  for(const id in per)per[id].sort((a,b)=>a.date<b.date?1:-1);
+  return {per,months:[...months].sort().reverse()};
+}
+async function renderLog(){
+  const el=$('#tab-log');
+  el.innerHTML=`<div class="empty"><b>기록 모으는 중</b>잠시만요.</div>`;
+  const {per,months}=await collectLog();
+  const inScope=e=>logMonth==='all'||e.date.startsWith(logMonth);
+  let rows=ROSTER.map(s=>{
+    const es=(per[s.id]||[]).filter(inScope);
+    const min=es.reduce((a,b)=>a+b.min,0);
+    const days=new Set(es.map(e=>e.date)).size;
+    const avg=es.length?Math.round(es.reduce((a,b)=>a+Number(b.t.slice(0,2))*60+Number(b.t.slice(2)),0)/es.length):null;
+    return {s,es,min,days,avg,last:es[0]?es[0].date:null};
+  });
+  rows.sort(logSort==='min'?(a,b)=>b.min-a.min||b.days-a.days:(a,b)=>a.s.g-b.s.g||a.s.c-b.s.c||a.s.n-b.s.n);
+  const came=rows.filter(r=>r.days>0);
+  const sumMin=rows.reduce((a,r)=>a+r.min,0);
+  const label=logMonth==='all'?'전체 기간':logMonth.replace('-','년 ')+'월';
+  const scopeBtn=(v,t)=>`<button class="btn btn-ghost btn-sm" data-lm="${v}" style="${logMonth===v?'background:var(--sun-tint);color:var(--sun-ink);border-color:var(--sun)':''}">${t}</button>`;
+  el.innerHTML=`<div class="p-title"><div><div class="brandline">${esc(CFG.school)} · 얼리버드 🌅</div><div class="eyebrow" style="margin-bottom:5px">${esc(label)}</div><h2>누적 기록</h2></div>
+    <div class="p-actions"><button class="btn btn-ghost btn-sm" id="lg-sort">${logSort==='num'?'번호순 ▾':'누적 많은 순 ▾'}</button><button class="btn btn-ghost btn-sm" id="lg-csv">엑셀로 내려받기</button></div></div>
+    <div style="display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s4)">${scopeBtn('all','전체')}${months.slice(0,6).map(m=>scopeBtn(m,m.replace('-','년 ')+'월')).join('')}</div>
+    <div class="card" style="margin-bottom:var(--s5);display:flex;gap:var(--s6);flex-wrap:wrap">
+      <div><div class="eyebrow">한 번이라도 나온 학생</div><div style="font-family:var(--f-display);font-size:26px">${came.length}<span style="font-size:15px;color:var(--ink-400)"> / ${ROSTER.length}명</span></div></div>
+      <div><div class="eyebrow">모두 합친 시간</div><div style="font-family:var(--f-display);font-size:26px">${fmtDur(sumMin)}</div></div>
+      <div><div class="eyebrow">나온 학생 1인 평균</div><div style="font-family:var(--f-display);font-size:26px">${came.length?fmtDur(Math.round(sumMin/came.length)):'—'}</div></div>
+    </div>
+    ${rows.length?`<div class="tbl-scroll"><table><thead><tr><th>반</th><th>번호</th><th>이름</th><th style="text-align:right">나온 날</th><th style="text-align:right">누적 시간</th><th style="text-align:right">평균 입실</th><th style="text-align:right">마지막</th></tr></thead><tbody>
+      ${rows.map(r=>`<tr data-lg="${r.s.id}" style="cursor:pointer${r.days?'':';color:var(--ink-400)'}"><td>${r.s.c}</td><td>${r.s.n}</td><td style="font-weight:600">${esc(r.s.name)}${r.es.length?' <span class="pill" style="border-color:var(--line-strong)">▾</span>':''}</td><td style="text-align:right">${r.days?r.days+'일':'—'}</td><td style="text-align:right;font-family:var(--f-data);font-weight:600">${r.min?fmtDur(r.min):'—'}</td><td style="text-align:right;font-family:var(--f-data)">${r.avg!=null?pad(Math.floor(r.avg/60))+':'+pad(r.avg%60):'—'}</td><td style="text-align:right;font-family:var(--f-data)">${r.last?r.last.slice(5).replace('-','/'):'—'}</td></tr>
+      ${logOpen===r.s.id&&r.es.length?`<tr><td colspan="7" style="background:var(--dawn-2)"><div style="display:flex;flex-wrap:wrap;gap:6px;padding:var(--s2) 0">${r.es.map(e=>`<span class="pill" style="border-color:var(--line-strong)">${e.date.slice(5).replace('-','/')} · ${e.t.slice(0,2)}:${e.t.slice(2)} · +${e.min}분</span>`).join('')}</div></td></tr>`:''}`).join('')}
+    </tbody></table></div>`:`<div class="empty"><b>명렬표가 비어 있습니다</b>명렬표 탭에서 학생을 등록해 주세요.</div>`}
+    <p class="hint" style="margin-top:var(--s3)">이름을 누르면 그 학생이 나온 날짜와 입실 시각이 펼쳐집니다.</p>`;
+  $$('[data-lm]').forEach(b=>b.onclick=()=>{logMonth=b.dataset.lm;logOpen=null;renderLog()});
+  $('#lg-sort').onclick=()=>{logSort=logSort==='num'?'min':'num';renderLog()};
+  $$('[data-lg]').forEach(tr=>tr.onclick=()=>{logOpen=logOpen===tr.dataset.lg?null:tr.dataset.lg;renderLog()});
+  $('#lg-csv').onclick=()=>{
+    const out=[['반','번호','이름','나온 날','누적(분)','누적 시간','평균 입실','마지막 출석']];
+    rows.forEach(r=>out.push([r.s.c,r.s.n,r.s.name,r.days,r.min,fmtDur(r.min),r.avg!=null?pad(Math.floor(r.avg/60))+':'+pad(r.avg%60):'',r.last||'']));
+    downloadCSV(out,`얼리버드_누적_${logMonth==='all'?'전체':logMonth}.csv`);
+    toast('내려받았습니다.');
+  };
+}
 
 /* ── 명렬표 ── */
 async function renderRoster(){
