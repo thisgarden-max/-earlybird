@@ -304,11 +304,11 @@ textarea.input{resize:vertical;font-family:var(--f-data);font-size:13px;line-hei
 #projector .pj-sub{font-size:clamp(12px,1.35vw,23px);color:var(--ink-500);text-align:center;line-height:1.5}
 #projector .pj-sub b{color:var(--sun-ink)}
 
-.pj-seats{flex:1 1 auto;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(96px,10vw,200px),1fr));gap:clamp(7px,.9vw,14px);align-content:start}
-.pj-seat{border-radius:var(--r-md);border:2px solid var(--line);background:var(--dawn-2);padding:clamp(7px,1vh,12px) 5px clamp(6px,.9vh,10px);text-align:center}
-.pj-seat .n{font-family:var(--f-display);font-size:clamp(15px,1.9vw,34px);color:var(--ink-300);line-height:1.15}
-.pj-seat .t{font-family:var(--f-data);font-size:clamp(11px,1.25vw,22px);color:transparent;margin-top:2px}
-.pj-seat .e{font-family:var(--f-data);font-size:clamp(10px,1.15vw,20px);color:transparent;margin-top:1px}
+.pj-seats{flex:1 1 auto;min-height:0;overflow:hidden;display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;align-content:stretch}
+.pj-seat{border-radius:var(--r-md);border:2px solid var(--line);background:var(--dawn-2);padding:3px 4px;text-align:center;min-width:0;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pj-seat .n{font-family:var(--f-display);font-size:var(--sn,clamp(15px,1.9vw,34px));color:var(--ink-300);line-height:1.12;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pj-seat .t{font-family:var(--f-data);font-size:var(--st,clamp(11px,1.25vw,22px));color:transparent;margin-top:2px;line-height:1.1}
+.pj-seat .e{font-family:var(--f-data);font-size:var(--st,clamp(10px,1.15vw,20px));color:transparent;line-height:1.1}
 .pj-seat.lit{background:linear-gradient(180deg,var(--sun-tint-2),var(--sun-tint));border-color:var(--sun);box-shadow:0 3px 12px rgba(255,142,114,.26)}
 .pj-seat.lit .n{color:var(--ink-900)}
 .pj-seat.lit .t{color:var(--sun-ink)}
@@ -333,9 +333,11 @@ textarea.input{resize:vertical;font-family:var(--f-data);font-size:13px;line-hei
 .pj-rank .pj-empty{color:var(--ink-400);text-align:center;padding:var(--s5) 0;font-size:14px}
 
 @media (max-width:820px),(max-height:440px){
-  .pj-grid{grid-template-columns:1fr;overflow:auto}
-  .pj-side{flex-direction:row}
-  .pj-side .pj-qr-col{flex:1 1 auto}
+  .pj-grid{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;overflow:hidden}
+  .pj-side{flex-direction:row;align-items:stretch}
+  .pj-side .pj-qr-col{flex:1 1 auto;flex-direction:row;align-items:center;gap:clamp(10px,2vw,20px)}
+  .pj-side .pj-qr-col .pj-h{margin-bottom:0}
+  #projector .qr-frame img,#projector .qr-frame canvas{width:min(22vh,30vw,260px);height:min(22vh,30vw,260px)}
   .pj-rank-col{display:none}
 }
 
@@ -1065,12 +1067,42 @@ function pjQuote(){const q=quoteOfDay();const t=$('#pj-quote-t'),a=$('#pj-quote-
 function pjClock(){const d=new Date();const dt=$('#pj-date'),ck=$('#pj-clock');if(dt)dt.textContent=`${d.getMonth()+1}월 ${d.getDate()}일 ${DOW[d.getDay()]}`;if(ck)ck.textContent=`${pad(d.getHours())}:${pad(d.getMinutes())}`}
 let pjSeen=new Set();
 // 좌석표: 전체 명단을 보여주고 출석한 자리에만 불이 들어옵니다. 눌러도 아무 일 없음(읽기 전용).
+// 남은 공간에 30칸이 스크롤 없이 들어가도록 칸 수·행 수·글자 크기를 계산
+function pjSeatFit(){
+  const box=$('#pj-seats');if(!box)return;
+  const n=ROSTER.length;if(!n)return;
+  const w=box.clientWidth,h=box.clientHeight;
+  if(w<40||h<40)return;
+  const gap=Math.max(5,Math.min(14,Math.round(w*.009)));
+  let best=null;
+  for(let c=1;c<=n;c++){
+    const r=Math.ceil(n/c);
+    const tw=(w-(c-1)*gap)/c,th=(h-(r-1)*gap)/r;
+    if(tw<56||th<32)continue;
+    const ar=tw/th;if(ar<.8||ar>3.6)continue;
+    const score=Math.min(tw/2.1,th);      // 이름 글자 크기를 좌우하는 쪽을 최대로
+    if(!best||score>best.score)best={c,r,th,score};
+  }
+  if(!best){                              // 어떻게 해도 빠듯하면 최대한 촘촘하게
+    const c=Math.max(1,Math.round(Math.sqrt(n*w/h)));
+    const r=Math.ceil(n/c);
+    best={c,r,th:(h-(r-1)*gap)/r};
+  }
+  box.style.gap=gap+'px';
+  box.style.gridTemplateColumns=`repeat(${best.c},minmax(0,1fr))`;
+  box.style.gridTemplateRows=`repeat(${best.r},minmax(0,1fr))`;
+  box.style.setProperty('--sn',Math.max(11,Math.min(36,best.th*.34))+'px');
+  box.style.setProperty('--st',Math.max(9,Math.min(24,best.th*.2))+'px');
+}
+let pjFitT=null;
+addEventListener('resize',()=>{clearTimeout(pjFitT);pjFitT=setTimeout(pjSeatFit,150)});
 function pjSeats(){
   const box=$('#pj-seats');if(!box)return;
   const n=ROSTER.filter(x=>TODAY[x.id]).length;
   $('#pj-count').textContent=n;
   $('#pj-total').textContent=ROSTER.length;
   const hn=$('#pj-here-n');if(hn)hn.textContent=`${n} / ${ROSTER.length}명`;
+  pjSeatFit();
   const sig=ROSTER.map(x=>x.id+(TODAY[x.id]?TODAY[x.id].t:'')).join(',');
   if(box.dataset.sig===sig)return;               // 변화 없으면 다시 그리지 않음(깜빡임 방지)
   box.dataset.sig=sig;
@@ -1122,7 +1154,9 @@ async function pjNote(){
   const el=$('#pj-note');if(!el)return;
   await loadNote();
   const has=!!NOTE.trim();
+  const was=!el.classList.contains('hidden');
   el.classList.toggle('hidden',!has);
+  if(was!==has)setTimeout(pjSeatFit,60);   // 전달사항이 생기거나 사라지면 좌석판 높이가 달라짐
   if(has&&el.dataset.v!==NOTE){el.dataset.v=NOTE;el.innerHTML=`<b>전달사항</b><p>${esc(NOTE).replace(/\n/g,'<br>')}</p>`}
   if(!has)el.dataset.v='';
 }
@@ -1135,6 +1169,7 @@ async function pjRank(){
 }
 let pjTick=0;
 function openProjector(force=false){
+  setTimeout(pjSeatFit,80);
   if(!LIVE&&!force)return toast(DAYOFF?'오늘은 출석이 닫혀 있습니다.':'지금은 출석 시간이 아닙니다.',true);
   const pj=$('#projector');pj.classList.remove('hidden');
   $('#pj-brand').textContent=CFG.school||'풍산고등학교';
