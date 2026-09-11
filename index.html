@@ -105,6 +105,16 @@ textarea.input{resize:vertical;font-family:var(--f-data);font-size:13px;line-hei
 .today-earn{font-family:var(--f-display);font-size:52px;font-weight:400;letter-spacing:0;color:var(--sun-deep);line-height:1}
 .today-earn i{font-style:normal;font-size:20px;color:var(--ink-400);font-weight:600;margin-left:3px}
 .sunburst p{font-family:var(--f-data);font-size:13px;color:var(--sun-ink)}
+.today-arrive{display:flex;flex-direction:column;align-items:center;gap:4px}
+.today-arrive span,.upto-box span{font-family:var(--f-data);font-size:13px;font-weight:600;color:var(--ink-400)}
+.today-arrive b{font-family:var(--f-display);font-size:60px;font-weight:400;color:var(--sun-deep);line-height:1}
+.upto-box{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;max-width:280px;padding:var(--s3) var(--s4);border-radius:var(--r-lg);background:var(--dawn-1);border:2px solid var(--line)}
+.upto-box b{font-family:var(--f-display);font-size:30px;font-weight:400;color:var(--ink-900);line-height:1.1}
+.upto-box b i{font-style:normal;font-size:16px;color:var(--ink-400);margin:0 2px}
+.today-end{font-family:var(--f-data);font-size:15px;font-weight:600;color:var(--ink-500);margin-top:-4px}
+.today-end b{font-family:var(--f-display);font-size:24px;font-weight:400;color:var(--ink-900);margin-left:4px}
+.sunburst .hint{word-break:keep-all}
+.stop-btn{width:100%;max-width:280px;padding:13px;font-size:16px;border:2px solid var(--line-strong);background:var(--dawn-1)}
 
 /* 나의 성적 카드 */
 .my-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
@@ -222,6 +232,14 @@ textarea.input{resize:vertical;font-family:var(--f-data);font-size:13px;line-hei
 .lg i{width:10px;height:10px;border-radius:3px;display:block;border:1px solid var(--line-strong)}
 .lg.on i{background:var(--sun);border-color:var(--sun-deep)}
 .lg.off i{background:var(--dawn-2)}
+.lg.done i{background:var(--dawn-1);border:2px solid var(--line-strong)}
+.reset-card{margin-top:var(--s5);border-color:var(--alert-tint);background:linear-gradient(180deg,var(--alert-tint),var(--dawn-1) 70%)}
+.reset-card h3{font-family:var(--f-display);font-size:17px;font-weight:400;margin-bottom:var(--s3);color:var(--alert)}
+.reset-row{display:flex;gap:var(--s2);flex-wrap:wrap;align-items:center;margin-top:var(--s3)}
+.reset-row label{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:99px;border:2px solid var(--line-strong);background:var(--dawn-1);font-size:13.5px;font-weight:600;cursor:pointer}
+.reset-row input[type=radio]{accent-color:var(--alert)}
+.reset-btn{background:var(--alert);border-color:var(--alert);color:#fff}
+.reset-btn:hover{filter:brightness(.95)}
 
 /* 리더보드 (교사/전체) */
 .podium{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:var(--s3);align-items:end;margin-bottom:var(--s6)}
@@ -322,12 +340,15 @@ textarea.input{resize:vertical;font-family:var(--f-data);font-size:13px;line-hei
 .pj-seats{flex:1 1 auto;min-height:0;overflow:hidden;display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;align-content:stretch}
 .pj-seat{border-radius:var(--r-md);border:2px solid var(--line);background:var(--dawn-2);padding:3px 4px;text-align:center;min-width:0;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .pj-seat .n{font-family:var(--f-display);font-size:var(--sn,clamp(15px,1.9vw,34px));color:var(--ink-300);line-height:1.12;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pj-seat .t{font-family:var(--f-data);font-size:var(--st,clamp(11px,1.25vw,22px));color:transparent;margin-top:2px;line-height:1.1}
-.pj-seat .e{font-family:var(--f-data);font-size:var(--st,clamp(10px,1.15vw,20px));color:transparent;line-height:1.1}
+.pj-seat .t{font-family:var(--f-display);font-size:calc(var(--st,clamp(11px,1.25vw,22px))*1.25);color:transparent;margin-top:2px;line-height:1.1}
+.pj-seat .e{font-family:var(--f-data);font-size:calc(var(--st,clamp(10px,1.15vw,20px))*.95);color:transparent;line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pj-seat .e small{font-size:.8em;font-weight:500;opacity:.8;margin-right:3px}
 .pj-seat.lit{background:linear-gradient(180deg,var(--sun-tint-2),var(--sun-tint));border-color:var(--sun);box-shadow:0 3px 12px rgba(255,142,114,.26)}
 .pj-seat.lit .n{color:var(--ink-900)}
-.pj-seat.lit .t{color:var(--sun-ink)}
-.pj-seat.lit .e{color:var(--sun-deep);font-weight:600}
+.pj-seat.lit .t{color:var(--sun-deep)}
+.pj-seat.lit .e{color:var(--ink-500);font-weight:600}
+.pj-seat.done{background:var(--dawn-1);border-color:var(--line-strong);box-shadow:none}
+.pj-seat.done .t{color:var(--ink-500);font-size:calc(var(--st,clamp(11px,1.25vw,22px))*1.02)}
 .pj-seat.fresh{animation:pop .38s var(--ease) both}
 .pj-seats .pj-empty{grid-column:1/-1;text-align:center;color:var(--ink-400);padding:clamp(20px,5vh,60px) 0;font-family:var(--f-display);font-size:clamp(15px,1.7vw,22px)}
 .pj-legend{flex:0 0 auto;display:flex;gap:var(--s4);padding-top:clamp(8px,1.2vh,14px);margin-top:clamp(8px,1.2vh,14px);border-top:2px solid var(--line)}
@@ -432,6 +453,91 @@ body{font-variant-numeric:tabular-nums}
 #toast.warn{background:var(--alert);border-color:var(--alert);color:#fff}
 .ttl-bar{height:8px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
+/* ── 동기부여 카드(학생) ── */
+.x-card{word-break:keep-all;background:var(--dawn-1);border:2px solid var(--line);border-radius:var(--r-lg);padding:var(--s4);box-shadow:var(--shadow-sm);margin-top:var(--s3)}
+.x-h{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3);margin-bottom:var(--s3)}
+.x-h h3{font-family:var(--f-display);font-size:15px;font-weight:400;color:var(--ink-900)}
+.x-h b{font-family:var(--f-display);font-size:22px;font-weight:400;color:var(--sun-deep);white-space:nowrap}
+.x-h b i{font-style:normal;font-size:13px;color:var(--ink-400);margin-left:1px}
+.x-row{display:flex;justify-content:space-between;gap:var(--s2);font-family:var(--f-data);font-size:12.5px;font-weight:600;color:var(--ink-500);margin-top:6px}
+.x-note{font-size:12.5px;color:var(--ink-500);line-height:1.6;margin-top:var(--s2);word-break:keep-all}
+.x-note b{color:var(--sun-ink)}
+.bar{height:14px;border-radius:99px;background:var(--dawn-2);border:1px solid var(--line-strong);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--good),#5DBB91);transition:width .8s var(--ease)}
+.bar.mine i{background:linear-gradient(90deg,var(--gold),var(--sun-deep))}
+.goal-class{background:linear-gradient(180deg,var(--good-tint),var(--dawn-1) 70%);border-color:#CDEBDD}
+.goal-class .x-h b{color:#3E9A70}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:7px 14px;border-radius:99px;border:2px solid var(--line-strong);background:var(--dawn-1);font-family:var(--f-display);font-size:15px;color:var(--ink-700)}
+.chip:hover{border-color:var(--sun);color:var(--sun-ink)}
+.goal-set{display:flex;align-items:center;gap:6px;margin-top:var(--s3)}
+.goal-set .input{max-width:110px;padding:8px 12px}
+.goal-set span{font-size:13px;color:var(--ink-500)}
+.cmp{display:grid;grid-template-columns:1fr auto;gap:2px var(--s2);padding:var(--s2) 0;border-top:1px dashed var(--line-strong)}
+.x-h+.cmp{border-top:0;padding-top:0}
+.cmp .k{font-size:12.5px;color:var(--ink-400);font-weight:600;align-self:center}
+.cmp b{font-family:var(--f-display);font-size:20px;font-weight:400;color:var(--ink-900);text-align:right}
+.cmp em{grid-column:1/-1;font-style:normal;font-size:12.5px;color:var(--ink-500);word-break:keep-all}
+.cmp em.up{color:#3E9A70;font-weight:600}
+.cmp em.down{color:var(--sun-ink)}
+.cal-w,.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal-w i{font-style:normal;font-size:11px;color:var(--ink-400);font-weight:600;padding-bottom:2px}
+.cal-w i:first-child{color:var(--alert)}
+.cal span{aspect-ratio:1;display:grid;place-items:center;border-radius:10px;font-family:var(--f-data);font-size:12.5px;font-weight:600;color:var(--ink-400)}
+.cal span.on{background:linear-gradient(160deg,var(--sun-tint-2),var(--sun));color:#5A2F1C}
+.cal span.miss{border:2px dashed var(--line-strong);color:var(--ink-400)}
+.cal span.future{border:2px solid var(--line);color:var(--ink-500)}
+.cal span.rest{color:var(--ink-300)}
+.cal span.today{outline:3px solid var(--sun-deep);outline-offset:1px}
+.cal-lg{display:flex;gap:var(--s3);justify-content:center;margin-top:var(--s3);font-size:11.5px;color:var(--ink-400)}
+.cal-lg span{display:inline-flex;align-items:center;gap:4px}
+.cal-lg i{width:11px;height:11px;border-radius:4px;display:block}
+.cal-lg i.on{background:var(--sun)}.cal-lg i.miss{border:2px dashed var(--line-strong)}.cal-lg i.rest{background:var(--dawn-2)}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px}
+.bdg{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border-radius:var(--r-md);background:var(--dawn-0);border:2px solid var(--line);text-align:center}
+.bdg span{font-size:24px;filter:grayscale(1);opacity:.35}
+.bdg b{font-family:var(--f-display);font-size:13px;font-weight:400;color:var(--ink-400)}
+.bdg small{font-size:10.5px;color:var(--ink-300);line-height:1.3;word-break:keep-all}
+.bdg.ok{background:linear-gradient(170deg,#FFF6DD,var(--dawn-1));border-color:var(--gold)}
+.bdg.ok span{filter:none;opacity:1}
+.bdg.ok b{color:var(--ink-900)}
+.bdg.ok small{color:var(--gold-deep);font-weight:700}
+/* ── 교사: 살펴볼 학생 ── */
+.watch{margin-top:var(--s5);background:var(--dawn-1);border:2px solid var(--line);border-radius:var(--r-lg);padding:var(--s4) var(--s5);box-shadow:var(--shadow-sm)}
+.watch h3{font-family:var(--f-display);font-size:16px;font-weight:400;margin-bottom:var(--s3);display:flex;align-items:baseline;gap:var(--s2)}
+.w-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:var(--s3)}
+.w-box{background:var(--dawn-0);border:1px solid var(--line);border-radius:var(--r-md);padding:var(--s3)}
+.w-box>b{font-family:var(--f-display);font-size:14.5px;font-weight:400;color:var(--ink-900)}
+.w-box>b i{font-style:normal;font-family:var(--f-data);font-size:12px;font-weight:700;color:#fff;background:var(--sun-deep);border-radius:99px;padding:1px 8px;margin-left:4px}
+.w-box>small{display:block;font-size:11.5px;color:var(--ink-400);margin:2px 0 var(--s2);word-break:keep-all}
+.w-box>div{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+.w-chip{font-size:13px;font-weight:600;color:var(--ink-900);background:var(--dawn-1);border:1px solid var(--line-strong);border-radius:99px;padding:3px 10px;cursor:pointer}
+.w-chip+em,.w-box em{font-style:normal;font-family:var(--f-data);font-size:11.5px;color:var(--sun-ink);margin:0 6px 0 -2px}
+/* ── 교사: 추이, 요약 문장 ── */
+.trend{margin-bottom:var(--s5)}
+.trend-h{display:flex;align-items:baseline;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s3)}
+.trend-h h3{font-family:var(--f-display);font-size:17px;font-weight:400}
+.trend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--s5)}
+.trend-svg{width:100%;height:auto;display:block;margin-top:var(--s2)}
+.trend-svg .tv{font-family:var(--f-data);font-size:13px;font-weight:700;fill:var(--sun-ink)}
+.trend-svg .tl{font-family:var(--f-body);font-size:12.5px;font-weight:600;fill:var(--ink-700)}
+.trend-svg .ts{font-family:var(--f-data);font-size:11.5px;fill:var(--ink-400)}
+.sum-box{white-space:normal;max-width:min(860px,82vw);background:var(--dawn-1);border:2px solid var(--line-strong);border-radius:var(--r-md);padding:var(--s3) var(--s4);margin-bottom:var(--s3)}
+.sum-box p{font-size:14px;line-height:1.75;color:var(--ink-900);margin:0 0 var(--s2);word-break:keep-all}
+.sum-box .row{display:flex;gap:var(--s2);align-items:center;flex-wrap:wrap}
+/* ── 교실 화면: 우리 반 목표 ── */
+.goal-months{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--s2);margin-top:4px}
+.gm{display:grid;grid-template-columns:1fr 80px auto;align-items:center;gap:6px;padding:8px 10px;border-radius:var(--r-sm);border:2px solid var(--line);background:var(--dawn-1)}
+.gm.now{border-color:#CDEBDD;background:var(--good-tint)}
+.gm span{font-size:14px;font-weight:600;color:var(--ink-700);white-space:nowrap;display:flex;align-items:center;gap:5px}
+.gm span em{font-style:normal;font-size:10.5px;font-weight:700;color:#3E9A70;background:#fff;border:1px solid #CDEBDD;border-radius:99px;padding:1px 6px}
+.gm .input{padding:6px 8px;text-align:right}
+.gm i{font-style:normal;font-size:12px;color:var(--ink-400);white-space:nowrap}
+.gm .input::placeholder{color:var(--ink-300)}
+.gm .input:not(:placeholder-shown){color:var(--ink-900);font-weight:700}
+.pj-goal{margin-left:auto;display:flex;align-items:center;gap:8px;letter-spacing:0;text-transform:none;font-family:var(--f-display);font-size:.95em;color:var(--ink-500);white-space:nowrap}
+.pj-goal .bar{width:clamp(80px,12vw,220px);height:clamp(9px,1.1vh,14px)}
+.pj-goal b{font-weight:400;color:#3E9A70}
 </style>
 </head>
 <body>
@@ -505,15 +611,15 @@ body{font-variant-numeric:tabular-nums}
 
   <div class="pj-grid">
     <section class="pj-col">
-      <div class="pj-h">오늘 아침 <i id="pj-here-n">0 / 0</i></div>
+      <div class="pj-h">오늘 아침 <i id="pj-here-n">0 / 0</i><span class="pj-goal" id="pj-goal"></span></div>
       <div class="pj-seats" id="pj-seats"></div>
-      <div class="pj-legend"><span class="lg on"><i></i>출석</span><span class="lg off"><i></i>아직</span></div>
+      <div class="pj-legend"><span class="lg on"><i></i>공부 중 · 오늘 도착 시간, 아래는 어제까지 공부한 시간</span><span class="lg done"><i></i>공부 끝 (도착–종료)</span><span class="lg off"><i></i>아직</span></div>
     </section>
 
     <div class="pj-side">
       <section class="pj-col pj-qr-col" id="pj-qr-col"></section>
       <aside class="pj-col pj-rank-col">
-        <div class="pj-h">이번 달 누적 TOP 10</div>
+        <div class="pj-h">이번 달 누적 TOP 10 <i>어제까지</i></div>
         <ol class="pj-rank" id="pj-rank"></ol>
       </aside>
     </div>
@@ -696,16 +802,23 @@ async function loadLive(){
   LIVE={code:codeFor(slot),prevCode:codeFor(slot-1),issuedAt:slot*ttl*60000,ttl,slot,auto:true};
   return LIVE;
 }
-async function loadToday(){const keys=await DB.list('at:'+dateKey());TODAY={};for(const k of keys){const p=k.split(':');if(p.length<4)continue;TODAY[p[2]]={t:p[3],key:k}}return TODAY}
+// 공부 종료: en:<날짜>:<학생id>:<HHMM>. 누르지 않으면 마감 시각까지 공부한 것으로 봅니다.
+async function loadToday(){const dk=dateKey();const [keys,eks]=await Promise.all([DB.list('at:'+dk),DB.list('en:'+dk)]);TODAY={};for(const k of keys){const p=k.split(':');if(p.length<4)continue;TODAY[p[2]]={t:p[3],key:k}}for(const k of eks.sort()){const p=k.split(':');if(p.length<4||!TODAY[p[2]])continue;TODAY[p[2]].end=p[3];TODAY[p[2]].endKey=k}return TODAY}
+async function loadEnds(pre=''){const ks=await DB.list('en:'+pre);const m={};for(const k of ks.sort()){const p=k.split(':');if(p.length>=4)m[p[1]+'|'+p[2]]=p[3]}return m}
+const hmMin=t=>Number(t.slice(0,2))*60+Number(t.slice(2));
+const spanTxt=r=>r.end?`${prettyTime(r.t)}–${prettyTime(r.end)}`:prettyTime(r.t);
 const findStudent=id=>ROSTER.find(s=>s.id===id)||null;
 const sortRoster=a=>a.sort((x,y)=>x.g-y.g||x.c-y.c||x.n-y.n||x.name.localeCompare(y.name,'ko'));
 
 // 입실시각 t(HHMM)로 그날 적립 분 계산: max(earliest, 입실)~deadline
-function earnedMinutes(t){
-  const inMin=Math.max(mins(CFG.earliest), Number(t.slice(0,2))*60+Number(t.slice(2)));
-  const end=mins(CFG.deadline);
+function earnedMinutes(t,endT){
+  const inMin=Math.max(mins(CFG.earliest), hmMin(t));
+  const end=endT?Math.min(mins(CFG.deadline),hmMin(endT)):mins(CFG.deadline);
   return Math.max(0, end-inMin);
 }
+// 누적에 더하는 시간: 어제까지의 기록만. 오늘 입실분은 마감까지 있었다고 미리 치지 않고,
+// 날짜가 바뀌면(다음 날부터) 누적·순위에 들어갑니다.
+function settledMin(date,t,endT){return date<dateKey()?earnedMinutes(t,endT):0}
 // 지금 출석 가능한지: 운영요일 & openTime~deadline 사이
 function windowStatus(d=new Date()){
   const dk=dateKey(d),dow=d.getDay();
@@ -726,13 +839,14 @@ function readUrlCode(){const h=location.hash||'';const m=h.match(/[#&]t=([A-Z0-9
 
 // 누적 통계 (전체 기간)
 async function computeTotals(){
-  const keys=await DB.list('at:');
+  const [keys,E]=await Promise.all([DB.list('at:'),loadEnds('')]);
+  OPDATES=[...new Set(keys.map(k=>k.split(':')[1]).filter(Boolean))].sort();
   const tot={}; // id -> {min, days:Set, dates:[]}
   for(const k of keys){
     const p=k.split(':');if(p.length<4)continue;
     const [,date,id,t]=p;
     const rec=(tot[id]||={min:0,days:new Set(),dates:[]});
-    rec.min+=earnedMinutes(t); rec.days.add(date); rec.dates.push(date);
+    rec.min+=settledMin(date,t,E[date+'|'+id]); rec.days.add(date); rec.dates.push(date);
   }
   return tot;
 }
@@ -770,12 +884,12 @@ async function saveNote(txt){
 // 이번 달 누적(분) — 좌석 칩과 '오늘 아침' TOP 10의 공통 기준
 let MONTHMIN={};
 async function computeMonthMins(){
-  const keys=await DB.list('at:'+monthKey());
+  const [keys,E]=await Promise.all([DB.list('at:'+monthKey()),loadEnds(monthKey())]);
   const mm={};
   for(const k of keys){
     const p=k.split(':');if(p.length<4)continue;
     const rec=(mm[p[2]]||={min:0,days:new Set()});
-    rec.min+=earnedMinutes(p[3]); rec.days.add(p[1]);
+    rec.min+=settledMin(p[1],p[3],E[p[1]+'|'+p[2]]); rec.days.add(p[1]);
   }
   return mm;
 }
@@ -789,6 +903,11 @@ function paintSeatCum(){
 function computeStreak(dates){
   if(!dates||!dates.length)return 0;
   const set=new Set(dates);
+  if(OPDATES.length){                    // 운영한 날(누군가 출석한 날)만 이어서 셉니다
+    const today=dateKey();let list=OPDATES.filter(d=>d<=today).reverse();
+    if(list[0]===today&&!set.has(today))list=list.slice(1);   // 오늘 아직 안 왔으면 어제부터
+    let n=0;for(const d of list){if(set.has(d))n++;else break}return n;
+  }
   let streak=0; let d=new Date();
   // 오늘 없으면 어제부터 카운트
   if(!set.has(dateKey(d)))d.setDate(d.getDate()-1);
@@ -810,25 +929,28 @@ async function renderStudent(){
   const me=findStudent(ME),rec=TODAY[ME],ws=windowStatus();
   const sessionOpen=!!LIVE,codeOK=sessionOpen&&(CFG.noCode||codeMatches(urlCode));
 
-  // 오늘 예상/확정 적립
+  // 출석 후에는 어제까지 쌓인 누적을 보여 줍니다(오늘 시간은 내일 더해짐)
   let banner,action='';
   if(rec){
-    const earned=earnedMinutes(rec.t);
+    const upto=((await computeTotals())[ME]||{min:0}).min;
     banner='';
     action=`<div class="sunburst">
       <div class="sun-mark">☀️</div>
       <h2>${esc(me.name)} — 오늘도 일찍 왔어요!</h2>
-      <div class="today-earn">${earned}<i>분 적립</i></div>
-      <p>${prettyTime(rec.t)} 입실 · ${CFG.deadline}까지 공부</p>
+      <div class="today-arrive"><span>오늘 도착</span><b>${prettyTime(rec.t)}</b></div>
+      ${rec.end?`<div class="today-end">공부 끝 <b>${prettyTime(rec.end)}</b></div>`:''}
+      <div class="upto-box"><span>어제까지 공부한 시간</span><b>${upto?`${Math.floor(upto/60)}<i>시간</i> ${upto%60}<i>분</i>`:`0<i>분</i>`}</b></div>
+      <p>오늘 공부한 시간은 내일 여기에 더해져요</p>
+      ${ws.ok&&!rec.end?`<button class="btn btn-ghost stop-btn" id="st-stop">공부 끝내기</button><p class="hint" style="margin:0;text-align:center">먼저 가야 하면 눌러 주세요. 누르지 않으면 ${CFG.deadline}까지 공부한 것으로 기록돼요.</p>`:''}
+      ${ws.ok&&rec.end?`<button class="linkbtn" id="st-resume">잘못 눌렀어요 · 다시 공부하기</button>`:''}
     </div>`;
   }else if(!ws.ok){
     banner=`<div class="banner off"><i class="pulse"></i><p>${ws.after?`<b>오늘 출석은 마감</b>되었습니다 (${CFG.deadline}).`:esc(ws.reason)}</p></div>`;
     action=`<div class="notice">${ws.after?'내일 아침 일찍 만나요! 🌅':'출석 시간이 되면 버튼이 열립니다.'}</div>`;
   }else if(codeOK){
-    const willEarn=earnedMinutes(hhmm());
     const askPin=CFG.pinEachTime!==false;
-    action=`${askPin?`<div class="field" style="margin-bottom:var(--s3)"><label for="st-mypin">내 핀 4자리</label><input class="input pin-in" id="st-mypin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••"></div>`:''}<button class="tap" id="st-check">아침 출석<small>지금 체크하면 ${willEarn}분 적립 · ${CFG.deadline}까지</small></button>`;
-    banner=`<div class="banner live"><i class="pulse"></i><p><b>출석 받는 중</b> · 지금 체크하면 <b>${willEarn}분</b> 적립돼요</p></div>`;
+    action=`${askPin?`<div class="field" style="margin-bottom:var(--s3)"><label for="st-mypin">내 핀 4자리</label><input class="input pin-in" id="st-mypin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••"></div>`:''}<button class="tap" id="st-check">아침 출석<small>${CFG.deadline}까지 공부한 시간이 쌓여요</small></button>`;
+    banner=`<div class="banner live"><i class="pulse"></i><p><b>출석 받는 중</b> · 오늘 시간은 내일 누적에 더해져요</p></div>`;
   }else if(sessionOpen){
     banner=`<div class="banner live"><i class="pulse"></i><p><b>출석 받는 중</b> · QR을 스캔하거나 코드를 입력하세요</p></div>`;
     action=`<div class="picker"><div class="field"><label for="st-code">화면의 6자리 코드</label><input class="input" id="st-code" maxlength="6" autocapitalize="characters" autocomplete="off" style="font-family:var(--f-data);font-size:22px;letter-spacing:.24em;text-align:center" placeholder="ABC123"></div><button class="btn btn-primary" id="st-code-go" style="width:100%;padding:13px">코드 확인</button></div>`;
@@ -848,11 +970,14 @@ async function renderStudent(){
     <div class="me-card"><div class="me-tag">${me.g}학년 ${me.c}반 ${me.n}번${me.lead?' · 얼리버드 팀장 ⭐':''}</div><div class="me-name">${esc(me.name)}</div><div class="me-sub">${rec?'오늘의 기록':'오늘의 아침'}</div></div>
     ${action}
     <div class="s-status"><div class="sh"><h3>🌅 오늘 아침 현황</h3><b>${cameN}<i> / ${ROSTER.length}명</i></b></div>${cameN?`<div class="s-dots">${dots}</div>`:`<div class="none">아직 아무도 없어요. 첫 번째가 되어 보세요!</div>`}</div>
+    <div id="st-class"></div>
     <div id="st-my"></div>
     <div id="st-lb"></div>`;
   if($('#st-open-pj'))$('#st-open-pj').onclick=openLeadScreen;
   $('#st-quote').onclick=()=>{quoteShift++;const nq=quoteOfDay();$('#st-quote').innerHTML=`<p>${esc(nq.t)}</p>${nq.a?`<cite>— ${esc(nq.a)}</cite>`:''}`};
   if($('#st-check'))$('#st-check').onclick=doCheckIn;
+  if($('#st-stop'))$('#st-stop').onclick=doStop;
+  if($('#st-resume'))$('#st-resume').onclick=undoStop;
   if($('#st-mypin')){$('#st-mypin').addEventListener('keydown',e=>{if(e.key==='Enter')doCheckIn()});setTimeout(()=>$('#st-mypin')&&$('#st-mypin').focus(),120)}
   if($('#st-code-go')){$('#st-code-go').onclick=()=>{const v=($('#st-code').value||'').trim().toUpperCase();if(!v)return toast('코드를 입력해 주세요.',true);if(!LIVE)return toast('지금은 출석 시간이 아닙니다.',true);if(!codeMatches(v))return toast('코드가 맞지 않습니다.',true);urlCode=v;renderStudent()};$('#st-code').addEventListener('keydown',e=>{if(e.key==='Enter')$('#st-code-go').click()})}
   renderMyAndBoard();
@@ -925,6 +1050,22 @@ function renderSelfEnroll(){
   };
 }
 
+async function doStop(){
+  const rec=TODAY[ME];if(!rec||rec.end)return renderStudent();
+  if(!windowStatus().ok){toast(`${CFG.deadline}이 지나 자동으로 끝났어요.`);return renderStudent()}
+  const t=hhmm();
+  if(hmMin(t)<=hmMin(rec.t)){toast('방금 출석했어요. 1분 뒤에 다시 눌러 주세요.',true);return}
+  if(!confirm(`지금(${prettyTime(t)}) 공부를 끝낼까요?\n오늘은 ${prettyTime(rec.t)}~${prettyTime(t)} 공부한 것으로 기록돼요.`))return;
+  const ok=await DB.set(`en:${dateKey()}:${ME}:${t}`,1);
+  if(!ok)return toast('저장 실패. 다시 눌러 주세요.',true);
+  await renderStudent();toast(`수고했어요! ${prettyTime(t)}에 공부를 끝냈어요 🌿`);
+}
+async function undoStop(){
+  const rec=TODAY[ME];if(!rec||!rec.endKey)return;
+  if(!windowStatus().ok)return toast('마감이 지나 되돌릴 수 없어요.',true);
+  if(!confirm('공부 끝내기를 취소하고 다시 공부할까요?'))return;
+  await DB.del(rec.endKey);await renderStudent();toast('다시 공부 중으로 바꿨어요.');
+}
 async function doCheckIn(){
   const btn=$('#st-check');if(btn)btn.disabled=true;
   const pf=$('#st-mypin');
@@ -944,12 +1085,13 @@ async function doCheckIn(){
   const ok=await DB.set(`at:${dateKey()}:${ME}:${t}`,1);
   if(!ok){toast('저장 실패. 다시 눌러 주세요.',true);if(btn)btn.disabled=false;return}
   await renderStudent();
-  toast(`출석! ${earnedMinutes(t)}분 적립되었어요 🌅`);
+  toast(`출석 완료! ${prettyTime(t)} 입실 🌅`);
 }
 
 async function renderMyAndBoard(){
-  const myBox=$('#st-my'),lbBox=$('#st-lb');if(!myBox)return;
-  const tot=await computeTotals();
+  const myBox=$('#st-my'),lbBox=$('#st-lb'),clsBox=$('#st-class');if(!myBox)return;
+  const A=await gatherAll();
+  const tot={};for(const r of A.recs){const x=(tot[r.id]||={min:0,days:new Set(),dates:[]});x.min+=r.settled;x.days.add(r.date);x.dates.push(r.date)}
   const arr=ROSTER.map(s=>{const r=tot[s.id]||{min:0,days:new Set(),dates:[]};return {s,min:r.min,days:r.days.size,streak:computeStreak(r.dates)}}).sort((a,b)=>b.min-a.min||b.days-a.days);
   const myIdx=arr.findIndex(x=>x.s.id===ME);
   const mine=arr[myIdx]||{min:0,days:0,streak:0};
@@ -957,10 +1099,16 @@ async function renderMyAndBoard(){
   myBox.innerHTML=`<div class="eyebrow" style="margin:var(--s5) 0 var(--s3);text-align:center">나의 얼리버드 기록</div>
     <div class="my-grid">
       <div class="my-box rank"><div class="k">우리 반 순위</div><div class="v">${rank}<i> / ${ROSTER.length}등</i></div></div>
-      <div class="my-box"><div class="k">누적 시간</div><div class="v">${Math.floor(mine.min/60)}<i>시간 ${mine.min%60}분</i></div></div>
+      <div class="my-box"><div class="k">누적 시간 (어제까지)</div><div class="v">${Math.floor(mine.min/60)}<i>시간 ${mine.min%60}분</i></div></div>
       <div class="my-box"><div class="k">나온 날</div><div class="v">${mine.days}<i>일</i></div></div>
-      <div class="my-box" style="grid-column:1/-1"><div class="k">연속 출석</div><div class="v"><span class="streak" style="color:var(--sun-deep)">🔥 ${mine.streak}<i>일 연속</i></span></div></div>
-    </div>`;
+      <div class="my-box" style="grid-column:1/-1"><div class="k">연속 출석 (운영일 기준)</div><div class="v"><span class="streak" style="color:var(--sun-deep)">🔥 ${mine.streak}<i>일 연속</i></span></div></div>
+    </div>
+    ${await myGoalHtml(A)}
+    ${compareHtml(A)}
+    ${calendarHtml(A)}
+    ${badgesHtml(A,mine.min)}`;
+  bindGoal();
+  if(clsBox)clsBox.innerHTML=classGoalHtml(A);
   // 미니 리더보드 top10 + 본인
   const top=arr.slice(0,10);
   const rows=top.map((x,i)=>({x,i})).map(({x,i})=>lbRow(x,i,x.s.id===ME));
@@ -968,6 +1116,206 @@ async function renderMyAndBoard(){
   lbBox.innerHTML=`<div class="mini-lb" style="margin-top:var(--s5)"><h3>🏆 우리 반 순위 <a>상위 10명</a></h3>${rows.join('')}</div>`;
 }
 function lbRow(x,i,isMe){const rc=i===0?'top1':i===1?'top2':i===2?'top3':'';const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1);return `<div class="lb-row${isMe?' me':''}"><div class="lb-rank ${rc}">${medal}</div><div class="lb-name">${esc(x.s.name)}<span>${x.s.c}반 ${x.s.n}번</span></div><div class="lb-time">${fmtHM(x.min)}</div></div>`}
+/* ══ 분석 공통 ══
+   모든 출석·종료 기록을 한 번에 모아 학생 화면(목표·비교·달력·배지)과
+   교사 화면(요약 문장·살펴볼 학생·추이)이 같은 기준으로 계산하게 합니다.
+   '운영한 날' = 한 명이라도 출석한 날. 공휴일·시험 기간은 자연히 빠집니다. */
+let OPDATES=[];
+async function gatherAll(){
+  const [ak,E]=await Promise.all([DB.list('at:'),loadEnds('')]);
+  const recs=[],byId={},byDate={};
+  for(const k of ak){
+    const p=k.split(':');if(p.length<4)continue;
+    const [,date,id,t]=p;const end=E[date+'|'+id];
+    const r={date,id,t,end,min:earnedMinutes(t,end),settled:settledMin(date,t,end)};
+    recs.push(r);(byId[id]||=[]).push(r);(byDate[date]||=[]).push(r);
+  }
+  for(const id in byId)byId[id].sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+  OPDATES=Object.keys(byDate).sort();
+  return {recs,byId,byDate,opDates:OPDATES};
+}
+// 운영일 기준 최장 연속
+function maxStreakOf(dates,ops){const set=new Set(dates);let best=0,cur=0;for(const d of ops){if(set.has(d)){cur++;best=Math.max(best,cur)}else cur=0}return best}
+const hm2txt=m=>`${pad(Math.floor(m/60))}:${pad(Math.round(m)%60)}`;
+const durTxt=m=>m>=60?`${Math.floor(m/60)}시간${m%60?` ${m%60}분`:''}`:`${m}분`;
+const avgArrive=list=>list.length?Math.round(list.reduce((a,r)=>a+hmMin(r.t),0)/list.length):null;
+// 반 목표(시간): 그 달에 따로 정한 값 → 기본 목표 → 인원×10시간 순서로 씁니다.
+const baseGoalH=()=>Number(CFG.classGoalH)>0?Number(CFG.classGoalH):Math.max(1,ROSTER.length)*10;
+const classGoalH=(mk=monthKey())=>{const v=Number((CFG.classGoals||{})[mk]);return v>0?v:baseGoalH()};
+const classGoalMin=(mk=monthKey())=>classGoalH(mk)*60;
+// 오늘부터 이번 달 말까지 남은 운영 요일 수(오늘 포함)
+function opDaysLeftInMonth(){const d=new Date(),m=d.getMonth();let n=0;const ops=CFG.opDays||[1,2,3,4,5];for(;d.getMonth()===m;d.setDate(d.getDate()+1))if(ops.includes(d.getDay()))n++;return n}
+
+/* ── 학생: 우리 반 공동 목표 ── */
+function classGoalHtml(A){
+  const mk=monthKey(),goal=classGoalMin();
+  const mine=A.recs.filter(r=>r.date.startsWith(mk));
+  const sum=mine.reduce((a,r)=>a+r.settled,0);
+  const myPart=mine.filter(r=>r.id===ME).reduce((a,r)=>a+r.settled,0);
+  const pct=Math.min(100,Math.round(sum/goal*100));
+  const m=new Date().getMonth()+1;
+  return `<div class="x-card goal-class"><div class="x-h"><h3>🌱 우리 반 ${m}월 목표</h3><b>${pct}<i>%</i></b></div>
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="x-row"><span>${durTxt(sum)} / ${Math.round(goal/60)}시간</span><span>${pct>=100?'목표 달성! 🎉':`${durTxt(goal-sum)} 남음`}</span></div>
+    <p class="x-note">${myPart?`내가 보탠 시간 <b>${durTxt(myPart)}</b> · 우리 반 시간의 ${sum?Math.round(myPart/sum*100):0}%`:'내일부터 내 시간이 우리 반 목표에 더해져요'}</p></div>`;
+}
+/* ── 학생: 개인 목표 ── */
+async function myGoalHtml(A){
+  const mk=monthKey(),g=Number(await DB.get(`goal:${ME}:${mk}`))||0;
+  const got=(A.byId[ME]||[]).filter(r=>r.date.startsWith(mk)).reduce((a,r)=>a+r.settled,0);
+  const m=new Date().getMonth()+1;
+  if(!g)return `<div class="x-card"><div class="x-h"><h3>🎯 ${m}월 내 목표</h3></div>
+    <p class="x-note" style="margin-bottom:var(--s3)">이번 달에 몇 시간 공부할지 정해 보세요.</p>
+    <div class="chips">${[5,10,15,20].map(h=>`<button class="chip" data-goal="${h}">${h}시간</button>`).join('')}</div>
+    <div class="goal-set"><input class="input" id="gl-in" type="number" min="1" max="200" inputmode="numeric" placeholder="직접 입력"><span>시간</span><button class="btn btn-primary btn-sm" id="gl-save">정하기</button></div></div>`;
+  const goal=g*60,pct=Math.min(100,Math.round(got/goal*100)),left=Math.max(0,goal-got),days=opDaysLeftInMonth();
+  return `<div class="x-card"><div class="x-h"><h3>🎯 ${m}월 내 목표 ${g}시간</h3><b>${pct}<i>%</i></b></div>
+    <div class="bar mine"><i style="width:${pct}%"></i></div>
+    <div class="x-row"><span>${durTxt(got)} 채움 (어제까지)</span><span>${left?`${durTxt(left)} 남음`:'목표 달성! 🎉'}</span></div>
+    <p class="x-note">${left&&days?`남은 운영일 ${days}일 동안 하루 평균 <b>${Math.ceil(left/days)}분</b>이면 달성해요`:left?'다음 달엔 조금 더 넉넉하게 잡아 볼까요?':'이번 달 목표를 이뤘어요. 정말 잘했어요!'}</p>
+    <button class="linkbtn" id="gl-edit" style="margin-top:var(--s2)">목표 바꾸기</button></div>`;
+}
+function bindGoal(){
+  const save=async h=>{h=Math.round(Number(h));if(!(h>=1&&h<=200))return toast('1~200 사이 시간으로 정해 주세요.',true);await DB.set(`goal:${ME}:${monthKey()}`,h);toast(`이번 달 목표 ${h}시간! 화이팅 🌅`);renderMyAndBoard()};
+  $$('[data-goal]').forEach(b=>b.onclick=()=>save(b.dataset.goal));
+  const s=$('#gl-save');if(s)s.onclick=()=>save($('#gl-in').value);
+  const e=$('#gl-edit');if(e)e.onclick=async()=>{await DB.del(`goal:${ME}:${monthKey()}`);renderMyAndBoard()};
+}
+/* ── 학생: 나와의 비교 (순위 대신 내 성장) ── */
+function compareHtml(A){
+  const today=dateKey(),mine=(A.byId[ME]||[]).filter(r=>r.date<today);
+  const rows=[];
+  if(mine.length>=4){
+    const n=Math.min(5,Math.floor(mine.length/2));
+    const a=avgArrive(mine.slice(-n)),b=avgArrive(mine.slice(-2*n,-n)),d=b-a;
+    rows.push(`<div class="cmp"><span class="k">최근 ${n}번 평균 도착</span><b>${hm2txt(a)}</b><em class="${d>0?'up':d<0?'down':''}">${d>0?`▲ 그 전 ${n}번보다 ${d}분 빨라요`:d<0?`그 전 ${n}번보다 ${-d}분 늦어요 · 내일 조금만 일찍!`:`그 전 ${n}번과 같아요`}</em></div>`);
+  }
+  const d=new Date(),day=d.getDate(),mk=monthKey();
+  const pm=new Date(d.getFullYear(),d.getMonth()-1,1),pmk=monthKey(pm);
+  const thisM=mine.filter(r=>r.date.startsWith(mk)).reduce((a,r)=>a+r.settled,0);
+  const prevM=mine.filter(r=>r.date.startsWith(pmk)&&Number(r.date.slice(8))<day).reduce((a,r)=>a+r.settled,0);
+  const hadPrev=mine.some(r=>r.date.startsWith(pmk));
+  if(hadPrev||thisM){
+    const diff=thisM-prevM;
+    rows.push(`<div class="cmp"><span class="k">이번 달 (어제까지)</span><b>${durTxt(thisM)}</b><em class="${hadPrev?diff>=0?'up':'down':''}">${hadPrev?diff>0?`▲ 지난달 같은 기간(1~${day-1}일)보다 ${durTxt(diff)} 더`:diff===0?`지난달 같은 기간과 똑같아요`:`지난달 같은 기간보다 ${durTxt(-diff)} 적어요 · 아직 따라잡을 수 있어요`:'지난달 기록이 없어 이번 달이 기준이 돼요'}</em></div>`);
+  }
+  const bestDay=mine.length?mine.reduce((a,r)=>hmMin(r.t)<hmMin(a.t)?r:a):null;
+  if(bestDay)rows.push(`<div class="cmp"><span class="k">나의 가장 이른 도착</span><b>${prettyTime(bestDay.t)}</b><em>${bestDay.date.slice(5).replace('-','/')} · 이 기록을 깨 볼까요?</em></div>`);
+  return `<div class="x-card"><div class="x-h"><h3>📈 나와의 비교</h3></div>${rows.length?rows.join(''):'<p class="x-note">며칠 더 나오면 지난 나와 비교해 드릴게요.</p>'}</div>`;
+}
+/* ── 학생: 출석 달력 ── */
+function calendarHtml(A){
+  const d=new Date(),y=d.getFullYear(),m=d.getMonth(),today=dateKey();
+  const mine=new Map((A.byId[ME]||[]).map(r=>[r.date,r]));
+  const ops=new Set(A.opDates),opDays=CFG.opDays||[1,2,3,4,5];
+  const first=new Date(y,m,1).getDay(),last=new Date(y,m+1,0).getDate();
+  let cells='';for(let i=0;i<first;i++)cells+='<i></i>';
+  let came=0,opN=0;
+  for(let dd=1;dd<=last;dd++){
+    const dk=`${y}-${pad(m+1)}-${pad(dd)}`,dow=new Date(y,m,dd).getDay(),r=mine.get(dk);
+    const isOp=ops.has(dk)||(dk>=today&&opDays.includes(dow));
+    if(r)came++;if(ops.has(dk)&&dk<=today)opN++;
+    const cls=r?'on':dk>today?(isOp?'future':'rest'):isOp?'miss':'rest';
+    cells+=`<span class="${cls}${dk===today?' today':''}" title="${r?prettyTime(r.t)+' 도착':''}">${dd}</span>`;
+  }
+  return `<div class="x-card"><div class="x-h"><h3>📅 ${m+1}월 출석 달력</h3><b>${came}<i>일 / 운영 ${opN}일</i></b></div>
+    <div class="cal-w">${['일','월','화','수','목','금','토'].map(x=>`<i>${x}</i>`).join('')}</div><div class="cal">${cells}</div>
+    <div class="cal-lg"><span><i class="on"></i>나온 날</span><span><i class="miss"></i>못 나온 날</span><span><i class="rest"></i>쉬는 날</span></div></div>`;
+}
+/* ── 학생: 배지 ── */
+function badgesHtml(A,totMin){
+  const mine=A.byId[ME]||[],dates=mine.map(r=>r.date);
+  const ms=maxStreakOf(dates,A.opDates);
+  let firsts=0;for(const dk in A.byDate){const list=A.byDate[dk];const min=Math.min(...list.map(r=>hmMin(r.t)));if(list.some(r=>r.id===ME&&hmMin(r.t)===min))firsts++}
+  const early=mine.filter(r=>hmMin(r.t)<=mins(CFG.openTime)+10).length;
+  const curM=monthKey();const months=[...new Set(A.opDates.map(x=>x.slice(0,7)))].filter(x=>x<curM);
+  const set=new Set(dates);const fullM=months.some(mk=>A.opDates.filter(x=>x.startsWith(mk)).every(x=>set.has(x)));
+  const H=totMin/60;
+  const list=[
+    ['🌱','첫 출석','처음 나온 날',mine.length>=1],
+    ['🔥','3일 연속','운영일 3일 연속',ms>=3],
+    ['🔥','5일 연속','운영일 5일 연속',ms>=5],
+    ['🏅','10일 연속','운영일 10일 연속',ms>=10],
+    ['⏳','10시간','누적 10시간',H>=10],
+    ['⌛','30시간','누적 30시간',H>=30],
+    ['💎','50시간','누적 50시간',H>=50],
+    ['👑','100시간','누적 100시간',H>=100],
+    ['🥇','오늘의 1등','가장 먼저 온 날 1번',firsts>=1],
+    ['🚪','문 열자마자',`${CFG.openTime}+10분 안에 5번`,early>=5],
+    ['📅','한 달 개근','지난달 운영일 모두 출석',fullM],
+  ];
+  const got=list.filter(b=>b[3]).length;
+  return `<div class="x-card"><div class="x-h"><h3>🏵️ 나의 배지</h3><b>${got}<i> / ${list.length}</i></b></div>
+    <div class="badges">${list.map(([e,n,c,ok])=>`<div class="bdg${ok?' ok':''}"><span>${e}</span><b>${n}</b><small>${ok?'획득!':c}</small></div>`).join('')}</div></div>`;
+}
+
+/* ══ 교사: 살펴볼 학생 ══ */
+function watchHtml(A){
+  const today=dateKey(),ops=A.opDates.filter(d=>d<today);
+  if(ops.length<3)return `<div class="watch"><h3>👀 살펴볼 학생</h3><p class="hint">운영일이 3일 넘게 쌓이면 여기에 챙겨 볼 학생이 나옵니다.</p></div>`;
+  const last5=ops.slice(-5),has=(id,d)=>(A.byDate[d]||[]).some(r=>r.id===id);
+  const nm=s=>`<span class="w-chip" data-lgj="${s.id}">${esc(s.name)}</span>`;
+  const away=ROSTER.filter(s=>(A.byId[s.id]||[]).length&&!last5.some(d=>has(s.id,d)));
+  const never=ROSTER.filter(s=>!(A.byId[s.id]||[]).length);
+  const prev=ops[ops.length-1];
+  const broke=ROSTER.filter(s=>{if(has(s.id,prev))return false;let n=0;for(let i=ops.length-2;i>=0&&has(s.id,ops[i]);i--)n++;return n>=3}).map(s=>{let n=0;for(let i=ops.length-2;i>=0&&has(s.id,ops[i]);i--)n++;return {s,n}});
+  const recent10=new Set(ops.slice(-10)),dl=mins(CFG.deadline);
+  const quit=ROSTER.map(s=>({s,n:(A.byId[s.id]||[]).filter(r=>recent10.has(r.date)&&r.end&&dl-hmMin(r.end)>=30).length})).filter(x=>x.n>=3);
+  const box=(t,why,list,f)=>`<div class="w-box"><b>${t} <i>${list.length}</i></b><small>${why}</small><div>${list.length?list.map(f).join(''):'<span class="hint">없음</span>'}</div></div>`;
+  return `<div class="watch"><h3>👀 살펴볼 학생 <span class="hint">운영일 기준 · 오늘 제외</span></h3><div class="w-grid">
+    ${box('요즘 안 나와요','최근 운영일 5일 동안 한 번도 안 옴',away,s=>{const l=(A.byId[s.id]||[]).slice(-1)[0];return `${nm(s)}<em>${l?'마지막 '+l.date.slice(5).replace('-','/'):''}</em>`})}
+    ${box('연속이 끊겼어요','3일 이상 연속으로 오다가 직전 운영일에 빠짐',broke,x=>`${nm(x.s)}<em>${x.n}일→0</em>`)}
+    ${box('일찍 끝내요','최근 10운영일 중 마감 30분 전 종료 3번 이상',quit,x=>`${nm(x.s)}<em>${x.n}번</em>`)}
+    ${box('아직 한 번도 없어요','한 번도 출석하지 않음',never,nm)}
+  </div></div>`;
+}
+
+/* ══ 교사: 생기부용 요약 문장 ══ */
+const dotDate=d=>`${d.slice(0,4)}.${d.slice(5,7)}.${d.slice(8)}.`;
+function summaryOf(A,id,scope){
+  const today=dateKey();
+  const inS=d=>(scope==='all'||d.startsWith(scope))&&d<today;   // 확정된 날(어제까지)만
+  const ops=A.opDates.filter(inS),es=(A.byId[id]||[]).filter(r=>inS(r.date));
+  if(!es.length||!ops.length)return '';
+  const tot=es.reduce((a,r)=>a+r.settled,0),avg=avgArrive(es),ms=maxStreakOf(es.map(r=>r.date),ops);
+  const rate=es.length/ops.length;
+  let s=`아침 자기주도학습 프로그램(얼리버드)에 ${dotDate(ops[0])}~${dotDate(ops[ops.length-1])} 운영일 ${ops.length}일 중 ${es.length}일 참여하여, 평균 ${hm2txt(avg)}에 등교해 누적 ${durTxt(tot)} 동안 스스로 학습함.`;
+  if(ms>=5)s+=` 최장 ${ms}일 연속 참여하며 꾸준한 학습 습관을 보임.`;
+  else if(rate>=0.8)s+=` 참여율이 ${Math.round(rate*100)}%로 성실하게 아침 시간을 활용함.`;
+  return s;
+}
+
+/* ══ 교사: 추이 그래프 (SVG) ══ */
+function barSvg(items,{h=170,label=v=>v,sub=null,max=null}={}){
+  const W=520,pad=28,bw=(W-pad*2)/items.length,mx=max||Math.max(1,...items.map(x=>x.v));
+  return `<svg viewBox="0 0 ${W} ${h+40}" class="trend-svg" role="img">${items.map((x,i)=>{
+    const bh=x.v?Math.max(3,(h-30)*x.v/mx):0,X=pad+i*bw+bw*.18,w=bw*.64,Y=h-bh;
+    return `<rect x="${X}" y="${Y}" width="${w}" height="${bh}" rx="7" fill="${x.hi?'var(--sun-deep)':'var(--sun)'}"/>
+      ${x.v?`<text x="${X+w/2}" y="${Y-6}" text-anchor="middle" class="tv">${label(x.v)}</text>`:''}
+      <text x="${X+w/2}" y="${h+16}" text-anchor="middle" class="tl">${x.k}</text>
+      ${sub&&x.s!=null?`<text x="${X+w/2}" y="${h+32}" text-anchor="middle" class="ts">${sub(x.s)}</text>`:''}`}).join('')}
+    <line x1="${pad}" x2="${W-pad}" y1="${h}" y2="${h}" stroke="var(--line-strong)" stroke-width="2"/></svg>`;
+}
+function mondayOf(dk){const d=new Date(dk+'T00:00:00');const w=(d.getDay()+6)%7;d.setDate(d.getDate()-w);return dateKey(d)}
+function trendHtml(A,scope){
+  if(!A.opDates.length)return '';
+  // 주별: 최근 8주, 운영일 하루 평균 인원 + 평균 도착
+  const weeks={};for(const dk of A.opDates){const w=mondayOf(dk);(weeks[w]||=[]).push(dk)}
+  const wk=Object.keys(weeks).sort().slice(-8);
+  const wItems=wk.map((w,i)=>{const ds=weeks[w],rs=ds.flatMap(d=>A.byDate[d]);return {k:`${Number(w.slice(5,7))}/${Number(w.slice(8))}~`,v:Math.round(rs.length/ds.length*10)/10,s:avgArrive(rs),hi:i===wk.length-1}});
+  // 요일별: 선택한 기간, 운영일 하루 평균 인원 + 평균 도착
+  const inS=d=>scope==='all'||d.startsWith(scope);
+  const byW={};for(const dk of A.opDates.filter(inS)){const dw=new Date(dk+'T00:00:00').getDay();(byW[dw]||=[]).push(dk)}
+  const dItems=(CFG.opDays||[1,2,3,4,5]).map(dw=>{const ds=byW[dw]||[],rs=ds.flatMap(d=>A.byDate[d]);return {k:DOW[dw],v:ds.length?Math.round(rs.length/ds.length*10)/10:0,s:rs.length?avgArrive(rs):null}});
+  const lowD=dItems.filter(x=>x.v).sort((a,b)=>a.v-b.v)[0];
+  const lastW=wItems[wItems.length-1],prevW=wItems[wItems.length-2];
+  const note=[prevW?`이번 주 하루 평균 ${lastW.v}명 (지난주 ${prevW.v}명)`:'',lowD&&dItems.filter(x=>x.v).length>1?`${lowD.k}요일에 가장 적게 와요`:''].filter(Boolean).join(' · ');
+  return `<div class="card trend"><div class="trend-h"><h3>주간 추이</h3><span class="hint">${esc(note)}</span></div><div class="trend-grid">
+    <div><div class="eyebrow">주별 하루 평균 출석 (최근 8주)</div>${barSvg(wItems,{label:v=>v+'명',sub:m=>hm2txt(m)})}<p class="hint">막대 아래 시각은 그 주 평균 도착 시각</p></div>
+    <div><div class="eyebrow">요일별 하루 평균 출석</div>${barSvg(dItems,{label:v=>v+'명',sub:m=>hm2txt(m)})}<p class="hint">선택한 기간 기준 · 아래 시각은 평균 도착</p></div>
+  </div></div>`;
+}
+
 /* ── 교사 진입 ── */
 function updateConnBadge(){const el=$('#conn-badge');if(!el)return;if(DB.isRemote){el.textContent='● 온라인 연결됨';el.style.background='var(--sun-tint)';el.style.color='var(--sun-ink)'}else{el.textContent='● 이 기기에만 저장';el.style.background='var(--alert-tint)';el.style.color='var(--alert)'}}
 $('#st-teacher').onclick=showTeacher;
@@ -989,19 +1337,19 @@ async function renderToday(){
   MONTHMIN=mm;
   const el=$('#tab-today'),d=new Date(),ws=windowStatus();
   const lit=ROSTER.filter(s=>TODAY[s.id]).length;
-  const todayMin=ROSTER.reduce((a,s)=>a+(TODAY[s.id]?earnedMinutes(TODAY[s.id].t):0),0);
   el.innerHTML=`<div class="p-title"><div><div class="brandline">${esc(CFG.school)} · 얼리버드 🌅</div><div class="eyebrow" style="margin-bottom:5px">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 ${DOW[d.getDay()]} · ${CFG.openTime}~${CFG.deadline}</div><h2>오늘 아침</h2><span class="day-flag ${ws.ok?'open':'closed'}">${ws.ok?'출석 받는 중':(ws.after?'마감됨':ws.before?'대기':'운영 안 함')}</span></div>
     <div class="p-actions"><button class="btn btn-ghost btn-sm" id="td-refresh">새로고침</button><button class="btn btn-sm" id="td-csv">오늘 명단</button><button class="btn btn-primary btn-sm" id="td-qr">QR 띄우기</button></div></div>
     <div class="note-box"><h3>📢 오늘 전달사항</h3>
     <textarea class="input" id="td-note" rows="2" maxlength="300" placeholder="예) 8시 20분에 학년 조회가 있습니다. 자리 정리하고 강당으로 이동하세요.">${esc(NOTE)}</textarea>
     <div style="display:flex;gap:var(--s2);margin-top:var(--s3);flex-wrap:wrap;align-items:center"><button class="btn btn-primary btn-sm" id="td-note-save">저장</button><button class="btn btn-ghost btn-sm" id="td-note-clear">지우기</button><span class="hint" id="td-note-state" style="margin-left:auto">교실 아이패드와 학생 폰에 10초 안에 뜹니다 · 오늘 하루만 표시</span></div></div>
-    <div class="today-grid"><div class="room"><div class="room-head"><div class="room-count"><b>${lit}</b><span>/ ${ROSTER.length}</span><u>오늘 출석 · 합계 ${fmtDur(todayMin)} 적립</u></div><div class="room-place">마감 ${CFG.deadline}</div></div>
+    <div class="today-grid"><div class="room"><div class="room-head"><div class="room-count"><b>${lit}</b><span>/ ${ROSTER.length}</span><u>오늘 출석 · 누적은 어제까지 기준</u></div><div class="room-place">마감 ${CFG.deadline}</div></div>
     <div class="seats" id="seats"></div>
-    <div class="room-legend"><span class="lg on"><i></i>출석 (입실시각·오늘 적립분)</span><span class="lg off"><i></i>미출석</span><span class="lg" style="margin-left:auto">이름 밑 숫자는 <b>이번 달 누적(분)</b> · 자리를 누르면 출결을 고칠 수 있습니다</span></div></div>
-    <aside class="mini-lb today-rank"><h3>🏆 이번 달 누적 <a>TOP 10</a></h3><div id="td-rank"><div class="empty" style="padding:var(--s5) 0"><b>집계 중</b>잠시만요.</div></div></aside></div>
+    <div class="room-legend"><span class="lg on"><i></i>출석 (입실시각, 끝낸 학생은 입실–종료)</span><span class="lg off"><i></i>미출석</span><span class="lg" style="margin-left:auto">이름 밑 숫자는 <b>이번 달 누적(분, 어제까지)</b> · 자리를 누르면 출결을 고칠 수 있습니다</span></div></div>
+    <aside class="mini-lb today-rank"><h3>🏆 이번 달 누적 <a>TOP 10</a> <span class="hint" style="font-size:11px">어제까지</span></h3><div id="td-rank"><div class="empty" style="padding:var(--s5) 0"><b>집계 중</b>잠시만요.</div></div></aside></div>
+    <div id="td-watch"></div>
     <div class="t-quote t-quote-foot" id="td-quote"><p>“${esc(quoteOfDay().t||'')}”</p>${quoteOfDay().a?`<cite>— ${esc(quoteOfDay().a)}</cite>`:''}</div>`;
   const seats=$('#seats');
-  seats.innerHTML=ROSTER.map(s=>{const r=TODAY[s.id];const e=r?earnedMinutes(r.t):0;const cm=(MONTHMIN[s.id]||{}).min||0;return `<button class="seat ${r?'lit':''}" data-id="${s.id}" title="${esc(s.name)} · 이번 달 ${cm}분"><div class="nm">${esc(s.name)}</div><div class="cum">${cm?cm+'분':'—'}</div><div class="foot"><span class="tm">${r?prettyTime(r.t):'··:··'}</span><span class="earn">${r?`+${e}분`:''}</span></div></button>`}).join('')||`<div class="empty" style="grid-column:1/-1"><b>등록된 학생이 없습니다</b>명렬표 탭에서 추가해 주세요.</div>`;
+  seats.innerHTML=ROSTER.map(s=>{const r=TODAY[s.id];const cm=(MONTHMIN[s.id]||{}).min||0;return `<button class="seat ${r?'lit':''}" data-id="${s.id}" title="${esc(s.name)} · 이번 달 ${cm}분"><div class="nm">${esc(s.name)}</div><div class="cum">${cm?cm+'분':'—'}</div><div class="foot"><span class="tm">${r?spanTxt(r):'··:··'}</span><span class="earn"></span></div></button>`}).join('')||`<div class="empty" style="grid-column:1/-1"><b>등록된 학생이 없습니다</b>명렬표 탭에서 추가해 주세요.</div>`;
   $$('#seats .seat').forEach(b=>b.onclick=()=>toggleSeat(b.dataset.id));
   $('#td-note-save').onclick=async()=>{
     const st=$('#td-note-state');
@@ -1026,8 +1374,9 @@ async function renderToday(){
   $('#td-refresh').onclick=renderToday;$('#td-csv').onclick=exportToday;$('#td-qr').onclick=()=>openTab('qr');
   $('#td-quote').onclick=()=>{quoteShift++;const q=quoteOfDay();$('#td-quote').innerHTML=`<p>“${esc(q.t)}”</p>${q.a?`<cite>— ${esc(q.a)}</cite>`:''}`};
   renderTodayRank(false);
+  gatherAll().then(A=>{const w=$('#td-watch');if(!w)return;w.innerHTML=watchHtml(A);$$('#td-watch [data-lgj]').forEach(c=>c.onclick=()=>{logOpen=c.dataset.lgj;openTab('log')})});
   let tdTick=0;
-  pollTimer=setInterval(async()=>{if(curTab!=='today')return;await loadToday();let n=0,sum=0;$$('#seats .seat').forEach(b=>{const r=TODAY[b.dataset.id];b.classList.toggle('lit',!!r);b.querySelector('.tm').textContent=r?prettyTime(r.t):'··:··';b.querySelector('.earn').textContent=r?`+${earnedMinutes(r.t)}분`:'';if(r){n++;sum+=earnedMinutes(r.t)}});const c=$('.room-count b');if(c)c.textContent=n;const u=$('.room-count u');if(u)u.textContent=`오늘 출석 · 합계 ${fmtDur(sum)} 적립`;if(++tdTick%4===0)renderTodayRank()},15000);
+  pollTimer=setInterval(async()=>{if(curTab!=='today')return;await loadToday();let n=0;$$('#seats .seat').forEach(b=>{const r=TODAY[b.dataset.id];b.classList.toggle('lit',!!r);b.querySelector('.tm').textContent=r?spanTxt(r):'··:··';if(r)n++});const c=$('.room-count b');if(c)c.textContent=n;if(++tdTick%4===0)renderTodayRank()},15000);
 }
 async function renderTodayRank(recompute=true){
   const box=$('#td-rank');if(!box)return;
@@ -1037,8 +1386,8 @@ async function renderTodayRank(recompute=true){
   box.innerHTML=arr.length?arr.map((x,i)=>lbRow(x,i,false)).join('')
     :`<div class="empty" style="padding:var(--s5) 0"><b>이번 달 기록이 아직 없습니다</b>첫 출석이 쌓이면 순위가 나옵니다.</div>`;
 }
-async function toggleSeat(id){const s=findStudent(id);if(!s)return;const r=TODAY[id];if(r){if(!confirm(`${s.name} 출석을 지울까요?`))return;await DB.del(r.key);toast(`${s.name} 출석을 지웠습니다.`)}else{const t=hhmm(new Date());await DB.set(`at:${dateKey()}:${id}:${t}`,1);toast(`${s.name} 출석 처리 (+${earnedMinutes(t)}분)`)}await loadToday();renderToday()}
-function exportToday(){const rows=[['학교','반','날짜','학년','반','번호','이름','입실시각','적립분']];const dk=dateKey();ROSTER.forEach(s=>{const r=TODAY[s.id];rows.push([CFG.school,CFG.className,dk,s.g,s.c,s.n,s.name,r?prettyTime(r.t):'',r?earnedMinutes(r.t):0])});downloadCSV(rows,`얼리버드_${dk}.csv`)}
+async function toggleSeat(id){const s=findStudent(id);if(!s)return;const r=TODAY[id];if(r){if(!confirm(`${s.name} 출석을 지울까요?`))return;await DB.del(r.key);if(r.endKey)await DB.del(r.endKey);toast(`${s.name} 출석을 지웠습니다.`)}else{const t=hhmm(new Date());await DB.set(`at:${dateKey()}:${id}:${t}`,1);toast(`${s.name} 출석 처리 (${prettyTime(t)})`)}await loadToday();renderToday()}
+function exportToday(){const rows=[['학교','반','날짜','학년','반','번호','이름','입실시각','종료시각','적립예정분(내일 누적 반영)']];const dk=dateKey();ROSTER.forEach(s=>{const r=TODAY[s.id];rows.push([CFG.school,CFG.className,dk,s.g,s.c,s.n,s.name,r?prettyTime(r.t):'',r&&r.end?prettyTime(r.end):'',r?earnedMinutes(r.t,r.end):0])});downloadCSV(rows,`얼리버드_${dk}.csv`)}
 
 /* ── 순위 ── */
 let boardScope='total';
@@ -1048,8 +1397,8 @@ async function renderBoard(){
   let arr=ROSTER.map(s=>{const r=tot[s.id]||{min:0,days:new Set(),dates:[]};return {s,min:r.min,days:r.days.size,streak:computeStreak(r.dates)}});
   if(boardScope==='month'){
     // 이번 달만 재계산
-    const keys=await DB.list('at:'+monthKey());
-    const mm={};for(const k of keys){const p=k.split(':');if(p.length<4)continue;const rec=(mm[p[2]]||={min:0,days:new Set()});rec.min+=earnedMinutes(p[3]);rec.days.add(p[1])}
+    const [keys,E]=await Promise.all([DB.list('at:'+monthKey()),loadEnds(monthKey())]);
+    const mm={};for(const k of keys){const p=k.split(':');if(p.length<4)continue;const rec=(mm[p[2]]||={min:0,days:new Set()});rec.min+=settledMin(p[1],p[3],E[p[1]+'|'+p[2]]);rec.days.add(p[1])}
     arr=ROSTER.map(s=>{const r=mm[s.id]||{min:0,days:new Set()};return {s,min:r.min,days:r.days.size,streak:0}});
   }
   arr.sort((a,b)=>b.min-a.min||b.days-a.days);
@@ -1142,7 +1491,7 @@ function pjSeatFit(){
   box.style.setProperty('--sn',Math.max(11,Math.min(36,best.th*.34))+'px');
   box.style.setProperty('--st',Math.max(9,Math.min(24,best.th*.2))+'px');
 }
-let pjFitT=null;
+let pjFitT=null,PJMM={};
 addEventListener('resize',()=>{clearTimeout(pjFitT);pjFitT=setTimeout(pjSeatFit,150)});
 function pjSeats(){
   const box=$('#pj-seats');if(!box)return;
@@ -1151,12 +1500,12 @@ function pjSeats(){
   $('#pj-total').textContent=ROSTER.length;
   const hn=$('#pj-here-n');if(hn)hn.textContent=`${n} / ${ROSTER.length}명`;
   pjSeatFit();
-  const sig=ROSTER.map(x=>x.id+(TODAY[x.id]?TODAY[x.id].t:'')).join(',');
+  const sig=ROSTER.map(x=>x.id+(TODAY[x.id]?TODAY[x.id].t+'|'+(TODAY[x.id].end||'')+'|'+((PJMM[x.id]||{}).min||0):'')).join(',');
   if(box.dataset.sig===sig)return;               // 변화 없으면 다시 그리지 않음(깜빡임 방지)
   box.dataset.sig=sig;
   box.innerHTML=ROSTER.length?ROSTER.map(x=>{
     const r=TODAY[x.id];
-    return `<div class="pj-seat${r?' lit':''}${r&&!pjSeen.has(x.id)?' fresh':''}"><div class="n">${esc(x.name)}</div><div class="t">${r?prettyTime(r.t):'··:··'}</div><div class="e">${r?'+'+earnedMinutes(r.t)+'분':''}</div></div>`;
+    return `<div class="pj-seat${r?' lit':''}${r&&r.end?' done':''}${r&&!pjSeen.has(x.id)?' fresh':''}"><div class="n">${esc(x.name)}</div><div class="t">${r?spanTxt(r):'··:··'}</div><div class="e">${r?`<small>어제까지</small>${fmtHM((PJMM[x.id]||{}).min||0)}`:''}</div></div>`;
   }).join(''):`<div class="pj-empty">명렬표가 비어 있습니다.</div>`;
   pjSeen=new Set(ROSTER.filter(x=>TODAY[x.id]).map(x=>x.id));
 }
@@ -1211,6 +1560,8 @@ async function pjNote(){
 async function pjRank(){
   const box=$('#pj-rank');if(!box)return;
   const mm=await computeMonthMins();
+  PJMM=mm;pjSeats();   // 좌석 칩 누적도 같은 기준(어제까지)으로
+  const pg=$('#pj-goal');if(pg){const sum=Object.values(mm).reduce((a,x)=>a+x.min,0),goal=classGoalMin(),pct=Math.min(100,Math.round(sum/goal*100));pg.innerHTML=`🌱 ${new Date().getMonth()+1}월 우리 반 목표 <span class="bar"><i style="width:${pct}%"></i></span><b>${pct}%</b> ${Math.floor(sum/60)}/${Math.round(goal/60)}시간`}
   const arr=ROSTER.map(s=>({s,min:(mm[s.id]||{min:0}).min})).filter(x=>x.min>0).sort((a,b)=>b.min-a.min).slice(0,10);
   box.innerHTML=arr.length?arr.map((x,i)=>`<li class="${i<3?'m'+(i+1):''}"><span class="r">${i+1}</span><span class="nm">${esc(x.s.name)}</span><span class="hr">${fmtHM(x.min)}</span></li>`).join('')
     :`<div class="pj-empty">기록이 쌓이면 순위가 나옵니다.</div>`;
@@ -1285,13 +1636,13 @@ function renderPreview(){
    학생별로 며칠 나왔고 몇 분 쌓았는지, 어느 날 몇 시에 왔는지까지 봅니다. */
 let logMonth='all',logSort='num',logOpen=null;
 async function collectLog(){
-  const keys=await DB.list('at:');
+  const [keys,E]=await Promise.all([DB.list('at:'),loadEnds('')]);
   const per={},months=new Set();
   for(const k of keys){
     const p=k.split(':');if(p.length<4)continue;
     const [,date,id,t]=p;
     months.add(date.slice(0,7));
-    (per[id]||=[]).push({date,t,min:earnedMinutes(t)});
+    const end=E[date+'|'+id];(per[id]||=[]).push({date,t,end,min:settledMin(date,t,end),today:date===dateKey()});
   }
   for(const id in per)per[id].sort((a,b)=>a.date<b.date?1:-1);
   return {per,months:[...months].sort().reverse()};
@@ -1299,7 +1650,7 @@ async function collectLog(){
 async function renderLog(){
   const el=$('#tab-log');
   el.innerHTML=`<div class="empty"><b>기록 모으는 중</b>잠시만요.</div>`;
-  const {per,months}=await collectLog();
+  const [{per,months},A]=await Promise.all([collectLog(),gatherAll()]);
   const inScope=e=>logMonth==='all'||e.date.startsWith(logMonth);
   let rows=ROSTER.map(s=>{
     const es=(per[s.id]||[]).filter(inScope);
@@ -1314,21 +1665,24 @@ async function renderLog(){
   const label=logMonth==='all'?'전체 기간':logMonth.replace('-','년 ')+'월';
   const scopeBtn=(v,t)=>`<button class="btn btn-ghost btn-sm" data-lm="${v}" style="${logMonth===v?'background:var(--sun-tint);color:var(--sun-ink);border-color:var(--sun)':''}">${t}</button>`;
   el.innerHTML=`<div class="p-title"><div><div class="brandline">${esc(CFG.school)} · 얼리버드 🌅</div><div class="eyebrow" style="margin-bottom:5px">${esc(label)}</div><h2>누적 기록</h2></div>
-    <div class="p-actions"><button class="btn btn-ghost btn-sm" id="lg-sort">${logSort==='num'?'번호순 ▾':'누적 많은 순 ▾'}</button><button class="btn btn-ghost btn-sm" id="lg-csv">엑셀로 내려받기</button></div></div>
+    <div class="p-actions"><button class="btn btn-ghost btn-sm" id="lg-sort">${logSort==='num'?'번호순 ▾':'누적 많은 순 ▾'}</button><button class="btn btn-ghost btn-sm" id="lg-csv">엑셀로 내려받기</button><button class="btn btn-sm" id="lg-sum">요약 문장 모두 내려받기</button></div></div>
     <div style="display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s4)">${scopeBtn('all','전체')}${months.slice(0,6).map(m=>scopeBtn(m,m.replace('-','년 ')+'월')).join('')}</div>
     <div class="card" style="margin-bottom:var(--s5);display:flex;gap:var(--s6);flex-wrap:wrap">
       <div><div class="eyebrow">한 번이라도 나온 학생</div><div style="font-family:var(--f-display);font-size:26px">${came.length}<span style="font-size:15px;color:var(--ink-400)"> / ${ROSTER.length}명</span></div></div>
       <div><div class="eyebrow">모두 합친 시간</div><div style="font-family:var(--f-display);font-size:26px">${fmtDur(sumMin)}</div></div>
       <div><div class="eyebrow">나온 학생 1인 평균</div><div style="font-family:var(--f-display);font-size:26px">${came.length?fmtDur(Math.round(sumMin/came.length)):'—'}</div></div>
     </div>
+    ${trendHtml(A,logMonth)}
     ${rows.length?`<div class="tbl-scroll"><table><thead><tr><th>반</th><th>번호</th><th>이름</th><th style="text-align:right">나온 날</th><th style="text-align:right">누적 시간</th><th style="text-align:right">평균 입실</th><th style="text-align:right">마지막</th></tr></thead><tbody>
       ${rows.map(r=>`<tr data-lg="${r.s.id}" style="cursor:pointer${r.days?'':';color:var(--ink-400)'}"><td>${r.s.c}</td><td>${r.s.n}</td><td style="font-weight:600">${esc(r.s.name)}${r.es.length?' <span class="pill" style="border-color:var(--line-strong)">▾</span>':''}</td><td style="text-align:right">${r.days?r.days+'일':'—'}</td><td style="text-align:right;font-family:var(--f-data);font-weight:600">${r.min?fmtDur(r.min):'—'}</td><td style="text-align:right;font-family:var(--f-data)">${r.avg!=null?pad(Math.floor(r.avg/60))+':'+pad(r.avg%60):'—'}</td><td style="text-align:right;font-family:var(--f-data)">${r.last?r.last.slice(5).replace('-','/'):'—'}</td></tr>
-      ${logOpen===r.s.id&&r.es.length?`<tr><td colspan="7" style="background:var(--dawn-2)"><div style="display:flex;flex-wrap:wrap;gap:6px;padding:var(--s2) 0">${r.es.map(e=>`<span class="pill" style="border-color:var(--line-strong)">${e.date.slice(5).replace('-','/')} · ${e.t.slice(0,2)}:${e.t.slice(2)} · +${e.min}분</span>`).join('')}</div></td></tr>`:''}`).join('')}
+      ${logOpen===r.s.id&&r.es.length?`<tr><td colspan="7" style="background:var(--dawn-2)">${(()=>{const t=summaryOf(A,r.s.id,logMonth);return t?`<div class="sum-box"><div class="eyebrow" style="margin-bottom:6px">기록 요약 문장 (어제까지 · 초안)</div><p id="sum-${r.s.id}">${esc(t)}</p><div class="row"><button class="btn btn-primary btn-sm" data-copy="${r.s.id}">복사</button><span class="hint">생기부에 옮기기 전에 활동 내용과 관찰을 덧붙여 다듬어 주세요.</span></div></div>`:''})()}<div style="display:flex;flex-wrap:wrap;gap:6px;padding:var(--s2) 0">${r.es.map(e=>`<span class="pill" style="border-color:var(--line-strong)">${e.date.slice(5).replace('-','/')} · ${spanTxt(e)} · ${e.today?'내일 반영':'+'+e.min+'분'}</span>`).join('')}</div></td></tr>`:''}`).join('')}
     </tbody></table></div>`:`<div class="empty"><b>명렬표가 비어 있습니다</b>명렬표 탭에서 학생을 등록해 주세요.</div>`}
     <p class="hint" style="margin-top:var(--s3)">이름을 누르면 그 학생이 나온 날짜와 입실 시각이 펼쳐집니다.</p>`;
   $$('[data-lm]').forEach(b=>b.onclick=()=>{logMonth=b.dataset.lm;logOpen=null;renderLog()});
   $('#lg-sort').onclick=()=>{logSort=logSort==='num'?'min':'num';renderLog()};
   $$('[data-lg]').forEach(tr=>tr.onclick=()=>{logOpen=logOpen===tr.dataset.lg?null:tr.dataset.lg;renderLog()});
+  $$('[data-copy]').forEach(b=>b.onclick=async e=>{e.stopPropagation();const t=$('#sum-'+b.dataset.copy).textContent;try{await navigator.clipboard.writeText(t);toast('복사했습니다.')}catch(_){const r=document.createRange();r.selectNodeContents($('#sum-'+b.dataset.copy));const sl=getSelection();sl.removeAllRanges();sl.addRange(r);toast('선택해 두었어요. Ctrl+C로 복사하세요.')}});
+  $('#lg-sum').onclick=()=>{const out=[['반','번호','이름','기간','참여일','요약 문장']];ROSTER.forEach(s=>{const t=summaryOf(A,s.id,logMonth);const es=(A.byId[s.id]||[]).filter(r=>(logMonth==='all'||r.date.startsWith(logMonth))&&r.date<dateKey());out.push([s.c,s.n,s.name,logMonth==='all'?'전체':logMonth,es.length,t])});downloadCSV(out,`얼리버드_요약문장_${logMonth==='all'?'전체':logMonth}.csv`)};
   $('#lg-csv').onclick=()=>{
     const out=[['반','번호','이름','나온 날','누적(분)','누적 시간','평균 입실','마지막 출석']];
     rows.forEach(r=>out.push([r.s.c,r.s.n,r.s.name,r.days,r.min,fmtDur(r.min),r.avg!=null?pad(Math.floor(r.avg/60))+':'+pad(r.avg%60):'',r.last||'']));
@@ -1383,16 +1737,57 @@ function renderSettings(){
     <p class="hint" style="margin-bottom:var(--s3)">교실 화면 맨 위에 뜹니다. 기본으로 <b>${QUOTES.length}개</b>가 들어 있고 매일 자동으로 바뀝니다. 화면의 명언을 <b>누르면</b> 다른 명언으로 넘어가요.</p>
     <div class="field"><label>직접 추가할 명언 (한 줄에 하나)</label><textarea class="input" id="cf-quotes" rows="6" style="resize:vertical;line-height:1.7;font-family:var(--f-body)" placeholder="시간은 흘러도 사랑은 남는다 — 담임 선생님&#10;오늘의 나는 어제의 나를 이긴다">${esc(CFG.quotes||'')}</textarea><p class="hint">출처는 <b>—</b> (또는 <b>|</b>) 뒤에 적으세요. 출처가 없으면 문장만 나옵니다.</p></div>
     <label style="display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:99px;border:2px solid var(--line-strong);background:var(--dawn-1);font-size:13.5px;font-weight:600;cursor:pointer;width:fit-content"><input type="checkbox" id="cf-qmine" ${CFG.quotesMineOnly?'checked':''}> 내가 적은 것만 사용</label></div>
+    <div class="card" style="margin-bottom:var(--s5)"><h3 style="font-family:var(--f-display);font-size:17px;font-weight:400;margin-bottom:var(--s4)">우리 반 공동 목표</h3>
+    <div class="form-grid"><div class="field"><label>기본 목표 (시간/달)</label><input class="input" id="cf-goal" type="number" min="0" max="5000" inputmode="numeric" value="${Number(CFG.classGoalH)>0?Number(CFG.classGoalH):''}" placeholder="비우면 ${Math.max(1,ROSTER.length)*10}시간 (1인 10시간)"><p class="hint">아래에서 따로 정하지 않은 달에 쓰입니다.</p></div></div>
+    <div class="field" style="margin-top:var(--s4)"><label>달마다 따로 정하기</label><div class="goal-months">${goalMonthList().map(mk=>{const v=Number((CFG.classGoals||{})[mk])||'';return `<label class="gm${mk===monthKey()?' now':''}"><span>${mk.slice(0,4)!==monthKey().slice(0,4)?mk.slice(2,4)+'년 ':''}${Number(mk.slice(5))}월${mk===monthKey()?'<em>이번 달</em>':''}</span><input class="input cf-gm" data-mk="${mk}" type="number" min="0" max="5000" inputmode="numeric" value="${v}" placeholder="${baseGoalH()}"><i>시간</i></label>`}).join('')}</div>
+    <p class="hint">시험이 있는 달은 낮게, 방학 전 달은 높게 잡는 식으로 쓰세요. 칸을 비우면 흐린 숫자(기본 목표)를 따릅니다. 채운 시간은 매달 1일에 0부터 다시 쌓입니다.</p></div></div>
     <div class="card" style="margin-bottom:var(--s5)"><h3 style="font-family:var(--f-display);font-size:17px;font-weight:400;margin-bottom:var(--s4)">교사용 PIN</h3><div class="form-grid"><div class="field"><label>새 PIN (4~6자리)</label><input class="input" id="cf-pin" type="password" inputmode="numeric" maxlength="6" placeholder="바꾸지 않으려면 비워두세요" autocomplete="new-password"></div></div></div>
     <div style="display:flex;gap:var(--s2);flex-wrap:wrap"><button class="btn btn-primary" id="cf-save">저장</button><button class="btn btn-ghost" id="cf-backup">전체 기록 백업 (CSV)</button></div>
-    <p class="hint" style="margin-top:var(--s5);max-width:640px">기록은 온라인에 저장됩니다. 학기 끝에 <b>전체 기록 백업</b>으로 따로 보관해 두시길 권합니다.</p>`;
-  $('#cf-save').onclick=async()=>{const pin=$('#cf-pin').value.trim();if(pin&&!/^\d{4,6}$/.test(pin))return toast('PIN은 숫자 4~6자리.',true);const days=$$('.cf-day:checked').map(c=>Number(c.value)).sort();CFG={...CFG,school:$('#cf-school').value.trim()||'풍산고등학교',className:$('#cf-class').value.trim()||'우리 반',baseUrl:$('#cf-url').value.trim(),openTime:$('#cf-open').value||'07:00',deadline:$('#cf-deadline').value||'08:50',earliest:$('#cf-earliest').value||'06:30',ttlMin:Math.max(1,Number($('#cf-ttl').value)||5),noCode:$('#cf-nocode').checked,fixedQr:$('#cf-fixedqr').checked,pinEachTime:$('#cf-pineach').checked,quotes:$('#cf-quotes').value,quotesMineOnly:$('#cf-qmine').checked,opDays:days.length?days:[1,2,3,4,5]};if(pin)CFG.pin=hashPin(pin);await DB.set('config',CFG);applyBrand();updateConnBadge();if(!DB.isRemote)toast('이 기기에만 저장됨 — 온라인 연결 안 됨.',true);else if(pin)toast('저장. 새 PIN이 모든 기기에 적용됩니다.');else toast('저장했습니다.');renderSettings()};
+    <p class="hint" style="margin-top:var(--s5);max-width:640px">기록은 온라인에 저장됩니다. 학기 끝에 <b>전체 기록 백업</b>으로 따로 보관해 두시길 권합니다.</p>
+    <div class="card reset-card"><h3>기록 리셋</h3>
+      <p class="hint">출석·공부 종료 기록을 지웁니다. 명렬표, 학생 핀, 설정은 그대로 남습니다. 지우기 직전에 지울 기록을 <b>CSV로 자동 백업</b>해 드려요.</p>
+      <div class="reset-row">
+        <label><input type="radio" name="rs-scope" value="today" checked> 오늘 기록만</label>
+        <label><input type="radio" name="rs-scope" value="month"> 이번 달 기록</label>
+        <label><input type="radio" name="rs-scope" value="all"> 전체 기록 (순위·누적 0부터)</label>
+      </div>
+      <div class="reset-row"><input class="input" id="rs-confirm" placeholder="확인을 위해 리셋 이라고 입력" autocomplete="off" style="max-width:260px"><button class="btn reset-btn" id="rs-go">기록 리셋</button></div>
+      <p class="hint" id="rs-state"></p>
+    </div>`;
+  $('#cf-save').onclick=async()=>{const pin=$('#cf-pin').value.trim();if(pin&&!/^\d{4,6}$/.test(pin))return toast('PIN은 숫자 4~6자리.',true);const days=$$('.cf-day:checked').map(c=>Number(c.value)).sort();CFG={...CFG,school:$('#cf-school').value.trim()||'풍산고등학교',className:$('#cf-class').value.trim()||'우리 반',baseUrl:$('#cf-url').value.trim(),openTime:$('#cf-open').value||'07:00',deadline:$('#cf-deadline').value||'08:50',earliest:$('#cf-earliest').value||'06:30',ttlMin:Math.max(1,Number($('#cf-ttl').value)||5),noCode:$('#cf-nocode').checked,fixedQr:$('#cf-fixedqr').checked,pinEachTime:$('#cf-pineach').checked,quotes:$('#cf-quotes').value,quotesMineOnly:$('#cf-qmine').checked,opDays:days.length?days:[1,2,3,4,5],classGoalH:Math.max(0,Math.round(Number($('#cf-goal').value)||0)),classGoals:(()=>{const g={...(CFG.classGoals||{})};$$('.cf-gm').forEach(x=>{const v=Math.round(Number(x.value)||0);if(v>0)g[x.dataset.mk]=v;else delete g[x.dataset.mk]});return g})()};if(pin)CFG.pin=hashPin(pin);await DB.set('config',CFG);applyBrand();updateConnBadge();if(!DB.isRemote)toast('이 기기에만 저장됨 — 온라인 연결 안 됨.',true);else if(pin)toast('저장. 새 PIN이 모든 기기에 적용됩니다.');else toast('저장했습니다.');renderSettings()};
   $('#cf-backup').onclick=backupAll;
+  $('#rs-go').onclick=resetRecords;
+}
+function goalMonthList(){const d=new Date(),out=new Set();for(let i=-2;i<=5;i++)out.add(monthKey(new Date(d.getFullYear(),d.getMonth()+i,1)));Object.keys(CFG.classGoals||{}).forEach(k=>out.add(k));return [...out].sort()}
+async function resetRecords(){
+  const scope=($$('[name="rs-scope"]').find(r=>r.checked)||{}).value||'today';
+  if(($('#rs-confirm').value||'').trim()!=='리셋')return toast('확인 칸에 리셋 이라고 입력해 주세요.',true);
+  const pre=scope==='today'?dateKey():scope==='month'?monthKey():'';
+  const label=scope==='today'?'오늘':scope==='month'?'이번 달':'전체';
+  const [ak,ek]=await Promise.all([DB.list('at:'+pre),DB.list('en:'+pre)]);
+  if(!ak.length&&!ek.length){$('#rs-confirm').value='';return toast(`${label} 기록이 없습니다.`)}
+  if(!confirm(`${label} 기록 ${ak.length}건을 지웁니다.\n지운 기록은 되돌릴 수 없어요(백업 CSV는 내려받아 둡니다).\n계속할까요?`))return;
+  // 1) 지울 기록 백업
+  const E={};ek.forEach(k=>{const p=k.split(':');if(p.length>=4)E[p[1]+'|'+p[2]]=p[3]});
+  const rows=[['날짜','학년','반','번호','이름','입실시각','종료시각']];
+  ak.sort().forEach(k=>{const p=k.split(':');if(p.length<4)return;const s=findStudent(p[2])||{g:'',c:'',n:'',name:p[2]};const end=E[p[1]+'|'+p[2]];rows.push([p[1],s.g,s.c,s.n,s.name,prettyTime(p[3]),end?prettyTime(end):''])});
+  if(rows.length>1)downloadCSV(rows,`얼리버드_리셋전백업_${label}_${dateKey()}.csv`);
+  // 2) 삭제 (20건씩)
+  const all=[...ak,...ek];let done=0,fail=0;const st=$('#rs-state');
+  for(let i=0;i<all.length;i+=20){
+    const res=await Promise.all(all.slice(i,i+20).map(k=>DB.delChecked(k)));
+    res.forEach(w=>{if(w==='remote'||!DB.isRemote)done++;else fail++});
+    if(st)st.textContent=`지우는 중… ${Math.min(i+20,all.length)} / ${all.length}`;
+  }
+  $('#rs-confirm').value='';
+  if(st)st.textContent=fail?`⚠ ${fail}건은 서버에서 지우지 못했습니다. 연결 상태를 확인하고 다시 시도해 주세요.`:`${label} 기록을 리셋했습니다.`;
+  await loadToday();MONTHMIN={};
+  toast(fail?'일부 기록을 지우지 못했습니다.':`${label} 기록을 리셋했습니다.`,!!fail);
 }
 async function backupAll(){
   toast('기록을 모으는 중…');
-  const keys=await DB.list('at:');const rows=[['학교','반','날짜','요일','학년','반','번호','이름','입실시각','적립분']];
-  keys.sort().forEach(k=>{const p=k.split(':');if(p.length<4)return;const[,date,id,t]=p;const s=findStudent(id)||{g:'',c:'',n:'',name:id};const dd=new Date(date+'T00:00:00');rows.push([CFG.school,CFG.className,date,DOW[dd.getDay()],s.g,s.c,s.n,s.name,prettyTime(t),earnedMinutes(t)])});
+  const [keys,E]=await Promise.all([DB.list('at:'),loadEnds('')]);const rows=[['학교','반','날짜','요일','학년','반','번호','이름','입실시각','종료시각','적립분']];
+  keys.sort().forEach(k=>{const p=k.split(':');if(p.length<4)return;const[,date,id,t]=p;const s=findStudent(id)||{g:'',c:'',n:'',name:id};const dd=new Date(date+'T00:00:00');const end=E[date+'|'+id];rows.push([CFG.school,CFG.className,date,DOW[dd.getDay()],s.g,s.c,s.n,s.name,prettyTime(t),end?prettyTime(end):'',earnedMinutes(t,end)])});
   if(rows.length===1)return toast('백업할 기록이 없습니다.',true);
   downloadCSV(rows,`얼리버드_전체백업_${dateKey()}.csv`);toast(`${rows.length-1}건 내려받음.`);
 }
