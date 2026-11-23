@@ -615,6 +615,18 @@ tr.dim td{color:var(--ink-300)}
 .pm-setdays{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s2)}
 .pm-sd{display:flex;flex-direction:column;gap:6px;padding:var(--s3);border-radius:var(--r-md);border:1px solid var(--line-strong);background:var(--dawn-0);font-weight:600;font-size:14px}
 .pm-sd span{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.pm-in{font-size:13.5px;font-weight:700;color:#2F8A62;background:var(--good-tint);border:2px solid var(--good);border-radius:99px;padding:4px 14px}
+.pm-qrcard{background:var(--dawn-1);border:2px solid var(--line-strong);border-radius:var(--r-xl);padding:var(--s6) var(--s5);display:flex;flex-direction:column;align-items:center;gap:var(--s3);text-align:center;box-shadow:var(--shadow-md);max-width:560px;margin:0 auto}
+.pm-qrcard h3{font-family:var(--f-display);font-weight:400;font-size:24px}
+.pm-qrbox{padding:12px;background:#fff;border-radius:var(--r-md);border:1px solid var(--line)}
+.pm-qrbox img,.pm-qrbox canvas{display:block}
+.pm-code{font-family:var(--f-data);font-weight:800;font-size:40px;letter-spacing:.24em;color:var(--sun-ink);padding-left:.24em}
+.pm-qrnote{font-size:14px;color:var(--ink-500)}
+.pm-qrcard:fullscreen{max-width:none;border:0;border-radius:0;justify-content:center;gap:var(--s5);background:var(--dawn-0)}
+.pm-qrcard:fullscreen h3{font-size:44px}
+.pm-qrcard:fullscreen .pm-code{font-size:84px}
+.pm-qrcard:fullscreen .pm-qrnote{font-size:22px}
+.pm-qrcard:fullscreen .pm-qrbox img,.pm-qrcard:fullscreen .pm-qrbox canvas{width:min(52vh,70vw)!important;height:auto!important}
 @media (prefers-reduced-motion:reduce){.pm-timer.live .pulse{animation:none}.pm-bar i,.pm-mbar i{transition:none}}
 </style>
 </head>
@@ -1878,7 +1890,9 @@ function downloadCSV(rows,filename){const body=rows.map(r=>r.map(c=>{const v=Str
 /* ══════════════ 방과후 자습 ══════════════
    얼리버드와 같은 컬렉션(early)에 키만 다르게 저장합니다.
    계획:     pp:<날짜>:<학생id> = {items:[{id,s(과목),t(할 일),d(완료)}], u(마지막 수정)}
-   공부 시간: ps:<날짜>:<학생id> = {segs:[{s:'HHMM', e:'HHMM'|null}]}  (시작·종료를 여러 번 할 수 있음)
+   공부 시간: ps:<날짜>:<학생id> = {in:'HHMM'(방과후 출석 시각), segs:[{s:'HHMM', e:'HHMM'|null}]}
+   출석: 교실 화면의 '방과후 QR'(하루 동안 같은 코드, 아침 코드와 다름)을 찍거나 6자리 코드를 넣어야
+         첫 공부 시작이 됩니다. 출석한 뒤 끝냈다가 다시 시작할 때는 코드가 필요 없습니다.
    종료를 누르지 않은 날은 시작 후 '최대 인정 시간' 또는 '마감 시각' 중 이른 때까지로 계산하고,
    교사 화면에 '종료 안 누름'으로 표시합니다. */
 const PM_DEF={
@@ -1887,11 +1901,15 @@ const PM_DEF={
   pmLatest:'19:00',     // 이 시각 이후로는 시간이 쌓이지 않음
   pmCapMin:150,         // 한 번 시작해서 인정되는 최대 시간(분)
   pmSubjects:'국어,수학,영어,사회,과학,한국사,중국어,기타',
+  pmNeedCode:true,      // 방과후 출석에 교실 QR·코드 필요
 };
 const pmc=k=>(CFG[k]===undefined||CFG[k]===null||CFG[k]==='')?PM_DEF[k]:CFG[k];
 const pmSubjects=()=>String(pmc('pmSubjects')).split(',').map(s=>s.trim()).filter(Boolean);
 const pmStartOf=(d=new Date())=>({...PM_DEF.pmStart,...(CFG.pmStart||{})})[d.getDay()]||'15:40';
 const pmDateObj=dk=>new Date(dk+'T12:00:00');
+const pmCode=()=>codeFor('PM|'+dateKey());   // 오늘의 방과후 출석 코드(자정에 바뀜)
+const pmCheckedIn=ss=>!!(ss&&(ss.in||((ss.segs||[]).length)));
+const pmInTime=ss=>ss?(ss.in||((ss.segs||[])[0]||{}).s||null):null;
 const pmUid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 function pmWindow(d=new Date()){
   const dow=d.getDay();
@@ -1938,7 +1956,7 @@ async function pmGather(pre=''){
 
 /* ── 학생 화면: 아침/방과후 전환 ── */
 let STMODE=null;   // 'am' | 'pm' — 고르지 않았으면 시각으로 정함(12시 이후 방과후)
-const stMode=()=>STMODE||(nowMin()>=12*60?'pm':'am');
+const stMode=()=>STMODE||((urlCode&&urlCode===pmCode())||nowMin()>=12*60?'pm':'am');
 function modeSwitchHtml(){const m=stMode();return `<div class="mode-sw" role="tablist"><button role="tab" data-mode="am" class="${m==='am'?'on':''}" aria-selected="${m==='am'}">🌅 아침 얼리버드</button><button role="tab" data-mode="pm" class="${m==='pm'?'on':''}" aria-selected="${m==='pm'}">📚 방과후 자습</button></div>`}
 function bindModeSwitch(){$$('.mode-sw [data-mode]').forEach(b=>b.onclick=()=>{STMODE=b.dataset.mode;renderStudent()})}
 
@@ -1999,11 +2017,28 @@ function pmPaintTimer(){
       <button class="btn pm-stop" id="pm-stop">공부 끝내기</button>
       <p class="hint" style="text-align:center;margin:0">학원에 가기 전에 꼭 눌러 주세요. 누르지 않으면 최대 ${pmc('pmCapMin')}분까지만 인정돼요.</p>`;
     $('#pm-stop').onclick=pmStop;
+  }else if(!pmCheckedIn(PMS)){
+    box.className='pm-timer';
+    const needCode=pmc('pmNeedCode')!==false,codeOK=!needCode||urlCode===pmCode();
+    if(!ws.ok||!hasPlan){
+      box.innerHTML=`<button class="tap pm-go" disabled>방과후 출석<small>${!ws.ok?esc(ws.reason):'먼저 아래에 오늘 할 일을 적어 주세요'}</small></button>`;
+    }else if(!codeOK){
+      box.innerHTML=`<div class="banner live" style="width:100%"><i class="pulse"></i><p><b>방과후 출석</b> · 교실 화면의 QR을 찍거나 코드를 넣으세요</p></div>
+        <div class="picker" style="width:100%"><div class="field"><label for="pm-code">교실 화면의 6자리 코드</label><input class="input" id="pm-code" maxlength="6" autocapitalize="characters" autocomplete="off" style="font-family:var(--f-data);font-size:22px;letter-spacing:.24em;text-align:center" placeholder="ABC123"></div><button class="btn btn-primary" id="pm-code-go" style="width:100%;padding:13px">코드 확인</button></div>`;
+      const go=()=>{const v=($('#pm-code').value||'').trim().toUpperCase();if(!v)return toast('코드를 입력해 주세요.',true);if(v!==pmCode())return toast('코드가 맞지 않습니다. 오늘 방과후 화면의 코드인지 확인하세요.',true);urlCode=v;pmPaintTimer()};
+      $('#pm-code-go').onclick=go;$('#pm-code').addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+    }else{
+      const askPin=CFG.pinEachTime!==false;
+      box.innerHTML=`${askPin?`<div class="field" style="width:100%"><label for="pm-pin">내 핀 4자리</label><input class="input pin-in" id="pm-pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••"></div>`:''}
+        <button class="tap pm-go" id="pm-go">방과후 출석<small>출석하면 바로 공부 시간이 쌓여요</small></button>`;
+      $('#pm-go').onclick=pmStart;
+      if($('#pm-pin'))$('#pm-pin').addEventListener('keydown',e=>{if(e.key==='Enter')pmStart()});
+    }
   }else{
     box.className='pm-timer';
-    const again=PMS.segs.length>0;
-    box.innerHTML=`${total?`<div class="pm-big">${fmtDur(total)}</div><div class="pm-sub2">오늘 공부한 시간${PMS.segs.length?` · ${esc(pmSpans(dk,PMS))}`:''}</div>`:''}
-      <button class="tap pm-go" id="pm-go" ${ws.ok&&hasPlan?'':'disabled'}>${again?'이어서 공부하기':'공부 시작'}<small>${!ws.ok?esc(ws.reason):(!hasPlan?'먼저 오늘 할 일을 적어 주세요':'시작을 누르면 시간이 쌓여요')}</small></button>`;
+    box.innerHTML=`<div class="pm-in">✅ 방과후 출석 ${prettyTime(pmInTime(PMS))}</div>
+      ${total?`<div class="pm-big">${fmtDur(total)}</div><div class="pm-sub2">오늘 공부한 시간${PMS.segs.length?` · ${esc(pmSpans(dk,PMS))}`:''}</div>`:''}
+      <button class="tap pm-go" id="pm-go" ${ws.ok?'':'disabled'}>이어서 공부하기<small>${ws.ok?'잠깐 쉬었다면 다시 눌러요':esc(ws.reason)}</small></button>`;
     $('#pm-go').onclick=pmStart;
   }
 }
@@ -2012,9 +2047,17 @@ async function pmStart(){
   if(!PMP.items.length)return toast('먼저 오늘 할 일을 적어 주세요.',true);
   const fresh=await DB.get(`ps:${dateKey()}:${ME}`);if(fresh&&Array.isArray(fresh.segs))PMS=fresh;
   if(pmOpenSeg(PMS))return pmPaintTimer();
-  PMS.segs.push({s:hhmm(),e:null});
+  const first=!pmCheckedIn(PMS);
+  if(first){
+    if(pmc('pmNeedCode')!==false&&urlCode!==pmCode()){toast('교실 화면의 방과후 QR을 다시 찍어 주세요.',true);return pmPaintTimer()}
+    const pf=$('#pm-pin');
+    if(pf){const v=(pf.value||'').trim();if(!/^\d{4}$/.test(v)){pf.focus();return toast('내 핀 4자리를 입력해 주세요.',true)}const cur=await getSpin(ME);if(cur&&hashPin(v)!==cur){pf.value='';pf.focus();return toast('핀이 맞지 않습니다. 본인 핀을 확인하세요.',true)}}
+  }
+  const t=hhmm();
+  if(first)PMS.in=t;
+  PMS.segs.push({s:t,e:null});
   const r=await DB.setChecked(`ps:${dateKey()}:${ME}`,PMS);
-  if(r!=='remote')toast('이 기기에만 저장됨 — 인터넷 연결을 확인해 주세요.',true);else toast('공부 시작! 화이팅 💪');
+  if(r!=='remote')toast('이 기기에만 저장됨 — 인터넷 연결을 확인해 주세요.',true);else toast(first?`방과후 출석 완료! ${prettyTime(t)} · 공부 시작 💪`:'다시 공부 시작! 💪');
   pmPaintTimer();pmPaintMine();
 }
 async function pmStop(){
@@ -2047,11 +2090,12 @@ async function renderPM(){
   const el=$('#tab-pm');
   const sub=(v,t)=>`<button class="btn btn-ghost btn-sm${pmView===v?' on':''}" data-pmv="${v}">${t}</button>`;
   el.innerHTML=`<div class="p-title"><div><div class="brandline">${esc(CFG.school)} · 방과후 자습 📚</div><div class="eyebrow" style="margin-bottom:5px">계획 · 실천 · 공부 시간</div><h2>방과후 자습</h2></div>
-    <div class="p-actions pm-subnav">${sub('today','하루 현황')}${sub('sum','누적 · 실천율')}${sub('set','방과후 설정')}</div></div>
+    <div class="p-actions pm-subnav">${sub('qr','출석 QR')}${sub('today','하루 현황')}${sub('sum','누적 · 실천율')}${sub('set','방과후 설정')}</div></div>
     <div id="pm-body"><div class="empty"><b>기록 모으는 중</b>잠시만요.</div></div>`;
   $$('[data-pmv]').forEach(b=>b.onclick=()=>{pmView=b.dataset.pmv;renderPM()});
   stopPoll();
   if(pmView==='today'){await renderPMDay();if(pmDate===dateKey())pollTimer=setInterval(()=>{if(curTab==='pm'&&pmView==='today'&&!document.activeElement?.closest?.('#pm-body input'))renderPMDay()},30000)}
+  else if(pmView==='qr')renderPMQR();
   else if(pmView==='sum')await renderPMSum();
   else renderPMSet();
 }
@@ -2062,20 +2106,21 @@ async function renderPMDay(){
   const rows=ROSTER.map(s=>{const r=by[s.id]||{};const it=pmItems(r.plan);return{s,it,done:it.filter(x=>x.d).length,sess:r.sess,min:pmDayMin(pmDate,r.sess),open:!!pmOpenSeg(r.sess),forgot:pmForgot(pmDate,r.sess)}});
   const active=rows.filter(r=>r.it.length||((r.sess||{}).segs||[]).length);
   const idle=rows.filter(r=>!active.includes(r));
+  const came=rows.filter(r=>pmCheckedIn(r.sess)).length;
   const now=active.filter(r=>r.open&&isToday).length,sumMin=active.reduce((a,r)=>a+r.min,0);
   const tot=active.reduce((a,r)=>a+r.it.length,0),dn=active.reduce((a,r)=>a+r.done,0);
   active.sort((a,b)=>(b.open-a.open)||a.s.n-b.s.n);
-  const pill=r=>r.open&&isToday?`<span class="pm-pill live">공부 중</span>`:r.forgot?`<span class="pm-pill warn">종료 안 누름</span>`:r.min?`<span class="pm-pill ok">끝냄</span>`:`<span class="pm-pill">계획만</span>`;
+  const pill=r=>r.open&&isToday?`<span class="pm-pill live">공부 중</span>`:r.forgot?`<span class="pm-pill warn">종료 안 누름</span>`:r.min?`<span class="pm-pill ok">끝냄</span>`:pmCheckedIn(r.sess)?`<span class="pm-pill ok">출석</span>`:`<span class="pm-pill">계획만 · 미출석</span>`;
   box.innerHTML=`<div class="pm-dayhead"><button class="btn btn-ghost btn-sm" id="pm-prev" aria-label="전날">‹</button><input class="input" type="date" id="pm-date" value="${pmDate}" style="width:auto"><button class="btn btn-ghost btn-sm" id="pm-next" aria-label="다음날" ${isToday?'disabled':''}>›</button>${isToday?'':`<button class="btn btn-ghost btn-sm" id="pm-today">오늘로</button>`}<span class="hint">${d.getMonth()+1}월 ${d.getDate()}일 ${DOW[d.getDay()]} · 종례 ${pmStartOf(d)}</span></div>
     <div class="stat-row">
-      <div class="stat-box"><div class="eyebrow">참여한 학생</div><div class="pm-num">${active.length}<i> / ${ROSTER.length}명</i></div></div>
+      <div class="stat-box"><div class="eyebrow">방과후 출석</div><div class="pm-num">${came}<i> / ${ROSTER.length}명</i></div></div>
       ${isToday?`<div class="stat-box"><div class="eyebrow">지금 공부 중</div><div class="pm-num">${now}<i>명</i></div></div>`:''}
       <div class="stat-box"><div class="eyebrow">모두 합친 시간</div><div class="pm-num">${fmtDur(sumMin)}</div></div>
       <div class="stat-box"><div class="eyebrow">계획 실천율</div><div class="pm-num">${tot?Math.round(dn/tot*100):0}<i>% · ${dn}/${tot}</i></div></div>
     </div>
     ${active.length?`<div class="pm-grid">${active.map(r=>`<div class="pm-card${r.open&&isToday?' live':''}">
       <div class="pm-ch"><div><span class="pm-no">${r.s.n}</span><b>${esc(r.s.name)}</b></div>${pill(r)}</div>
-      <div class="pm-tm"><b>${r.min?fmtDur(r.min):'0분'}</b><span>${((r.sess||{}).segs||[]).length?esc(pmSpans(pmDate,r.sess)):'시작 안 함'}</span></div>
+      <div class="pm-tm"><b>${r.min?fmtDur(r.min):'0분'}</b><span>${pmCheckedIn(r.sess)?`출석 ${prettyTime(pmInTime(r.sess))} · ${esc(pmSpans(pmDate,r.sess))}`:'출석 안 함'}</span></div>
       ${r.it.length?`<div class="pm-mbar"><i style="width:${Math.round(r.done/r.it.length*100)}%"></i></div><ul class="pm-tl">${r.it.map(x=>`<li class="${x.d?'done':''}"><span class="mk">${x.d?'✓':'○'}</span><span class="pm-sub">${esc(x.s)}</span>${esc(x.t)}</li>`).join('')}</ul>`:`<p class="hint">계획을 적지 않았어요.</p>`}
       ${r.open?`<button class="btn btn-ghost btn-sm" data-pmend="${r.s.id}">${isToday?'지금 종료 처리':`${pmc('pmCapMin')}분으로 종료 처리`}</button>`:''}
     </div>`).join('')}</div>`:`<div class="empty"><b>${isToday?'아직 오늘 기록이 없어요':'이 날은 기록이 없어요'}</b>학생이 계획을 적거나 공부를 시작하면 여기에 나타납니다.</div>`}
@@ -2106,10 +2151,10 @@ async function renderPMSum(){
   const months=[...new Set(dates.map(d=>d.slice(0,7)))].sort().reverse().filter(m=>m!==monthKey());
   const inDates=dates.filter(pmScopeOk);
   let rows=ROSTER.map(s=>{
-    let min=0,days=0,tot=0,dn=0,forgot=0,planDays=0;const list=[];
+    let min=0,days=0,tot=0,dn=0,forgot=0,planDays=0,att=0;const list=[];
     inDates.forEach(date=>{const r=(by[date]||{})[s.id];if(!r)return;const it=pmItems(r.plan),m=pmDayMin(date,r.sess);if(!it.length&&!((r.sess||{}).segs||[]).length)return;
-      min+=m;if(m>0)days++;if(it.length)planDays++;tot+=it.length;dn+=it.filter(x=>x.d).length;if(pmForgot(date,r.sess))forgot++;list.push({date,m,it})});
-    return{s,min,days,tot,dn,rate:tot?dn/tot:null,forgot,planDays,list};
+      min+=m;if(m>0)days++;if(pmCheckedIn(r.sess))att++;if(it.length)planDays++;tot+=it.length;dn+=it.filter(x=>x.d).length;if(pmForgot(date,r.sess))forgot++;list.push({date,m,it})});
+    return{s,min,days,att,tot,dn,rate:tot?dn/tot:null,forgot,planDays,list};
   });
   const sorter={num:(a,b)=>a.s.n-b.s.n,min:(a,b)=>b.min-a.min||a.s.n-b.s.n,rate:(a,b)=>(b.rate??-1)-(a.rate??-1)||b.tot-a.tot};
   rows.sort(sorter[pmSort]);
@@ -2128,14 +2173,14 @@ async function renderPMSum(){
       <div class="stat-box"><div class="eyebrow">계획 실천율</div><div class="pm-num">${T?Math.round(D/T*100):0}<i>% · ${D}/${T}</i></div></div>
     </div>
     ${trend.length?`<div class="card pm-trend" style="margin-bottom:var(--s5)"><div class="eyebrow" style="margin-bottom:var(--s2)">날짜별 공부한 학생 수 · 아래는 그날 실천율</div>${barSvg(trend,{h:150,label:v=>v+'명',sub:s=>s+'%'})}</div>`:''}
-    ${joined.length?`<div class="tbl-scroll"><table><thead><tr><th>번호</th><th>이름</th><th style="text-align:right">공부한 날</th><th style="text-align:right">공부 시간</th><th style="text-align:right">하루 평균</th><th style="text-align:right">할 일 완료</th><th>실천율</th><th style="text-align:right">종료 안 누름</th></tr></thead><tbody>
-      ${rows.map(r=>`<tr${r.list.length?'':' class="dim"'}><td>${r.s.n}</td><td style="font-weight:600">${esc(r.s.name)}</td><td style="text-align:right">${r.days?r.days+'일':'—'}</td><td style="text-align:right;font-family:var(--f-data);font-weight:600">${r.min?fmtDur(r.min):'—'}</td><td style="text-align:right;font-family:var(--f-data)">${r.days?fmtDur(Math.round(r.min/r.days)):'—'}</td><td style="text-align:right;font-family:var(--f-data)">${r.tot?`${r.dn} / ${r.tot}`:'—'}</td><td>${r.rate!=null?`<span class="pm-rate"><i style="width:${Math.round(r.rate*100)}%"></i></span> <span class="pm-ratev">${Math.round(r.rate*100)}%</span>`:'<span class="hint">—</span>'}</td><td style="text-align:right">${r.forgot?`<span class="pm-pill warn">${r.forgot}번</span>`:'—'}</td></tr>`).join('')}
+    ${joined.length?`<div class="tbl-scroll"><table><thead><tr><th>번호</th><th>이름</th><th style="text-align:right">출석한 날</th><th style="text-align:right">공부 시간</th><th style="text-align:right">하루 평균</th><th style="text-align:right">할 일 완료</th><th>실천율</th><th style="text-align:right">종료 안 누름</th></tr></thead><tbody>
+      ${rows.map(r=>`<tr${r.list.length?'':' class="dim"'}><td>${r.s.n}</td><td style="font-weight:600">${esc(r.s.name)}</td><td style="text-align:right">${r.att?r.att+'일':'—'}</td><td style="text-align:right;font-family:var(--f-data);font-weight:600">${r.min?fmtDur(r.min):'—'}</td><td style="text-align:right;font-family:var(--f-data)">${r.att?fmtDur(Math.round(r.min/r.att)):'—'}</td><td style="text-align:right;font-family:var(--f-data)">${r.tot?`${r.dn} / ${r.tot}`:'—'}</td><td>${r.rate!=null?`<span class="pm-rate"><i style="width:${Math.round(r.rate*100)}%"></i></span> <span class="pm-ratev">${Math.round(r.rate*100)}%</span>`:'<span class="hint">—</span>'}</td><td style="text-align:right">${r.forgot?`<span class="pm-pill warn">${r.forgot}번</span>`:'—'}</td></tr>`).join('')}
     </tbody></table></div>`:`<div class="empty"><b>${esc(label)} 기록이 없어요</b>학생들이 방과후 화면에서 계획을 적고 공부를 시작하면 쌓입니다.</div>`}
     <p class="hint" style="margin-top:var(--s3)">실천율 = 적은 할 일 중 완료 체크한 비율. '종료 안 누름'은 끝내기를 누르지 않아 최대 ${pmc('pmCapMin')}분으로 계산된 날입니다.</p>`;
   $$('[data-pms]').forEach(b=>b.onclick=()=>{pmScope=b.dataset.pms;renderPMSum()});
   $('#pm-sort').onclick=()=>{pmSort={num:'min',min:'rate',rate:'num'}[pmSort];renderPMSum()};
-  $('#pm-csv').onclick=()=>{const out=[['기간','번호','이름','공부한 날','공부(분)','공부 시간','계획 항목','완료','실천율(%)','종료 안 누름']];rows.forEach(r=>out.push([label,r.s.n,r.s.name,r.days,r.min,fmtDur(r.min),r.tot,r.dn,r.rate!=null?Math.round(r.rate*100):'',r.forgot]));downloadCSV(out,`방과후자습_누적_${label}.csv`);toast('내려받았습니다.')};
-  $('#pm-csv2').onclick=()=>{const out=[['날짜','요일','번호','이름','공부(분)','시간','과목','할 일','완료']];inDates.forEach(date=>{const dd=pmDateObj(date);ROSTER.forEach(s=>{const r=(by[date]||{})[s.id];if(!r)return;const it=pmItems(r.plan),m=pmDayMin(date,r.sess),sp=pmSpans(date,r.sess);if(!it.length&&!sp)return;if(!it.length)out.push([date,DOW[dd.getDay()],s.n,s.name,m,sp,'','',''] );it.forEach((x,i)=>out.push([date,DOW[dd.getDay()],s.n,s.name,i?'':m,i?'':sp,x.s,x.t,x.d?'O':'X']))})});downloadCSV(out,`방과후자습_날짜별_${label}.csv`);toast('내려받았습니다.')};
+  $('#pm-csv').onclick=()=>{const out=[['기간','번호','이름','출석한 날','공부(분)','공부 시간','계획 항목','완료','실천율(%)','종료 안 누름']];rows.forEach(r=>out.push([label,r.s.n,r.s.name,r.att,r.min,fmtDur(r.min),r.tot,r.dn,r.rate!=null?Math.round(r.rate*100):'',r.forgot]));downloadCSV(out,`방과후자습_누적_${label}.csv`);toast('내려받았습니다.')};
+  $('#pm-csv2').onclick=()=>{const out=[['날짜','요일','번호','이름','출석','공부(분)','시간','과목','할 일','완료']];inDates.forEach(date=>{const dd=pmDateObj(date);ROSTER.forEach(s=>{const r=(by[date]||{})[s.id];if(!r)return;const it=pmItems(r.plan),m=pmDayMin(date,r.sess),sp=pmSpans(date,r.sess);if(!it.length&&!sp)return;const ia=pmInTime(r.sess)?prettyTime(pmInTime(r.sess)):'';if(!it.length)out.push([date,DOW[dd.getDay()],s.n,s.name,ia,m,sp,'','',''] );it.forEach((x,i)=>out.push([date,DOW[dd.getDay()],s.n,s.name,i?'':ia,i?'':m,i?'':sp,x.s,x.t,x.d?'O':'X']))})});downloadCSV(out,`방과후자습_날짜별_${label}.csv`);toast('내려받았습니다.')};
 }
 function renderPMSet(){
   const box=$('#pm-body');if(!box)return;
@@ -2148,14 +2193,38 @@ function renderPMSet(){
       <div class="field"><label>한 번에 인정하는 최대 시간(분)</label><input class="input" id="pm-cap" type="number" min="10" max="600" value="${pmc('pmCapMin')}"><p class="hint">끝내기를 누르지 않고 간 학생은 시작 후 이 시간까지만 계산돼요.</p></div></div></div>
     <div class="card" style="margin-bottom:var(--s5)"><h3 style="font-family:var(--f-display);font-size:17px;font-weight:400;margin-bottom:var(--s4)">과목 목록</h3>
       <div class="field"><label>쉼표로 구분</label><input class="input" id="pm-subs" value="${esc(pmc('pmSubjects'))}"><p class="hint">학생이 할 일을 적을 때 고르는 과목입니다.</p></div></div>
+    <div class="card" style="margin-bottom:var(--s5)"><h3 style="font-family:var(--f-display);font-size:17px;font-weight:400;margin-bottom:var(--s4)">출석 방식</h3>
+      <label style="display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:99px;border:2px solid var(--line-strong);background:var(--dawn-1);font-size:13.5px;font-weight:600;cursor:pointer;width:fit-content"><input type="checkbox" id="pm-needcode" ${pmc('pmNeedCode')!==false?'checked':''}> 교실 QR·코드가 있어야 방과후 출석</label>
+      <p class="hint" style="margin-top:var(--s3)">켜 두면 '출석 QR' 화면의 코드를 찍거나 입력한 학생만 출석하고 공부를 시작할 수 있어요(교실에 있는 학생만). 코드는 아침 얼리버드 코드와 다르고 날마다 바뀝니다.<br>본인 핀 확인은 설정 탭의 <b>'출석할 때마다 본인 핀 입력'</b>을 아침과 같이 따릅니다.</p></div>
     <button class="btn btn-primary" id="pm-save">저장</button>`;
   $('#pm-save').onclick=async()=>{
     const pd=$$('.pm-day:checked').map(c=>Number(c.value)).sort();
     const ps={};$$('.pm-st').forEach(i=>{if(i.value)ps[i.dataset.dow]=i.value});
     const fresh=await DB.get('config');if(fresh)CFG={...DEFAULTS,...fresh};
-    CFG={...CFG,pmDays:pd,pmStart:ps,pmLatest:$('#pm-late').value||PM_DEF.pmLatest,pmCapMin:Math.min(600,Math.max(10,Math.round(Number($('#pm-cap').value)||PM_DEF.pmCapMin))),pmSubjects:$('#pm-subs').value.split(',').map(s=>s.trim()).filter(Boolean).join(',')||PM_DEF.pmSubjects};
+    CFG={...CFG,pmDays:pd,pmStart:ps,pmLatest:$('#pm-late').value||PM_DEF.pmLatest,pmCapMin:Math.min(600,Math.max(10,Math.round(Number($('#pm-cap').value)||PM_DEF.pmCapMin))),pmNeedCode:$('#pm-needcode').checked,pmSubjects:$('#pm-subs').value.split(',').map(s=>s.trim()).filter(Boolean).join(',')||PM_DEF.pmSubjects};
     const r=await DB.setChecked('config',CFG);toast(r==='remote'?'저장했습니다.':'이 기기에만 저장됨 — 온라인 연결 안 됨.',r!=='remote');renderPMSet();
   };
+}
+
+/* 교사: 방과후 출석 QR — 교실 화면(전자칠판)에 띄워 둡니다. 하루 동안 같은 코드입니다. */
+function renderPMQR(){
+  const box=$('#pm-body');if(!box)return;
+  const d=new Date(),ws=pmWindow(),code=pmCode();
+  box.innerHTML=`<div class="pm-qrcard" id="pm-qrcard">
+      <div class="eyebrow">${d.getMonth()+1}월 ${d.getDate()}일 ${DOW[d.getDay()]} · 방과후 자습 출석</div>
+      <h3>휴대폰 카메라로 찍고 출석하세요</h3>
+      <div class="pm-qrbox" id="pm-qr"></div>
+      <div class="pm-code">${code}</div>
+      <p class="pm-qrnote">${ws.ok?`오늘 종례 ${pmStartOf()}부터 ${pmc('pmLatest')}까지 · 할 일을 적고 출석해요`:esc(ws.reason)}</p>
+      <button class="btn btn-ghost btn-sm" id="pm-fs">전체 화면으로 띄우기</button>
+    </div>
+    ${needsUrlWarning()?`<p class="hint" style="margin-top:var(--s3);color:var(--alert)">설정 탭의 <b>배포 주소</b>가 비어 있어 QR이 학생 폰에서 안 열릴 수 있어요.</p>`:''}
+    ${pmc('pmNeedCode')===false?`<p class="hint" style="margin-top:var(--s3)">지금은 '방과후 설정'에서 QR 없이도 출석되게 해 두었어요.</p>`:''}
+    <p class="hint" style="margin-top:var(--s3)">이 코드는 오늘 하루만 쓰이고 자정에 바뀝니다. 아침 얼리버드 코드로는 방과후 출석이 되지 않아요.</p>`;
+  const qb=$('#pm-qr'),size=Math.min(320,Math.max(200,Math.floor((box.clientWidth||400)*.5)));
+  if(typeof QRCode==='undefined'){qb.innerHTML=`<div style="width:${size}px;height:${size}px;display:grid;place-items:center;color:var(--ink-500);font-size:13px;text-align:center;line-height:1.6">QR을 못 불러왔어요.<br>아래 6자리 코드를<br>안내해 주세요.</div>`}
+  else new QRCode(qb,{text:studentUrl(code),width:size,height:size,colorDark:'#20180E',colorLight:'#FFFFFF',correctLevel:QRCode.CorrectLevel.M});
+  $('#pm-fs').onclick=()=>{const c=$('#pm-qrcard');if(document.fullscreenElement)document.exitFullscreen?.();else if(c.requestFullscreen)c.requestFullscreen().catch(()=>toast('이 기기에서는 전체 화면을 쓸 수 없어요.',true));else toast('이 기기에서는 전체 화면을 쓸 수 없어요.',true)};
 }
 
 (async function init(){
