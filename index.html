@@ -538,6 +538,84 @@ body{font-variant-numeric:tabular-nums}
 .pj-goal{margin-left:auto;display:flex;align-items:center;gap:8px;letter-spacing:0;text-transform:none;font-family:var(--f-display);font-size:.95em;color:var(--ink-500);white-space:nowrap}
 .pj-goal .bar{width:clamp(80px,12vw,220px);height:clamp(9px,1.1vh,14px)}
 .pj-goal b{font-weight:400;color:#3E9A70}
+/* ── 방과후 자습 ── */
+.mode-sw{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:99px;background:var(--dawn-1);border:2px solid var(--line-strong);box-shadow:var(--shadow-sm)}
+.mode-sw button{padding:9px 8px;border-radius:99px;font-family:var(--f-display);font-size:15px;color:var(--ink-500);transition:background .18s var(--ease),color .18s var(--ease)}
+.mode-sw button.on{background:var(--sun);color:#5A2F1C}
+.mode-sw button:not(.on):hover{background:var(--dawn-2);color:var(--ink-900)}
+.pm-timer{display:flex;flex-direction:column;align-items:center;gap:var(--s2);text-align:center}
+.pm-timer.live{background:var(--sun-tint);border:2px solid var(--sun);border-radius:var(--r-lg);padding:var(--s5) var(--s4)}
+.pm-state{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--sun-ink);font-size:14px}
+.pm-timer.live .pulse{background:var(--sun-deep);animation:pulse 2s var(--ease) infinite}
+.pm-big{font-family:var(--f-display);font-size:40px;line-height:1.1;color:var(--ink-900)}
+.pm-sub2{font-size:12.5px;color:var(--ink-400);margin-top:-4px}
+.pm-stop{width:100%;padding:13px;font-size:16px;font-weight:700;border-width:2px;border-color:var(--sun-deep);color:var(--sun-ink);margin-top:var(--s2)}
+.pm-go{margin-top:var(--s1)}
+.pm-plan{display:flex;flex-direction:column;gap:var(--s3)}
+.pm-plan-h{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3)}
+.pm-plan-h h3,.pm-mine h3{font-family:var(--f-display);font-weight:400;font-size:18px}
+.pm-plan-h span{font-family:var(--f-data);font-size:13px;color:var(--ink-500);font-weight:600}
+.pm-bar,.pm-mbar{height:8px;border-radius:99px;background:var(--dawn-2);overflow:hidden}
+.pm-bar i,.pm-mbar i{display:block;height:100%;background:var(--good);border-radius:99px;transition:width .3s var(--ease)}
+.pm-items{list-style:none;display:flex;flex-direction:column;gap:6px}
+.pm-items li{display:flex;align-items:center;gap:var(--s2);padding:8px 10px;border-radius:var(--r-sm);background:var(--dawn-0);border:1px solid var(--line)}
+.pm-items li.done .pm-t{color:var(--ink-400);text-decoration:line-through}
+.pm-items li.pm-empty{justify-content:center;text-align:center;color:var(--ink-400);font-size:13px;background:transparent;border-style:dashed;padding:var(--s4)}
+.pm-chk{width:28px;height:28px;flex:none;border-radius:50%;border:2px solid var(--line-strong);background:var(--dawn-1);font-weight:800;color:#fff;display:grid;place-items:center;font-size:15px;transition:background .16s var(--ease),border-color .16s var(--ease)}
+.pm-chk[aria-pressed="true"]{background:var(--good);border-color:var(--good)}
+.pm-chk:hover{border-color:var(--good)}
+.pm-sub{flex:none;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--sky-tint);color:#4A78A8;border:1px solid var(--sky)}
+.pm-t{flex:1;min-width:0;font-size:14px;word-break:break-all}
+.pm-del{flex:none;width:26px;height:26px;border-radius:50%;color:var(--ink-300);font-size:18px;line-height:1}
+.pm-del:hover{background:var(--alert-tint);color:var(--alert)}
+.pm-add{display:grid;grid-template-columns:96px 1fr auto;gap:6px}
+@media (max-width:380px){.pm-add{grid-template-columns:1fr auto}.pm-add select{grid-column:1/-1}}
+.pm-mine{display:flex;flex-direction:column;gap:var(--s3)}
+.pm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2)}
+.pm-stats div{background:var(--dawn-0);border:1px solid var(--line);border-radius:var(--r-md);padding:var(--s3) var(--s2);text-align:center;display:flex;flex-direction:column;gap:2px}
+.pm-stats b{font-family:var(--f-display);font-weight:400;font-size:17px;white-space:nowrap}
+.pm-stats b i{font-style:normal;font-size:13px;color:var(--ink-400);margin-left:1px}
+.pm-stats span{font-size:11.5px;color:var(--ink-400)}
+.pm-days{list-style:none;display:flex;flex-direction:column}
+.pm-days li{display:grid;grid-template-columns:70px 1fr auto;gap:var(--s2);padding:8px 2px;border-bottom:1px dashed var(--line);font-size:13px;font-variant-numeric:tabular-nums}
+.pm-days li:last-child{border-bottom:0}
+.pm-days .dt{color:var(--ink-500)}.pm-days .mn{font-weight:700}.pm-days .ck{color:var(--ink-400)}
+/* 교사 */
+.btn.on{background:var(--sun-tint);color:var(--sun-ink);border-color:var(--sun)}
+.pm-dayhead{display:flex;gap:var(--s2);align-items:center;flex-wrap:wrap;margin-bottom:var(--s4)}
+.pm-num{font-family:var(--f-display);font-size:26px;line-height:1.2}
+.pm-num i{font-style:normal;font-size:14px;color:var(--ink-400)}
+.pm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:var(--s3)}
+.pm-card{background:var(--dawn-1);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s4);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:var(--s2);min-width:0}
+.pm-card.live{border:2px solid var(--sun);background:linear-gradient(var(--sun-tint),var(--dawn-1) 70%)}
+.pm-ch{display:flex;justify-content:space-between;align-items:center;gap:var(--s2)}
+.pm-ch b{font-size:15.5px}
+.pm-no{font-family:var(--f-data);font-size:12px;color:var(--ink-400);margin-right:6px}
+.pm-pill{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:99px;border:2px solid var(--line-strong);color:var(--ink-500);white-space:nowrap}
+.pm-pill.live{background:var(--sun-tint);border-color:var(--sun);color:var(--sun-ink)}
+.pm-pill.ok{background:var(--good-tint);border-color:var(--good);color:#2F8A62}
+.pm-pill.warn{background:var(--alert-tint);border-color:rgba(219,111,107,.45);color:var(--alert)}
+.pm-tm{display:flex;align-items:baseline;gap:var(--s2);flex-wrap:wrap}
+.pm-tm b{font-family:var(--f-display);font-weight:400;font-size:20px}
+.pm-tm span{font-size:12px;color:var(--ink-400);font-variant-numeric:tabular-nums}
+.pm-tl{list-style:none;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.pm-tl li{display:flex;gap:6px;align-items:baseline;line-height:1.45}
+.pm-tl li .mk{flex:none;width:14px;color:var(--ink-300);font-weight:800}
+.pm-tl li.done .mk{color:#2F8A62}
+.pm-tl li.done{color:var(--ink-400)}
+.pm-tl .pm-sub{font-size:10.5px;padding:0 6px}
+.pm-idle{margin-top:var(--s4);display:flex;flex-direction:column;gap:6px}
+.pm-idle div{display:flex;flex-wrap:wrap;gap:6px}
+.pm-idle div span{font-size:12.5px;color:var(--ink-500);padding:3px 10px;border-radius:99px;background:var(--dawn-2)}
+.pm-rate{display:inline-block;width:70px;height:8px;border-radius:99px;background:var(--dawn-2);overflow:hidden;vertical-align:middle}
+.pm-rate i{display:block;height:100%;background:var(--good)}
+.pm-ratev{font-family:var(--f-data);font-size:12.5px;font-weight:600}
+tr.dim td{color:var(--ink-300)}
+.pm-trend svg{display:block;width:100%;max-height:230px}
+.pm-setdays{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s2)}
+.pm-sd{display:flex;flex-direction:column;gap:6px;padding:var(--s3);border-radius:var(--r-md);border:1px solid var(--line-strong);background:var(--dawn-0);font-weight:600;font-size:14px}
+.pm-sd span{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.pm-timer.live .pulse{animation:none}.pm-bar i,.pm-mbar i{transition:none}}
 </style>
 </head>
 <body>
@@ -575,6 +653,7 @@ body{font-variant-numeric:tabular-nums}
         <div class="t-logo"><span class="logo"></span><span><span class="brandline" id="t-school">풍산고등학교</span>얼리버드</span></div>
         <div class="t-nav" id="t-nav">
           <button data-tab="today" class="on">오늘 현황</button>
+          <button data-tab="pm">방과후 자습</button>
           <button data-tab="board">순위</button>
           <button data-tab="log">누적 기록</button>
           <button data-tab="preview">교실 화면</button>
@@ -588,6 +667,7 @@ body{font-variant-numeric:tabular-nums}
     </nav>
     <main class="t-main"><div class="wrap">
       <div id="tab-today" class="panel"></div>
+      <div id="tab-pm" class="panel hidden"></div>
       <div id="tab-board" class="panel hidden"></div>
       <div id="tab-log" class="panel hidden"></div>
       <div id="tab-preview" class="panel hidden"></div>
@@ -926,6 +1006,7 @@ async function renderStudent(){
   if(!ME||!findStudent(ME)){renderPicker();return}
   if(!(await meVerified())){renderPinGate(ME);return}
   $('#st-change').classList.remove('hidden');
+  if(stMode()==='pm')return renderStudentPM();
   const me=findStudent(ME),rec=TODAY[ME],ws=windowStatus();
   const sessionOpen=!!LIVE,codeOK=sessionOpen&&(CFG.noCode||codeMatches(urlCode));
 
@@ -965,7 +1046,7 @@ async function renderStudent(){
   const leadBtn=me.lead?`<button class="btn btn-primary" id="st-open-pj" style="width:100%;padding:14px;font-size:16px;margin-bottom:var(--s3)">📺 교실 화면 켜기</button>
     <p class="hint" style="margin:-4px 0 var(--s4);text-align:center">전자칠판·패드에 오늘 현황을 띄웁니다. 닫으려면 화면 오른쪽 위 <b>닫기</b>.</p>`:'';
   const noteCard=NOTE.trim()?`<div class="s-note"><b>오늘 전달사항</b><p>${esc(NOTE).replace(/\n/g,'<br>')}</p></div>`:'';
-  stage.innerHTML=`${leadBtn}${noteCard}<div class="s-quote" id="st-quote"><p>${esc(q.t||'오늘도 잘 왔어요')}</p>${q.a?`<cite>— ${esc(q.a)}</cite>`:''}</div>
+  stage.innerHTML=`${modeSwitchHtml()}${leadBtn}${noteCard}<div class="s-quote" id="st-quote"><p>${esc(q.t||'오늘도 잘 왔어요')}</p>${q.a?`<cite>— ${esc(q.a)}</cite>`:''}</div>
     ${banner}
     <div class="me-card"><div class="me-tag">${me.g}학년 ${me.c}반 ${me.n}번${me.lead?' · 얼리버드 팀장 ⭐':''}</div><div class="me-name">${esc(me.name)}</div><div class="me-sub">${rec?'오늘의 기록':'오늘의 아침'}</div></div>
     ${action}
@@ -973,6 +1054,7 @@ async function renderStudent(){
     <div id="st-class"></div>
     <div id="st-my"></div>
     <div id="st-lb"></div>`;
+  bindModeSwitch();
   if($('#st-open-pj'))$('#st-open-pj').onclick=openLeadScreen;
   $('#st-quote').onclick=()=>{quoteShift++;const nq=quoteOfDay();$('#st-quote').innerHTML=`<p>${esc(nq.t)}</p>${nq.a?`<cite>— ${esc(nq.a)}</cite>`:''}`};
   if($('#st-check'))$('#st-check').onclick=doCheckIn;
@@ -1327,7 +1409,7 @@ $('#t-exit').onclick=showStudent;
 let curTab='today',pollTimer=null;
 function openTab(name){
   if(curTab==='preview'&&name!=='preview'){const f=$('#pv-if');if(f)f.src='about:blank'}  // 안 보는 동안은 미리보기 정지
-  curTab=name;$$('#t-nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));['today','board','log','preview','qr','roster','settings'].forEach(t=>$('#tab-'+t).classList.toggle('hidden',t!==name));stopPoll();({today:renderToday,board:renderBoard,log:renderLog,preview:renderPreview,qr:renderQR,roster:renderRoster,settings:renderSettings})[name]()}
+  curTab=name;$$('#t-nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));['today','pm','board','log','preview','qr','roster','settings'].forEach(t=>$('#tab-'+t).classList.toggle('hidden',t!==name));stopPoll();({today:renderToday,pm:renderPM,board:renderBoard,log:renderLog,preview:renderPreview,qr:renderQR,roster:renderRoster,settings:renderSettings})[name]()}
 $$('#t-nav button').forEach(b=>b.onclick=()=>openTab(b.dataset.tab));
 function stopPoll(){if(pollTimer){clearInterval(pollTimer);pollTimer=null}if(rotateTimer&&curTab!=='qr'&&$('#projector').classList.contains('hidden')){clearInterval(rotateTimer);rotateTimer=null;clearInterval(ttlTimer)}}
 
@@ -1793,6 +1875,289 @@ async function backupAll(){
 }
 function downloadCSV(rows,filename){const body=rows.map(r=>r.map(c=>{const v=String(c??'');return /[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v}).join(',')).join('\r\n');const blob=new Blob(['\uFEFF'+body],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},400)}
 
+/* ══════════════ 방과후 자습 ══════════════
+   얼리버드와 같은 컬렉션(early)에 키만 다르게 저장합니다.
+   계획:     pp:<날짜>:<학생id> = {items:[{id,s(과목),t(할 일),d(완료)}], u(마지막 수정)}
+   공부 시간: ps:<날짜>:<학생id> = {segs:[{s:'HHMM', e:'HHMM'|null}]}  (시작·종료를 여러 번 할 수 있음)
+   종료를 누르지 않은 날은 시작 후 '최대 인정 시간' 또는 '마감 시각' 중 이른 때까지로 계산하고,
+   교사 화면에 '종료 안 누름'으로 표시합니다. */
+const PM_DEF={
+  pmDays:[1,2,3,4,5],
+  pmStart:{1:'15:40',2:'16:40',3:'15:40',4:'16:40',5:'15:40'},  // 요일별 종례(시작 가능) 시각
+  pmLatest:'19:00',     // 이 시각 이후로는 시간이 쌓이지 않음
+  pmCapMin:150,         // 한 번 시작해서 인정되는 최대 시간(분)
+  pmSubjects:'국어,수학,영어,사회,과학,한국사,중국어,기타',
+};
+const pmc=k=>(CFG[k]===undefined||CFG[k]===null||CFG[k]==='')?PM_DEF[k]:CFG[k];
+const pmSubjects=()=>String(pmc('pmSubjects')).split(',').map(s=>s.trim()).filter(Boolean);
+const pmStartOf=(d=new Date())=>({...PM_DEF.pmStart,...(CFG.pmStart||{})})[d.getDay()]||'15:40';
+const pmDateObj=dk=>new Date(dk+'T12:00:00');
+const pmUid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function pmWindow(d=new Date()){
+  const dow=d.getDay();
+  if(!(pmc('pmDays')||[]).includes(dow))return{ok:false,reason:`${DOW[dow]}요일은 방과후 자습이 없어요`};
+  const cur=nowMin(d),st=pmStartOf(d);
+  if(cur<mins(st))return{ok:false,before:true,reason:`오늘은 ${st} 종례 후에 시작할 수 있어요`};
+  if(cur>=mins(pmc('pmLatest')))return{ok:false,after:true,reason:`${pmc('pmLatest')} 이후에는 기록되지 않아요`};
+  return{ok:true,reason:''};
+}
+// 한 구간의 공부 분. 오늘 열려 있는 구간은 지금까지, 지난날 열린 채 남은 구간은 최대 인정 시간까지.
+function pmSegMin(date,seg){
+  if(!seg||!seg.s)return 0;
+  const s=hmMin(seg.s),cap=Math.max(10,Number(pmc('pmCapMin'))||150),late=mins(pmc('pmLatest'));
+  let e=seg.e?hmMin(seg.e):(date===dateKey()?nowMin():s+cap);
+  if(!seg.e)e=Math.min(e,s+cap);
+  e=Math.min(e,late);
+  return Math.max(0,e-s);
+}
+const pmDayMin=(date,ss)=>((ss&&ss.segs)||[]).reduce((a,g)=>a+pmSegMin(date,g),0);
+const pmOpenSeg=ss=>{const g=(ss&&ss.segs)||[];const last=g[g.length-1];return last&&!last.e?last:null};
+const pmForgot=(date,ss)=>date<dateKey()&&!!pmOpenSeg(ss);
+const pmSpans=(date,ss)=>((ss&&ss.segs)||[]).map(g=>`${prettyTime(g.s)}–${g.e?prettyTime(g.e):(date===dateKey()?'공부 중':'종료 안 누름')}`).join(', ');
+const pmItems=p=>(p&&Array.isArray(p.items))?p.items.filter(x=>x&&String(x.t||'').trim()):[];
+
+// 한 번의 목록 조회로 키와 값을 함께 가져옵니다(학생 수×날짜만큼 따로 읽지 않도록).
+async function pmList(pre){
+  if(DB.isRemote&&typeof firebase!=='undefined'){
+    try{
+      const snap=await firebase.firestore().collection(COLLECTION).orderBy('k').startAt(pre).endAt(pre+'').get();
+      return snap.docs.map(d=>d.data()).filter(x=>x&&typeof x.k==='string'&&x.k.startsWith(pre)).map(x=>({k:x.k,v:x.v}));
+    }catch(e){console.warn('방과후 목록 조회 실패',e)}
+  }
+  const ks=await DB.list(pre);
+  return Promise.all(ks.map(async k=>({k,v:await DB.get(k)})));
+}
+// 기록을 {날짜:{학생id:{plan,sess}}} 모양으로 모읍니다. pre는 'YYYY-MM-DD' 또는 'YYYY-MM' 또는 ''.
+async function pmGather(pre=''){
+  const [pp,ps]=await Promise.all([pmList('pp:'+pre),pmList('ps:'+pre)]);
+  const by={};
+  const put=(arr,field)=>arr.forEach(({k,v})=>{const p=k.split(':');if(p.length<3)return;const date=p[1],id=p.slice(2).join(':');((by[date]=by[date]||{})[id]=by[date][id]||{})[field]=v});
+  put(pp,'plan');put(ps,'sess');
+  return by;
+}
+
+/* ── 학생 화면: 아침/방과후 전환 ── */
+let STMODE=null;   // 'am' | 'pm' — 고르지 않았으면 시각으로 정함(12시 이후 방과후)
+const stMode=()=>STMODE||(nowMin()>=12*60?'pm':'am');
+function modeSwitchHtml(){const m=stMode();return `<div class="mode-sw" role="tablist"><button role="tab" data-mode="am" class="${m==='am'?'on':''}" aria-selected="${m==='am'}">🌅 아침 얼리버드</button><button role="tab" data-mode="pm" class="${m==='pm'?'on':''}" aria-selected="${m==='pm'}">📚 방과후 자습</button></div>`}
+function bindModeSwitch(){$$('.mode-sw [data-mode]').forEach(b=>b.onclick=()=>{STMODE=b.dataset.mode;renderStudent()})}
+
+let PMP={items:[]},PMS={segs:[]},PMHIST={};
+async function renderStudentPM(){
+  const stage=$('#st-stage'),me=findStudent(ME),dk=dateKey(),ws=pmWindow();
+  const [plan,sess,hist]=await Promise.all([DB.get(`pp:${dk}:${ME}`),DB.get(`ps:${dk}:${ME}`),pmGather(dk.slice(0,7))]);
+  PMP=plan&&Array.isArray(plan.items)?plan:{items:[]};
+  PMS=sess&&Array.isArray(sess.segs)?sess:{segs:[]};
+  PMHIST=hist;
+  const subs=pmSubjects();
+  stage.innerHTML=`${modeSwitchHtml()}
+    <div class="me-card"><div class="me-tag">${me.g}학년 ${me.c}반 ${me.n}번 · 방과후 자습</div><div class="me-name">${esc(me.name)}</div><div class="me-sub">${(pmc('pmDays')||[]).includes(new Date().getDay())?`오늘 종례 ${pmStartOf()} · ${pmc('pmLatest')}까지 기록`:'오늘은 방과후 자습이 없는 날'}</div></div>
+    <div class="pm-timer" id="pm-timer"></div>
+    <div class="card pm-plan">
+      <div class="pm-plan-h"><h3>오늘 할 일</h3><span id="pm-prog"></span></div>
+      <div class="pm-bar"><i id="pm-bar"></i></div>
+      <ul class="pm-items" id="pm-items"></ul>
+      <div class="pm-add">
+        <select class="input" id="pm-sub" aria-label="과목">${subs.map(s=>`<option>${esc(s)}</option>`).join('')}</select>
+        <input class="input" id="pm-txt" maxlength="60" placeholder="예: 오늘 배운 이차함수 예제 3개 다시 풀기" autocomplete="off">
+        <button class="btn btn-primary" id="pm-addbtn" aria-label="할 일 추가">추가</button>
+      </div>
+      <p class="hint">그날 배운 내용을 바로 복습할 거리로 적어 보세요. 끝낸 일은 동그라미를 눌러 체크해요.</p>
+    </div>
+    <div id="pm-mine"></div>`;
+  bindModeSwitch();
+  const subSel=$('#pm-sub');
+  try{const last=localStorage.getItem('eb::pmLastSub');if(last&&subs.includes(last))subSel.value=last}catch(e){}
+  const add=async()=>{const t=$('#pm-txt').value.trim();if(!t)return toast('할 일을 적어 주세요.',true);const s=subSel.value;try{localStorage.setItem('eb::pmLastSub',s)}catch(e){}PMP.items.push({id:pmUid(),s,t,d:false});$('#pm-txt').value='';pmPaintPlan();pmPaintTimer();await pmSavePlan();$('#pm-txt').focus()};
+  $('#pm-addbtn').onclick=add;
+  $('#pm-txt').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing)add()});
+  pmPaintPlan();pmPaintTimer();pmPaintMine();
+}
+function pmPaintPlan(){
+  const ul=$('#pm-items');if(!ul)return;
+  const items=PMP.items,done=items.filter(x=>x.d).length;
+  $('#pm-prog').textContent=items.length?`${done} / ${items.length} 완료`:'아직 없음';
+  $('#pm-bar').style.width=items.length?`${Math.round(done/items.length*100)}%`:'0';
+  ul.innerHTML=items.length?items.map(x=>`<li class="${x.d?'done':''}"><button class="pm-chk" data-chk="${x.id}" aria-pressed="${!!x.d}" aria-label="${esc(x.t)} 완료 표시">${x.d?'✓':''}</button><span class="pm-sub">${esc(x.s)}</span><span class="pm-t">${esc(x.t)}</span><button class="pm-del" data-del="${x.id}" aria-label="${esc(x.t)} 지우기">×</button></li>`).join(''):`<li class="pm-empty">아래 칸에 오늘 할 일을 적어 주세요. 한 개 이상 적어야 공부를 시작할 수 있어요.</li>`;
+  $$('[data-chk]').forEach(b=>b.onclick=async()=>{const it=PMP.items.find(x=>x.id===b.dataset.chk);if(!it)return;it.d=!it.d;pmPaintPlan();pmPaintMine();await pmSavePlan();if(it.d&&PMP.items.every(x=>x.d))toast('오늘 할 일을 모두 끝냈어요! 👏')});
+  $$('[data-del]').forEach(b=>b.onclick=async()=>{PMP.items=PMP.items.filter(x=>x.id!==b.dataset.del);pmPaintPlan();pmPaintTimer();await pmSavePlan()});
+}
+async function pmSavePlan(){
+  PMP.u=new Date().toISOString();
+  const r=await DB.setChecked(`pp:${dateKey()}:${ME}`,PMP);
+  ((PMHIST[dateKey()]=PMHIST[dateKey()]||{})[ME]=PMHIST[dateKey()][ME]||{}).plan=PMP;
+  if(r!=='remote')toast('이 기기에만 저장됨 — 인터넷 연결을 확인해 주세요.',true);
+}
+function pmPaintTimer(){
+  const box=$('#pm-timer');if(!box)return;
+  const dk=dateKey(),ws=pmWindow(),open=pmOpenSeg(PMS),total=pmDayMin(dk,PMS),hasPlan=PMP.items.length>0;
+  if(open){
+    box.className='pm-timer live';
+    box.innerHTML=`<div class="pm-state"><i class="pulse"></i>공부 중 · ${prettyTime(open.s)} 시작</div>
+      <div class="pm-big">${fmtDur(total)}</div>
+      <div class="pm-sub2">오늘 공부한 시간</div>
+      <button class="btn pm-stop" id="pm-stop">공부 끝내기</button>
+      <p class="hint" style="text-align:center;margin:0">학원에 가기 전에 꼭 눌러 주세요. 누르지 않으면 최대 ${pmc('pmCapMin')}분까지만 인정돼요.</p>`;
+    $('#pm-stop').onclick=pmStop;
+  }else{
+    box.className='pm-timer';
+    const again=PMS.segs.length>0;
+    box.innerHTML=`${total?`<div class="pm-big">${fmtDur(total)}</div><div class="pm-sub2">오늘 공부한 시간${PMS.segs.length?` · ${esc(pmSpans(dk,PMS))}`:''}</div>`:''}
+      <button class="tap pm-go" id="pm-go" ${ws.ok&&hasPlan?'':'disabled'}>${again?'이어서 공부하기':'공부 시작'}<small>${!ws.ok?esc(ws.reason):(!hasPlan?'먼저 오늘 할 일을 적어 주세요':'시작을 누르면 시간이 쌓여요')}</small></button>`;
+    $('#pm-go').onclick=pmStart;
+  }
+}
+async function pmStart(){
+  if(!pmWindow().ok)return toast(pmWindow().reason,true);
+  if(!PMP.items.length)return toast('먼저 오늘 할 일을 적어 주세요.',true);
+  const fresh=await DB.get(`ps:${dateKey()}:${ME}`);if(fresh&&Array.isArray(fresh.segs))PMS=fresh;
+  if(pmOpenSeg(PMS))return pmPaintTimer();
+  PMS.segs.push({s:hhmm(),e:null});
+  const r=await DB.setChecked(`ps:${dateKey()}:${ME}`,PMS);
+  if(r!=='remote')toast('이 기기에만 저장됨 — 인터넷 연결을 확인해 주세요.',true);else toast('공부 시작! 화이팅 💪');
+  pmPaintTimer();pmPaintMine();
+}
+async function pmStop(){
+  const fresh=await DB.get(`ps:${dateKey()}:${ME}`);if(fresh&&Array.isArray(fresh.segs))PMS=fresh;
+  const open=pmOpenSeg(PMS);if(!open)return pmPaintTimer();
+  open.e=hhmm();
+  if(hmMin(open.e)<=hmMin(open.s))open.e=String(open.s);
+  const r=await DB.setChecked(`ps:${dateKey()}:${ME}`,PMS);
+  if(r!=='remote')toast('이 기기에만 저장됨 — 인터넷 연결을 확인해 주세요.',true);
+  else{const left=PMP.items.filter(x=>!x.d).length;toast(left?`수고했어요! 남은 할 일 ${left}개는 체크했나요?`:'수고했어요! 오늘 할 일 완료 🎉')}
+  pmPaintTimer();pmPaintMine();
+}
+function pmTick(){if($('#pm-timer')&&pmOpenSeg(PMS))pmPaintTimer()}
+function pmPaintMine(){
+  const box=$('#pm-mine');if(!box)return;
+  const dk=dateKey();
+  ((PMHIST[dk]=PMHIST[dk]||{})[ME]=PMHIST[dk][ME]||{}).plan=PMP;PMHIST[dk][ME].sess=PMS;
+  const days=Object.keys(PMHIST).sort().reverse().map(date=>({date,r:PMHIST[date][ME]})).filter(x=>x.r&&(pmItems(x.r.plan).length||((x.r.sess||{}).segs||[]).length));
+  const totMin=days.reduce((a,x)=>a+pmDayMin(x.date,x.r.sess),0);
+  const tot=days.reduce((a,x)=>a+pmItems(x.r.plan).length,0),dn=days.reduce((a,x)=>a+pmItems(x.r.plan).filter(i=>i.d).length,0);
+  const studied=days.filter(x=>pmDayMin(x.date,x.r.sess)>0).length;
+  box.innerHTML=`<div class="card pm-mine"><h3>${new Date().getMonth()+1}월 나의 방과후</h3>
+    <div class="pm-stats"><div><b>${fmtDur(totMin)}</b><span>공부한 시간</span></div><div><b>${studied}<i>일</i></b><span>공부한 날</span></div><div><b>${tot?Math.round(dn/tot*100):0}<i>%</i></b><span>계획 실천율</span></div></div>
+    ${days.length?`<ul class="pm-days">${days.slice(0,7).map(x=>{const it=pmItems(x.r.plan),d=it.filter(i=>i.d).length,dd=pmDateObj(x.date);return `<li><span class="dt">${dd.getMonth()+1}/${dd.getDate()} ${DOW[dd.getDay()]}</span><span class="mn">${fmtDur(pmDayMin(x.date,x.r.sess))}</span><span class="ck">${it.length?`할 일 ${d}/${it.length}`:'계획 없음'}</span></li>`}).join('')}</ul>`:`<p class="hint" style="text-align:center">이번 달 기록이 여기에 쌓여요.</p>`}</div>`;
+}
+
+/* ── 교사 화면: 방과후 탭 ── */
+let pmView='today',pmDate=dateKey(),pmScope='month',pmSort='num';
+async function renderPM(){
+  const el=$('#tab-pm');
+  const sub=(v,t)=>`<button class="btn btn-ghost btn-sm${pmView===v?' on':''}" data-pmv="${v}">${t}</button>`;
+  el.innerHTML=`<div class="p-title"><div><div class="brandline">${esc(CFG.school)} · 방과후 자습 📚</div><div class="eyebrow" style="margin-bottom:5px">계획 · 실천 · 공부 시간</div><h2>방과후 자습</h2></div>
+    <div class="p-actions pm-subnav">${sub('today','하루 현황')}${sub('sum','누적 · 실천율')}${sub('set','방과후 설정')}</div></div>
+    <div id="pm-body"><div class="empty"><b>기록 모으는 중</b>잠시만요.</div></div>`;
+  $$('[data-pmv]').forEach(b=>b.onclick=()=>{pmView=b.dataset.pmv;renderPM()});
+  stopPoll();
+  if(pmView==='today'){await renderPMDay();if(pmDate===dateKey())pollTimer=setInterval(()=>{if(curTab==='pm'&&pmView==='today'&&!document.activeElement?.closest?.('#pm-body input'))renderPMDay()},30000)}
+  else if(pmView==='sum')await renderPMSum();
+  else renderPMSet();
+}
+async function renderPMDay(){
+  const box=$('#pm-body');if(!box)return;
+  const by=(await pmGather(pmDate))[pmDate]||{};
+  const isToday=pmDate===dateKey(),d=pmDateObj(pmDate);
+  const rows=ROSTER.map(s=>{const r=by[s.id]||{};const it=pmItems(r.plan);return{s,it,done:it.filter(x=>x.d).length,sess:r.sess,min:pmDayMin(pmDate,r.sess),open:!!pmOpenSeg(r.sess),forgot:pmForgot(pmDate,r.sess)}});
+  const active=rows.filter(r=>r.it.length||((r.sess||{}).segs||[]).length);
+  const idle=rows.filter(r=>!active.includes(r));
+  const now=active.filter(r=>r.open&&isToday).length,sumMin=active.reduce((a,r)=>a+r.min,0);
+  const tot=active.reduce((a,r)=>a+r.it.length,0),dn=active.reduce((a,r)=>a+r.done,0);
+  active.sort((a,b)=>(b.open-a.open)||a.s.n-b.s.n);
+  const pill=r=>r.open&&isToday?`<span class="pm-pill live">공부 중</span>`:r.forgot?`<span class="pm-pill warn">종료 안 누름</span>`:r.min?`<span class="pm-pill ok">끝냄</span>`:`<span class="pm-pill">계획만</span>`;
+  box.innerHTML=`<div class="pm-dayhead"><button class="btn btn-ghost btn-sm" id="pm-prev" aria-label="전날">‹</button><input class="input" type="date" id="pm-date" value="${pmDate}" style="width:auto"><button class="btn btn-ghost btn-sm" id="pm-next" aria-label="다음날" ${isToday?'disabled':''}>›</button>${isToday?'':`<button class="btn btn-ghost btn-sm" id="pm-today">오늘로</button>`}<span class="hint">${d.getMonth()+1}월 ${d.getDate()}일 ${DOW[d.getDay()]} · 종례 ${pmStartOf(d)}</span></div>
+    <div class="stat-row">
+      <div class="stat-box"><div class="eyebrow">참여한 학생</div><div class="pm-num">${active.length}<i> / ${ROSTER.length}명</i></div></div>
+      ${isToday?`<div class="stat-box"><div class="eyebrow">지금 공부 중</div><div class="pm-num">${now}<i>명</i></div></div>`:''}
+      <div class="stat-box"><div class="eyebrow">모두 합친 시간</div><div class="pm-num">${fmtDur(sumMin)}</div></div>
+      <div class="stat-box"><div class="eyebrow">계획 실천율</div><div class="pm-num">${tot?Math.round(dn/tot*100):0}<i>% · ${dn}/${tot}</i></div></div>
+    </div>
+    ${active.length?`<div class="pm-grid">${active.map(r=>`<div class="pm-card${r.open&&isToday?' live':''}">
+      <div class="pm-ch"><div><span class="pm-no">${r.s.n}</span><b>${esc(r.s.name)}</b></div>${pill(r)}</div>
+      <div class="pm-tm"><b>${r.min?fmtDur(r.min):'0분'}</b><span>${((r.sess||{}).segs||[]).length?esc(pmSpans(pmDate,r.sess)):'시작 안 함'}</span></div>
+      ${r.it.length?`<div class="pm-mbar"><i style="width:${Math.round(r.done/r.it.length*100)}%"></i></div><ul class="pm-tl">${r.it.map(x=>`<li class="${x.d?'done':''}"><span class="mk">${x.d?'✓':'○'}</span><span class="pm-sub">${esc(x.s)}</span>${esc(x.t)}</li>`).join('')}</ul>`:`<p class="hint">계획을 적지 않았어요.</p>`}
+      ${r.open?`<button class="btn btn-ghost btn-sm" data-pmend="${r.s.id}">${isToday?'지금 종료 처리':`${pmc('pmCapMin')}분으로 종료 처리`}</button>`:''}
+    </div>`).join('')}</div>`:`<div class="empty"><b>${isToday?'아직 오늘 기록이 없어요':'이 날은 기록이 없어요'}</b>학생이 계획을 적거나 공부를 시작하면 여기에 나타납니다.</div>`}
+    ${idle.length&&active.length?`<div class="pm-idle"><span class="eyebrow">기록 없는 학생 ${idle.length}명</span><div>${idle.map(r=>`<span>${r.s.n} ${esc(r.s.name)}</span>`).join('')}</div></div>`:''}
+    ${isToday?`<p class="hint" style="margin-top:var(--s3)">30초마다 새로 고칩니다.</p>`:''}`;
+  const go=dk=>{pmDate=dk;renderPM()};
+  $('#pm-date').onchange=e=>{if(e.target.value)go(e.target.value>dateKey()?dateKey():e.target.value)};
+  $('#pm-prev').onclick=()=>{const x=pmDateObj(pmDate);x.setDate(x.getDate()-1);go(dateKey(x))};
+  $('#pm-next').onclick=()=>{const x=pmDateObj(pmDate);x.setDate(x.getDate()+1);const k=dateKey(x);go(k>dateKey()?dateKey():k)};
+  if($('#pm-today'))$('#pm-today').onclick=()=>go(dateKey());
+  $$('[data-pmend]').forEach(b=>b.onclick=async()=>{
+    const key=`ps:${pmDate}:${b.dataset.pmend}`,ss=await DB.get(key),open=pmOpenSeg(ss);if(!open)return renderPMDay();
+    if(isToday)open.e=hhmm();else{const e=Math.min(hmMin(open.s)+(Number(pmc('pmCapMin'))||150),mins(pmc('pmLatest')));open.e=pad(Math.floor(e/60))+pad(e%60)}
+    if(hmMin(open.e)<hmMin(open.s))open.e=open.s;
+    const r=await DB.setChecked(key,ss);toast(r==='remote'?'종료 처리했습니다.':'이 기기에만 저장됨 — 온라인 연결 안 됨.',r!=='remote');renderPMDay();
+  });
+}
+function pmScopeOk(date){
+  if(pmScope==='all')return true;
+  if(pmScope==='week')return date>=mondayOf(dateKey());
+  if(pmScope==='month')return date.startsWith(monthKey());
+  return date.startsWith(pmScope);
+}
+async function renderPMSum(){
+  const box=$('#pm-body');if(!box)return;
+  const by=await pmGather('');
+  const dates=Object.keys(by).sort();
+  const months=[...new Set(dates.map(d=>d.slice(0,7)))].sort().reverse().filter(m=>m!==monthKey());
+  const inDates=dates.filter(pmScopeOk);
+  let rows=ROSTER.map(s=>{
+    let min=0,days=0,tot=0,dn=0,forgot=0,planDays=0;const list=[];
+    inDates.forEach(date=>{const r=(by[date]||{})[s.id];if(!r)return;const it=pmItems(r.plan),m=pmDayMin(date,r.sess);if(!it.length&&!((r.sess||{}).segs||[]).length)return;
+      min+=m;if(m>0)days++;if(it.length)planDays++;tot+=it.length;dn+=it.filter(x=>x.d).length;if(pmForgot(date,r.sess))forgot++;list.push({date,m,it})});
+    return{s,min,days,tot,dn,rate:tot?dn/tot:null,forgot,planDays,list};
+  });
+  const sorter={num:(a,b)=>a.s.n-b.s.n,min:(a,b)=>b.min-a.min||a.s.n-b.s.n,rate:(a,b)=>(b.rate??-1)-(a.rate??-1)||b.tot-a.tot};
+  rows.sort(sorter[pmSort]);
+  const joined=rows.filter(r=>r.list.length),sumMin=rows.reduce((a,r)=>a+r.min,0),T=rows.reduce((a,r)=>a+r.tot,0),D=rows.reduce((a,r)=>a+r.dn,0);
+  // 날짜별 참여 인원 막대 (최근 12일)
+  const trend=inDates.slice(-12).map(date=>{const v=Object.values(by[date]||{});const n=v.filter(r=>pmDayMin(date,r.sess)>0).length;const it=v.flatMap(r=>pmItems(r.plan));const dd=pmDateObj(date);return{k:`${dd.getMonth()+1}/${dd.getDate()}`,v:n,s:it.length?Math.round(it.filter(x=>x.d).length/it.length*100):null,hi:date===dateKey()}});
+  const label=pmScope==='all'?'전체 기간':pmScope==='week'?'이번 주':pmScope==='month'?`${Number(monthKey().slice(5))}월`:`${pmScope.replace('-','년 ')}월`;
+  const chip=(v,t)=>`<button class="btn btn-ghost btn-sm${pmScope===v?' on':''}" data-pms="${v}">${t}</button>`;
+  const sortName={num:'번호순',min:'공부 시간 많은 순',rate:'실천율 높은 순'};
+  box.innerHTML=`<div class="pm-dayhead">${chip('week','이번 주')}${chip('month','이번 달')}${months.slice(0,4).map(m=>chip(m,`${Number(m.slice(5))}월`)).join('')}${chip('all','전체')}
+      <span style="flex:1"></span><button class="btn btn-ghost btn-sm" id="pm-sort">${sortName[pmSort]} ▾</button><button class="btn btn-ghost btn-sm" id="pm-csv">엑셀로 내려받기</button><button class="btn btn-ghost btn-sm" id="pm-csv2">날짜별 상세</button></div>
+    <div class="stat-row">
+      <div class="stat-box"><div class="eyebrow">${esc(label)} 참여 학생</div><div class="pm-num">${joined.length}<i> / ${ROSTER.length}명</i></div></div>
+      <div class="stat-box"><div class="eyebrow">모두 합친 시간</div><div class="pm-num">${fmtDur(sumMin)}</div></div>
+      <div class="stat-box"><div class="eyebrow">참여 학생 1인 평균</div><div class="pm-num">${joined.length?fmtDur(Math.round(sumMin/joined.length)):'—'}</div></div>
+      <div class="stat-box"><div class="eyebrow">계획 실천율</div><div class="pm-num">${T?Math.round(D/T*100):0}<i>% · ${D}/${T}</i></div></div>
+    </div>
+    ${trend.length?`<div class="card pm-trend" style="margin-bottom:var(--s5)"><div class="eyebrow" style="margin-bottom:var(--s2)">날짜별 공부한 학생 수 · 아래는 그날 실천율</div>${barSvg(trend,{h:150,label:v=>v+'명',sub:s=>s+'%'})}</div>`:''}
+    ${joined.length?`<div class="tbl-scroll"><table><thead><tr><th>번호</th><th>이름</th><th style="text-align:right">공부한 날</th><th style="text-align:right">공부 시간</th><th style="text-align:right">하루 평균</th><th style="text-align:right">할 일 완료</th><th>실천율</th><th style="text-align:right">종료 안 누름</th></tr></thead><tbody>
+      ${rows.map(r=>`<tr${r.list.length?'':' class="dim"'}><td>${r.s.n}</td><td style="font-weight:600">${esc(r.s.name)}</td><td style="text-align:right">${r.days?r.days+'일':'—'}</td><td style="text-align:right;font-family:var(--f-data);font-weight:600">${r.min?fmtDur(r.min):'—'}</td><td style="text-align:right;font-family:var(--f-data)">${r.days?fmtDur(Math.round(r.min/r.days)):'—'}</td><td style="text-align:right;font-family:var(--f-data)">${r.tot?`${r.dn} / ${r.tot}`:'—'}</td><td>${r.rate!=null?`<span class="pm-rate"><i style="width:${Math.round(r.rate*100)}%"></i></span> <span class="pm-ratev">${Math.round(r.rate*100)}%</span>`:'<span class="hint">—</span>'}</td><td style="text-align:right">${r.forgot?`<span class="pm-pill warn">${r.forgot}번</span>`:'—'}</td></tr>`).join('')}
+    </tbody></table></div>`:`<div class="empty"><b>${esc(label)} 기록이 없어요</b>학생들이 방과후 화면에서 계획을 적고 공부를 시작하면 쌓입니다.</div>`}
+    <p class="hint" style="margin-top:var(--s3)">실천율 = 적은 할 일 중 완료 체크한 비율. '종료 안 누름'은 끝내기를 누르지 않아 최대 ${pmc('pmCapMin')}분으로 계산된 날입니다.</p>`;
+  $$('[data-pms]').forEach(b=>b.onclick=()=>{pmScope=b.dataset.pms;renderPMSum()});
+  $('#pm-sort').onclick=()=>{pmSort={num:'min',min:'rate',rate:'num'}[pmSort];renderPMSum()};
+  $('#pm-csv').onclick=()=>{const out=[['기간','번호','이름','공부한 날','공부(분)','공부 시간','계획 항목','완료','실천율(%)','종료 안 누름']];rows.forEach(r=>out.push([label,r.s.n,r.s.name,r.days,r.min,fmtDur(r.min),r.tot,r.dn,r.rate!=null?Math.round(r.rate*100):'',r.forgot]));downloadCSV(out,`방과후자습_누적_${label}.csv`);toast('내려받았습니다.')};
+  $('#pm-csv2').onclick=()=>{const out=[['날짜','요일','번호','이름','공부(분)','시간','과목','할 일','완료']];inDates.forEach(date=>{const dd=pmDateObj(date);ROSTER.forEach(s=>{const r=(by[date]||{})[s.id];if(!r)return;const it=pmItems(r.plan),m=pmDayMin(date,r.sess),sp=pmSpans(date,r.sess);if(!it.length&&!sp)return;if(!it.length)out.push([date,DOW[dd.getDay()],s.n,s.name,m,sp,'','',''] );it.forEach((x,i)=>out.push([date,DOW[dd.getDay()],s.n,s.name,i?'':m,i?'':sp,x.s,x.t,x.d?'O':'X']))})});downloadCSV(out,`방과후자습_날짜별_${label}.csv`);toast('내려받았습니다.')};
+}
+function renderPMSet(){
+  const box=$('#pm-body');if(!box)return;
+  const st={...PM_DEF.pmStart,...(CFG.pmStart||{})},days=[['월',1],['화',2],['수',3],['목',4],['금',5]];
+  box.innerHTML=`<div class="card" style="margin-bottom:var(--s5)"><h3 style="font-family:var(--f-display);font-size:17px;font-weight:400;margin-bottom:var(--s4)">운영 요일과 시작 시각</h3>
+      <p class="hint" style="margin-bottom:var(--s3)">요일마다 종례 시각부터 학생이 <b>공부 시작</b>을 누를 수 있어요. 체크를 끈 요일은 방과후 자습이 없는 날입니다.</p>
+      <div class="pm-setdays">${days.map(([l,v])=>`<label class="pm-sd"><span><input type="checkbox" class="pm-day" value="${v}" ${(pmc('pmDays')||[]).includes(v)?'checked':''}> ${l}</span><input class="input pm-st" data-dow="${v}" type="time" value="${st[v]}"></label>`).join('')}</div></div>
+    <div class="card" style="margin-bottom:var(--s5)"><h3 style="font-family:var(--f-display);font-size:17px;font-weight:400;margin-bottom:var(--s4)">시간 계산</h3>
+      <div class="form-grid"><div class="field"><label>마감 시각</label><input class="input" id="pm-late" type="time" value="${pmc('pmLatest')}"><p class="hint">이 시각 이후로는 시간이 쌓이지 않고 시작도 막힙니다.</p></div>
+      <div class="field"><label>한 번에 인정하는 최대 시간(분)</label><input class="input" id="pm-cap" type="number" min="10" max="600" value="${pmc('pmCapMin')}"><p class="hint">끝내기를 누르지 않고 간 학생은 시작 후 이 시간까지만 계산돼요.</p></div></div></div>
+    <div class="card" style="margin-bottom:var(--s5)"><h3 style="font-family:var(--f-display);font-size:17px;font-weight:400;margin-bottom:var(--s4)">과목 목록</h3>
+      <div class="field"><label>쉼표로 구분</label><input class="input" id="pm-subs" value="${esc(pmc('pmSubjects'))}"><p class="hint">학생이 할 일을 적을 때 고르는 과목입니다.</p></div></div>
+    <button class="btn btn-primary" id="pm-save">저장</button>`;
+  $('#pm-save').onclick=async()=>{
+    const pd=$$('.pm-day:checked').map(c=>Number(c.value)).sort();
+    const ps={};$$('.pm-st').forEach(i=>{if(i.value)ps[i.dataset.dow]=i.value});
+    const fresh=await DB.get('config');if(fresh)CFG={...DEFAULTS,...fresh};
+    CFG={...CFG,pmDays:pd,pmStart:ps,pmLatest:$('#pm-late').value||PM_DEF.pmLatest,pmCapMin:Math.min(600,Math.max(10,Math.round(Number($('#pm-cap').value)||PM_DEF.pmCapMin))),pmSubjects:$('#pm-subs').value.split(',').map(s=>s.trim()).filter(Boolean).join(',')||PM_DEF.pmSubjects};
+    const r=await DB.setChecked('config',CFG);toast(r==='remote'?'저장했습니다.':'이 기기에만 저장됨 — 온라인 연결 안 됨.',r!=='remote');renderPMSet();
+  };
+}
+
 (async function init(){
   readUrlCode();
   DB.initFirebase();
@@ -1826,7 +2191,7 @@ function downloadCSV(rows,filename){const body=rows.map(r=>r.map(c=>{const v=Str
     return;
   }
   showStudent();
-  setInterval(()=>{if(!$('#v-student').classList.contains('hidden'))renderStudent()},30000);
+  setInterval(()=>{if($('#v-student').classList.contains('hidden'))return;if($('#pm-timer'))pmTick();else renderStudent()},30000);
 })();
 </script>
 </body>
